@@ -7,7 +7,10 @@ include_directories(${SDL2_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Test src/main.cpp)
+add_executable(Test src/main.cpp
+        src/Player.h
+        src/Player.cpp
+        src/vector2.h)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES})
