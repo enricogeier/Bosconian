@@ -10,7 +10,12 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(Test src/main.cpp
         src/Player.h
         src/Player.cpp
-        src/vector2.h)
+        src/Vector2.h
+        src/Vector2.cpp
+        src/GameHandler.h
+        src/GameHandler.cpp
+        src/Renderer.h
+        src/Renderer.cpp)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES})

@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include <SDL2/SDL.h>
-#include "vector2.h"
+#include "Vector2.h"
 
 class Player
 {
@@ -18,13 +18,8 @@ public:
 
     SDL_Surface* sprite{}; // will be changed in the future
 
-    Player(Vector2 position, Vector2 direction, int lives, float max_velocity, float min_velocity);
-
-    ~Player();
-
-    void render(SDL_Renderer* renderer);
-
-    void free();
+    explicit Player(Vector2 position = Vector2(0.0f, 0.0f), Vector2 direction = Vector2(0.0f, 0.0f),
+           int lives = 3, float max_velocity = 0.0125f, float min_velocity = 0.0125f);
 
     void move(Vector2& new_direction);
 

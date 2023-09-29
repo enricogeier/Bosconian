@@ -1,4 +1,4 @@
-1. clamp
-2. MVC implementieren
-3. sprite sheet => Raumschiff anstatt Rechteck rendern
+1. sprite sheet => Raumschiff anstatt Rechteck rendern, ...
+2. screen size, "unendliche Welt", Kamera
+3. enemy, collision, shoot
 --------------------------------------------------------------------------------------------------------------------------------------------------------
