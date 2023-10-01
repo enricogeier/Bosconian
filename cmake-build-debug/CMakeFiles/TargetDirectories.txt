@@ -1,0 +1,3 @@
+/home/enno/GitHub/Bosconian/cmake-build-debug/CMakeFiles/Test.dir
+/home/enno/GitHub/Bosconian/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/enno/GitHub/Bosconian/cmake-build-debug/CMakeFiles/rebuild_cache.dir

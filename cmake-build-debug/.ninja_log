@@ -1,0 +1,7 @@
+# ninja log v5
+0	464	1696108241462999416	CMakeFiles/Test.dir/src/Vector2.cpp.o	5be8f56df27f471d
+0	1512	1696108242503080639	CMakeFiles/Test.dir/src/main.cpp.o	35e2fade2c4de3b3
+0	1548	1696108242543083764	CMakeFiles/Test.dir/src/Player.cpp.o	6ba15f2f1cf1563d
+465	2235	1696108243231137524	CMakeFiles/Test.dir/src/GameHandler.cpp.o	13b6ba0200e2102c
+1513	2794	1696108243791181300	CMakeFiles/Test.dir/src/Renderer.cpp.o	1bbfa8030a8e3e00
+2794	2886	1696108243883188492	Test	18fedf3e5c60de7f
