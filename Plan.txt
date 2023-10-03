@@ -1,4 +1,7 @@
-1. sprite sheet => Raumschiff anstatt Rechteck rendern, ...
-2. screen size, "unendliche Welt", Kamera
-3. enemy, collision, shoot
---------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Rechteck durch player sprite austauschen
+2. png anstatt bmp laden
+3. sprite: Austauschen, rotieren nach Bewegung
+4. Schießen implementieren: ohne Kollision
+5. Kamera, Spielfeld implementieren
+6. Gegner implementieren (dumm), Kollision
+--------------------------------------------------------------------------------
