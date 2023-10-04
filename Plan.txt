@@ -1,6 +1,6 @@
-1. Rechteck durch player sprite austauschen
-2. png anstatt bmp laden
-3. sprite: Austauschen, rotieren nach Bewegung
+1. png anstatt bmp laden *
+2. fps und andere Sachen
+3. Setting.h implementieren => model
 4. Schießen implementieren: ohne Kollision
 5. Kamera, Spielfeld implementieren
 6. Gegner implementieren (dumm), Kollision

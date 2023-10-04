@@ -1,17 +1,22 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "Vector2.h"
+
 
 class Player
 {
+private:
+    Vector2 clamped_direction;
+
+
 public:
 
     int lives{};
 
     Vector2 position;
-    Vector2 direction;
+    Vector2 direction = Vector2(0.0f, 0.0f);
 
     float max_velocity{};
     float min_velocity{};

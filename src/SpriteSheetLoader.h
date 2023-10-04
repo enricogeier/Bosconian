@@ -1,9 +1,11 @@
 #ifndef SPRITESHEETLOADER_H
 #define SPRITESHEETLOADER_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <SDL_image.h>
 #include <string>
 #include <iostream>
+
 
 class SpriteSheetLoader
 {

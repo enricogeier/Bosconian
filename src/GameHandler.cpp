@@ -36,22 +36,25 @@ void GameHandler::game_loop()
 
 void GameHandler::match_input_vector()
 {
+    Vector2 scale(4.0f, 4.0f);
+
+
     switch ((int)player.direction.x)
     {
         case 1:
             switch ((int)player.direction.y)
             {
                 case 1:
-                    renderer.render_and_rotate((int)player.position.x, (int)player.position.y, &this->player_sprites.back(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f);
+                    renderer.render(player.position, &this->player_sprites.back(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f, scale);
                     break;
                 case 0:
-                    renderer.render_and_rotate((int)player.position.x, (int)player.position.y, &this->player_sprites.front(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f);
+                    renderer.render(player.position, &this->player_sprites.front(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f, scale);
                     break;
                 case -1:
-                    renderer.render_and_rotate((int)player.position.x, (int)player.position.y, &this->player_sprites.back(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f);
+                    renderer.render(player.position, &this->player_sprites.back(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f, scale);
                     break;
             }
             break;
@@ -59,11 +62,12 @@ void GameHandler::match_input_vector()
             switch ((int)player.direction.y)
             {
                 case 1:
-                    renderer.render_and_rotate((int)player.position.x, (int)player.position.y, &this->player_sprites.front(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f);
+                    renderer.render(player.position, &this->player_sprites.front(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f, scale);
                     break;
                 case -1:
-                    renderer.render((int)player.position.x, (int)player.position.y, &this->player_sprites.front(), SpriteSheet::get_sprite_sheet_texture());
+                    renderer.render(player.position, &this->player_sprites.front(),
+                                    SpriteSheet::get_sprite_sheet_texture(), 0.0f, scale);
                     break;
             }
             break;
@@ -71,15 +75,16 @@ void GameHandler::match_input_vector()
             switch ((int)player.direction.y)
             {
                 case 1:
-                    renderer.render_and_rotate((int)player.position.x, (int)player.position.y, &this->player_sprites.back(),
-                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f);
+                    renderer.render(player.position, &this->player_sprites.back(),
+                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f, scale);
                     break;
                 case 0:
-                    renderer.render_and_rotate((int)player.position.x, (int)player.position.y, &this->player_sprites.front(),
-                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f);
+                    renderer.render(player.position, &this->player_sprites.front(),
+                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f, scale);
                     break;
                 case -1:
-                    renderer.render((int)player.position.x, (int)player.position.y, &this->player_sprites.back(), SpriteSheet::get_sprite_sheet_texture());
+                    renderer.render(player.position, &this->player_sprites.back(),
+                                    SpriteSheet::get_sprite_sheet_texture(), 0.0f, scale);
                     break;
             }
             break;
@@ -113,12 +118,40 @@ void GameHandler::handle_input()
         }
         else if(e.type == SDL_KEYDOWN)
         {
+
+
+
+            const Uint8* current_key_state =  SDL_GetKeyboardState(NULL);
+
+            if(current_key_state[SDL_SCANCODE_UP])
+            {
+                this->keyboard_input_vector.y = -1.0f;
+            }
+            if(current_key_state[SDL_SCANCODE_DOWN])
+            {
+                this->keyboard_input_vector.y = 1.0f;
+            }
+            if(current_key_state[SDL_SCANCODE_LEFT])
+            {
+                this->keyboard_input_vector.x = -1.0f;
+            }
+            if(current_key_state[SDL_SCANCODE_RIGHT])
+            {
+                this->keyboard_input_vector.x = 1.0f;
+            }
+
+
+
+
         }
 
 
 
 
     }
+
+    /*
+
 
     const Uint8* current_key_state =  SDL_GetKeyboardState(NULL);
 
@@ -139,7 +172,7 @@ void GameHandler::handle_input()
         this->keyboard_input_vector.x = 1.0f;
     }
 
-
+    */
 
 }
 

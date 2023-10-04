@@ -1,7 +1,7 @@
 #ifndef SPRITESHEET_H
 #define SPRITESHEET_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <string>
 #include <list>
 
@@ -14,7 +14,7 @@ private:
 public:
     const static int SPRITE_SHEET_WIDTH = 256;
     const static int SPRITE_SHEET_HEIGHT = 400;
-    inline const static std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.bmp";
+    inline const static std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
 
     // constexpr: value is known at compile-time => for compiler
     constexpr static SDL_Rect sprites[256] = {

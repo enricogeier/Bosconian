@@ -1,7 +1,7 @@
 #ifndef GAMEHANDLER_H
 #define GAMEHANDLER_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "Player.h"
 #include "Renderer.h"
 #include "Vector2.h"

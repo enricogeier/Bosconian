@@ -2,7 +2,9 @@
 
 SDL_Surface* SpriteSheetLoader::load_sprite_sheet_surface(std::string path)
 {
-    SDL_Surface* sprite_sheet_surface = SDL_LoadBMP(path.c_str());
+    // Initialize PNG loading
+    IMG_Init(IMG_INIT_PNG);
+    SDL_Surface* sprite_sheet_surface = IMG_Load(path.c_str());
     if(sprite_sheet_surface == nullptr)
     {
         std::cerr << "sprite sheet could not be loaded! SDL Error: " << SDL_GetError() << std::endl;

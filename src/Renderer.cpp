@@ -35,17 +35,10 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
-
-void Renderer::render(int x, int y, SDL_Rect* sprite, SDL_Texture* sprite_sheet_texture)
+void Renderer::render(Vector2& position, SDL_Rect* sprite, SDL_Texture* sprite_sheet_texture, float rotation, Vector2 scale)
 {
-     SDL_Rect render_quad = {x, y, sprite->w, sprite->h};
-     SDL_RenderCopy(renderer, sprite_sheet_texture, sprite, &render_quad);
-}
-
-void Renderer::render_and_rotate(int x, int y, SDL_Rect *sprite, SDL_Texture *sprite_sheet_texture, float angle)
-{
-    SDL_Rect render_quad = {x, y, sprite->w, sprite->h};
-    SDL_RenderCopyEx(renderer, sprite_sheet_texture, sprite, &render_quad, angle, nullptr, SDL_FLIP_NONE);
+     SDL_Rect render_quad = {(int)position.x, (int)position.y, sprite->w * (int)scale.x, sprite->h * (int)scale.y};
+     SDL_RenderCopyEx(renderer, sprite_sheet_texture, sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 }
 
 
