@@ -91,6 +91,20 @@ build CMakeFiles/Test.dir/src/SpriteSheetLoader.cpp.o: CXX_COMPILER__Test_unscan
   OBJECT_DIR = CMakeFiles/Test.dir
   OBJECT_FILE_DIR = CMakeFiles/Test.dir/src
 
+build CMakeFiles/Test.dir/src/Timer.cpp.o: CXX_COMPILER__Test_unscanned_Debug /home/enrico/GitHub/Bosconian/src/Timer.cpp || cmake_object_order_depends_target_Test
+  DEP_FILE = CMakeFiles/Test.dir/src/Timer.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/usr/include/SDL2
+  OBJECT_DIR = CMakeFiles/Test.dir
+  OBJECT_FILE_DIR = CMakeFiles/Test.dir/src
+
+build CMakeFiles/Test.dir/src/FPSTimer.cpp.o: CXX_COMPILER__Test_unscanned_Debug /home/enrico/GitHub/Bosconian/src/FPSTimer.cpp || cmake_object_order_depends_target_Test
+  DEP_FILE = CMakeFiles/Test.dir/src/FPSTimer.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/usr/include/SDL2
+  OBJECT_DIR = CMakeFiles/Test.dir
+  OBJECT_FILE_DIR = CMakeFiles/Test.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Test
@@ -99,7 +113,7 @@ build CMakeFiles/Test.dir/src/SpriteSheetLoader.cpp.o: CXX_COMPILER__Test_unscan
 #############################################
 # Link the executable Test
 
-build Test: CXX_EXECUTABLE_LINKER__Test_Debug CMakeFiles/Test.dir/src/main.cpp.o CMakeFiles/Test.dir/src/Player.cpp.o CMakeFiles/Test.dir/src/Vector2.cpp.o CMakeFiles/Test.dir/src/GameHandler.cpp.o CMakeFiles/Test.dir/src/Renderer.cpp.o CMakeFiles/Test.dir/src/SpriteSheetLoader.cpp.o | /usr/lib/x86_64-linux-gnu/libSDL2_image.so
+build Test: CXX_EXECUTABLE_LINKER__Test_Debug CMakeFiles/Test.dir/src/main.cpp.o CMakeFiles/Test.dir/src/Player.cpp.o CMakeFiles/Test.dir/src/Vector2.cpp.o CMakeFiles/Test.dir/src/GameHandler.cpp.o CMakeFiles/Test.dir/src/Renderer.cpp.o CMakeFiles/Test.dir/src/SpriteSheetLoader.cpp.o CMakeFiles/Test.dir/src/Timer.cpp.o CMakeFiles/Test.dir/src/FPSTimer.cpp.o | /usr/lib/x86_64-linux-gnu/libSDL2_image.so
   FLAGS = -g
   LINK_LIBRARIES = -L/usr/lib/x86_64-linux-gnu  -lSDL2  /usr/lib/x86_64-linux-gnu/libSDL2_image.so
   OBJECT_DIR = CMakeFiles/Test.dir

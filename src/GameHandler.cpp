@@ -11,12 +11,20 @@ void GameHandler::initialize()
     load_sprite_sheet();
     this->quit_game = false;
     this->player_sprites = SpriteSheet::get_player_sprites();
+
+
+
+
+
+
+    fps_timer.start();
 }
 
 void GameHandler::game_loop()
 {
     while(!this->quit_game)
     {
+
         renderer.clear_screen();
 
         handle_input();
@@ -26,11 +34,11 @@ void GameHandler::game_loop()
 
 
 
-
-
-
-
         renderer.update_screen();
+        fps_timer.clamp_fps();
+        fps_timer.print_fps(frame_counter);
+        frame_counter++;
+
     }
 }
 
@@ -178,6 +186,7 @@ void GameHandler::handle_input()
 
 void GameHandler::run()
 {
+
     initialize();
 
     game_loop();

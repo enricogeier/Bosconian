@@ -1,5 +1,5 @@
-1. png anstatt bmp laden *
-2. fps und andere Sachen
+1. fps und andere Sachen
+2. neues input implementieren
 3. Setting.h implementieren => model
 4. Schießen implementieren: ohne Kollision
 5. Kamera, Spielfeld implementieren

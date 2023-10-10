@@ -7,6 +7,8 @@
 #include "Vector2.h"
 #include "SpriteSheet.h"
 #include "SpriteSheetLoader.h"
+#include "FPSTimer.h"
+#include <string>
 
 
 class GameHandler
@@ -17,6 +19,8 @@ private:
     Vector2 keyboard_input_vector;
     bool quit_game;
     std::list<SDL_Rect> player_sprites;
+    FPSTimer fps_timer;
+    int frame_counter = 0;
 
 
 public:
