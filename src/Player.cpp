@@ -8,7 +8,7 @@ Player::Player(Vector2 position,
 {
 }
 
-void Player::move(Vector2& new_direction)
+void Player::move(Vector2& new_direction, float& delta)
 {
 
     if(new_direction != this->direction && new_direction != Vector2())
@@ -18,7 +18,7 @@ void Player::move(Vector2& new_direction)
 
     this->clamped_direction = this->direction.clamp();
 
-    Vector2 new_position = Vector2(position.x + (clamped_direction.x * max_velocity), position.y + (clamped_direction.y * max_velocity));
+    Vector2 new_position = Vector2(position.x + (clamped_direction.x * max_velocity * delta), position.y + (clamped_direction.y * max_velocity * delta));
     this->position = new_position;
 
 

@@ -2,7 +2,7 @@
 
 void Timer::start()
 {
-    if(is_stopped)
+    if(is_stopped || is_paused)
     {
         // reset timer
         this->is_paused = false;
@@ -41,7 +41,7 @@ void Timer::resume()
 {
     if(is_started && is_paused)
     {
-        this->pause_time += SDL_GetTicks() - this->time_left;
+        this->pause_time = SDL_GetTicks() - this->time_left - this->start_time;
         is_paused = false;
 
     }

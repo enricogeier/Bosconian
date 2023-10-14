@@ -9,14 +9,15 @@ class FPSTimer : public Timer
 {
 private:
     Uint32 previous_time = 0;
-    const int time_for_frame = 1000 / MAX_FPS;
+    const Uint32 time_for_frame =  1000 / MAX_FPS;
+    Uint32 delta = 0;
 public:
+
     FPSTimer()= default;
 
-    void print_fps(const int& amount_of_frames);
+    float get_delta() const;
 
-    void clamp_fps();
-
+    void clamp_and_print_fps(const int& amount_of_frames);
 
 };
 

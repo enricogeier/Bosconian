@@ -5,3 +5,6 @@
 5. Kamera, Spielfeld implementieren
 6. Gegner implementieren (dumm), Kollision
 --------------------------------------------------------------------------------
+Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
+
+1. fps korrekt clampen (120 anstatt 123 fps)

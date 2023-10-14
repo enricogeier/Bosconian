@@ -20,7 +20,7 @@ private:
     bool quit_game;
     std::list<SDL_Rect> player_sprites;
     FPSTimer fps_timer;
-    int frame_counter = 0;
+    int frame_counter = 1;
 
 
 public:

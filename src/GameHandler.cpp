@@ -2,7 +2,8 @@
 
 GameHandler::GameHandler()
 {
-    player = Player(Vector2(640 / 2, 480 / 2), Vector2(0.0f, -1.0f), 3, 0.125f, 0.0125f);
+    player = Player(Vector2(PLAYER_START_X, PLAYER_START_Y),
+                    Vector2(0.0f, -1.0f), PLAYER_LIVES, MAX_VELOCITY, MIN_VELOCITY);
 
 }
 
@@ -27,16 +28,19 @@ void GameHandler::game_loop()
 
         renderer.clear_screen();
 
+        float delta = fps_timer.get_delta();
+
+
+
         handle_input();
-        player.move(keyboard_input_vector);
+        player.move(keyboard_input_vector, delta);
         match_input_vector();
 
 
 
 
         renderer.update_screen();
-        fps_timer.clamp_fps();
-        fps_timer.print_fps(frame_counter);
+        fps_timer.clamp_and_print_fps(frame_counter);
         frame_counter++;
 
     }
@@ -124,7 +128,7 @@ void GameHandler::handle_input()
             return;
 
         }
-        else if(e.type == SDL_KEYDOWN)
+        else if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
         {
 
 
@@ -184,8 +188,7 @@ void GameHandler::handle_input()
 
 }
 
-void GameHandler::run()
-{
+void GameHandler::run() {
 
     initialize();
 

@@ -1,22 +1,32 @@
 #include "FPSTimer.h"
 
-void FPSTimer::print_fps(const int &amount_of_frames)
+
+float FPSTimer::get_delta() const
 {
-    float fps = (amount_of_frames / (get_current_time() / 1000.0f));
-    std::cout << std::to_string(fps) << std::endl;
+    return (float)delta / 1000;
 }
 
-void FPSTimer::clamp_fps()
+void FPSTimer::clamp_and_print_fps(const int &amount_of_frames)
 {
     Uint32 current_time = get_current_time();
-    Uint32 current_frame_time = current_time - previous_time;
-    if(current_frame_time < time_for_frame + 1)
+
+
+    delta = current_time - previous_time;
+    Uint32 delay_time = 0;
+    if(delta < time_for_frame)
     {
-        Uint32 delay_time = time_for_frame - current_frame_time;
+        delay_time = time_for_frame - delta;
         SDL_Delay(delay_time);
+
     }
 
-    previous_time = current_time;
+    previous_time = get_current_time();
+    delta += previous_time - current_time;
+
+    // calculate fps
+    float fps = ( amount_of_frames / (get_current_time() / 1000.0f));
+    std::cout << std::to_string(fps) << std::endl;
+
 
 
 }

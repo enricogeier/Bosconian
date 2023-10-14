@@ -26,7 +26,7 @@ public:
     explicit Player(Vector2 position = Vector2(0.0f, 0.0f), Vector2 direction = Vector2(0.0f, 0.0f),
            int lives = 3, float max_velocity = 0.0125f, float min_velocity = 0.0125f);
 
-    void move(Vector2& new_direction);
+    void move(Vector2& new_direction, float& delta);
 
 };
 
