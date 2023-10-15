@@ -1,4 +1,4 @@
-# Install script for directory: /home/enrico/GitHub/Bosconian
+# Install script for directory: /home/enno/GitHub/Bosconian
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/enrico/GitHub/Bosconian/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/enno/GitHub/Bosconian/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
