@@ -18,11 +18,12 @@ void GameHandler::initialize()
 
 
 
-    fps_timer.start();
+
 }
 
 void GameHandler::game_loop()
 {
+    fps_timer.start();
     while(!this->quit_game)
     {
 
@@ -30,10 +31,13 @@ void GameHandler::game_loop()
 
         float delta = fps_timer.get_delta();
 
+        if(Input::handle_user_input(this->keyboard_input_vector, this->frame_counter))
+        {
+            return;
+        }
 
-
-        handle_input();
         player.move(keyboard_input_vector, delta);
+
         match_input_vector();
 
 
@@ -112,81 +116,7 @@ void GameHandler::load_sprite_sheet()
     SpriteSheet::set_sprite_sheet_texture(sprite_sheet_texture);
 }
 
-void GameHandler::handle_input()
-{
-    SDL_Event e;
 
-    this->keyboard_input_vector.x = 0.0f;
-    this->keyboard_input_vector.y = 0.0f;
-
-    // Handle events on queue. SDL's internal keystates are updated every time SDL PollEvent is called
-    while(SDL_PollEvent(&e)) {
-
-        // User requests quit
-        if (e.type == SDL_QUIT) {
-            this->quit_game = true;
-            return;
-
-        }
-        else if(e.type == SDL_KEYDOWN && e.key.repeat == 0)
-        {
-
-
-
-            const Uint8* current_key_state =  SDL_GetKeyboardState(NULL);
-
-            if(current_key_state[SDL_SCANCODE_UP])
-            {
-                this->keyboard_input_vector.y = -1.0f;
-            }
-            if(current_key_state[SDL_SCANCODE_DOWN])
-            {
-                this->keyboard_input_vector.y = 1.0f;
-            }
-            if(current_key_state[SDL_SCANCODE_LEFT])
-            {
-                this->keyboard_input_vector.x = -1.0f;
-            }
-            if(current_key_state[SDL_SCANCODE_RIGHT])
-            {
-                this->keyboard_input_vector.x = 1.0f;
-            }
-
-
-
-
-        }
-
-
-
-
-    }
-
-    /*
-
-
-    const Uint8* current_key_state =  SDL_GetKeyboardState(NULL);
-
-    if(current_key_state[SDL_SCANCODE_UP])
-    {
-        this->keyboard_input_vector.y = -1.0f;
-    }
-    if(current_key_state[SDL_SCANCODE_DOWN])
-    {
-        this->keyboard_input_vector.y = 1.0f;
-    }
-    if(current_key_state[SDL_SCANCODE_LEFT])
-    {
-        this->keyboard_input_vector.x = -1.0f;
-    }
-    if(current_key_state[SDL_SCANCODE_RIGHT])
-    {
-        this->keyboard_input_vector.x = 1.0f;
-    }
-
-    */
-
-}
 
 void GameHandler::run() {
 

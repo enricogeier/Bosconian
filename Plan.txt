@@ -1,8 +1,8 @@
-1. fps und andere Sachen
+
 2. neues input implementieren
-3. Setting.h implementieren => model
-4. Schießen implementieren: ohne Kollision
-5. Kamera, Spielfeld implementieren
+
+4. Kamera, Spielfeld implementieren
+5. Schießen implementieren: ohne Kollision
 6. Gegner implementieren (dumm), Kollision
 --------------------------------------------------------------------------------
 Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:

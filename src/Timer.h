@@ -7,9 +7,9 @@
 class Timer
 {
 private:
-    Uint32 start_time = 0;
-    Uint32 pause_time = 0;
-    Uint32 time_left = 0;
+    Uint64 start_time = 0;
+    Uint64 pause_time = 0;
+    Uint64 time_left = 0;
     bool is_paused = false;
     bool is_started = false;
     bool is_stopped = false;
@@ -26,7 +26,7 @@ public:
 
     void resume();
 
-    Uint32 get_current_time() const;
+    Uint64 get_current_time() const;
 
 
 };

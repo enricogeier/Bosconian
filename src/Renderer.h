@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <iostream>
+#include "Settings.h"
 #include "Player.h"
 #include "SpriteSheet.h"
 

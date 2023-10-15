@@ -27,7 +27,9 @@ add_executable(Test src/main.cpp
         src/Timer.cpp
         src/FPSTimer.h
         src/FPSTimer.cpp
-        src/Settings.h)
+        src/Settings.h
+        src/Input.h
+        src/Input.cpp)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

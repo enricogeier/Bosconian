@@ -5,7 +5,7 @@ Renderer::Renderer()
     SDL_Init(SDL_INIT_EVERYTHING);
 
     // create window
-    window = SDL_CreateWindow("Bosconian", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow("Bosconian", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_RESIZABLE);
 
     // create renderer for window
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);

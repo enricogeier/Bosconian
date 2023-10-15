@@ -6,9 +6,9 @@ float FPSTimer::get_delta() const
     return (float)delta / 1000;
 }
 
-void FPSTimer::clamp_and_print_fps(const int &amount_of_frames)
+void FPSTimer::clamp_and_print_fps(const long int &amount_of_frames)
 {
-    Uint32 current_time = get_current_time();
+    Uint64 current_time = get_current_time();
 
 
     delta = current_time - previous_time;
@@ -25,7 +25,7 @@ void FPSTimer::clamp_and_print_fps(const int &amount_of_frames)
 
     // calculate fps
     float fps = ( amount_of_frames / (get_current_time() / 1000.0f));
-    std::cout << std::to_string(fps) << std::endl;
+    //std::cout << std::to_string(fps) << std::endl;
 
 
 

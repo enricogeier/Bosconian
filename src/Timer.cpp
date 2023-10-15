@@ -47,11 +47,11 @@ void Timer::resume()
     }
 }
 
-Uint32 Timer::get_current_time() const
+Uint64 Timer::get_current_time() const
 {
   if(!is_stopped && !is_paused)
   {
-      return SDL_GetTicks() - this->pause_time - this->start_time;
+      return SDL_GetTicks64() - this->pause_time - this->start_time;
   }
   else
   {

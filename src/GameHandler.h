@@ -8,6 +8,7 @@
 #include "SpriteSheet.h"
 #include "SpriteSheetLoader.h"
 #include "FPSTimer.h"
+#include "Input.h"
 #include <string>
 
 
@@ -20,7 +21,7 @@ private:
     bool quit_game;
     std::list<SDL_Rect> player_sprites;
     FPSTimer fps_timer;
-    int frame_counter = 1;
+    long int frame_counter = 1;
 
 
 public:
@@ -33,8 +34,6 @@ public:
     void match_input_vector();
 
     void load_sprite_sheet();
-
-    void handle_input();
 
     void run();
 
