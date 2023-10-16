@@ -2,7 +2,6 @@
 
 bool Input::is_key_pressed(SDL_KeyCode key)
 {
-    std::set dump = actually_released;
     if(actually_released.find(key) == actually_released.end())
     {
         return true;
@@ -13,55 +12,6 @@ bool Input::is_key_pressed(SDL_KeyCode key)
     }
 }
 
-void Input::disable_active_keys(Vector2 &keyboard_input, SDL_KeyCode ignore_key)
-{
-    /*
-
-    for(auto key : still_active)
-    {
-        if(is_key_pressed(key) || key == ignore_key)
-        {
-            continue;
-        }
-
-        switch(key)
-        {
-            case SDLK_UP:
-                if(keyboard_input.y == -1.0f)
-                {
-                    keyboard_input.y = 0.0f;
-                }
-                break;
-
-            case SDLK_DOWN:
-                if(keyboard_input.y == 1.0f)
-                {
-                    keyboard_input.y = 0.0f;
-                }
-                break;
-
-            case SDLK_LEFT:
-                if(keyboard_input.x == -1.0f)
-                {
-                    keyboard_input.x = 0.0f;
-                }
-                break;
-
-            case SDLK_RIGHT:
-                if(keyboard_input.x == 1.0f)
-                {
-                    keyboard_input.x = 0.0f;
-                }
-                break;
-        }
-
-
-
-
-    }
-     */
-
-}
 
 SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode key_code, long int& frame_number)
 {
@@ -94,34 +44,46 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
             {
                 case SDLK_UP:
                     actually_released.erase(SDLK_UP);
-                    disable_active_keys(keyboard_input_vector, SDLK_UP);
                     keyboard_input_vector.y = -1.0f;
                     key_pressed[SDLK_UP] = current_frame;
-                    std::cout << current_frame << std::endl;
+                    if(actually_released.size() == 3)
+                    {
+                        keyboard_input_vector.x = 0.0f;
+                    }
+
                     break;
 
                 case SDLK_DOWN:
                     actually_released.erase(SDLK_DOWN);
-                    disable_active_keys(keyboard_input_vector, SDLK_DOWN);
                     keyboard_input_vector.y = 1.0f;
                     key_pressed[SDLK_DOWN] = current_frame;
-                    std::cout << current_frame << std::endl;
+                    if(actually_released.size() == 3)
+                    {
+                        keyboard_input_vector.x = 0.0f;
+                    }
+
                     break;
 
                 case SDLK_LEFT:
                     actually_released.erase(SDLK_LEFT);
-                    disable_active_keys(keyboard_input_vector, SDLK_LEFT);
                     keyboard_input_vector.x = -1.0f;
                     key_pressed[SDLK_LEFT] = current_frame;
-                    std::cout << current_frame << std::endl;
+                    if(actually_released.size() == 3)
+                    {
+                        keyboard_input_vector.y = 0.0f;
+                    }
+
                     break;
 
                 case SDLK_RIGHT:
                     actually_released.erase(SDLK_RIGHT);
-                    disable_active_keys(keyboard_input_vector, SDLK_RIGHT);
                     keyboard_input_vector.x = 1.0f;
                     key_pressed[SDLK_RIGHT] = current_frame;
-                    std::cout << current_frame << std::endl;
+                    if(actually_released.size() == 3)
+                    {
+                        keyboard_input_vector.y = 0.0f;
+                    }
+
                     break;
 
 
@@ -133,7 +95,6 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
         {
             if(event.key.keysym.sym == SDLK_UP)
             {
-                std::cerr << current_frame << std::endl;
                 actually_released.insert(SDLK_UP);
                 key_released[SDLK_UP] = current_frame;
 
@@ -166,7 +127,6 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
             }
             else if(event.key.keysym.sym == SDLK_DOWN)
             {
-                std::cerr << current_frame << std::endl;
                 actually_released.insert(SDLK_DOWN);
                 key_released[SDLK_DOWN] = current_frame;
 
@@ -199,7 +159,6 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
             }
             else if(event.key.keysym.sym == SDLK_LEFT)
             {
-                std::cerr << current_frame << std::endl;
                 actually_released.insert(SDLK_LEFT);
                 key_released[SDLK_LEFT] = current_frame;
 
@@ -225,13 +184,12 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
                         keyboard_input_vector.x = 0.0f;
                         if(!(is_key_pressed(SDLK_UP) || is_key_pressed(SDLK_DOWN)))
                         {
-                            keyboard_input_vector.x = 0.0f;
+                            keyboard_input_vector.y = 0.0f;
                         }
                 }
             }
             else if(event.key.keysym.sym == SDLK_RIGHT)
             {
-                std::cerr << current_frame << std::endl;
                 actually_released.insert(SDLK_RIGHT);
                 key_released[SDLK_RIGHT] = current_frame;
 
@@ -257,7 +215,7 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
                         keyboard_input_vector.x = 0.0f;
                         if(!(is_key_pressed(SDLK_UP) || is_key_pressed(SDLK_DOWN)))
                         {
-                            keyboard_input_vector.x = 0.0f;
+                            keyboard_input_vector.y = 0.0f;
                         }
                 }
             }
