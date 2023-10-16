@@ -1,3 +1,0 @@
-/home/enrico/GitHub/Bosconian/cmake-build-debug/CMakeFiles/Test.dir
-/home/enrico/GitHub/Bosconian/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/enrico/GitHub/Bosconian/cmake-build-debug/CMakeFiles/rebuild_cache.dir
