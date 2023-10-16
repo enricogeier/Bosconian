@@ -1,0 +1,7 @@
+# example ignore a specific folder
+# folder_to_ignore/
+# example ignore a specific file
+# file_to_ignore
+
+cmake-build-debug/ 
+.idea/
