@@ -35,9 +35,9 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
-void Renderer::update_logical_size(int &width, int &height)
+void Renderer::update_logical_size()
 {
-    SDL_RenderSetLogicalSize(renderer, width, height);
+    SDL_RenderSetLogicalSize(renderer, current_screen_width, current_screen_height);
 }
 
 void Renderer::render(Vector2& position, Vector2& camera_position, SDL_Rect* sprite, SDL_Texture* sprite_sheet_texture, float rotation, Vector2 scale)
@@ -48,9 +48,9 @@ void Renderer::render(Vector2& position, Vector2& camera_position, SDL_Rect* spr
      SDL_RenderCopyEx(renderer, sprite_sheet_texture, sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
      // for testing
-     SDL_Rect rect = {-32 - (int)camera_position.x, -32 - (int)camera_position.y, SCREEN_SIZE_WIDTH / 8, SCREEN_SIZE_HEIGHT / 8};
+     SDL_Rect rect = {-32 - (int)camera_position.x, -32 - (int)camera_position.y, current_screen_width / 8, current_screen_height / 8}; // -32, -32
      SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-    SDL_RenderFillRect(renderer, &rect);
+     SDL_RenderFillRect(renderer, &rect);
 
 
 }

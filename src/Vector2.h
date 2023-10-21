@@ -12,7 +12,9 @@ public:
     float x;
     float y;
 
-    explicit Vector2(float x = 0.0f, float y = 0.0f);
+    explicit Vector2(float x, float y);
+
+    explicit Vector2(float xy = 0.0f);
 
     bool operator==(const Vector2& other) const;
 

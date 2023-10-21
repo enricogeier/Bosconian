@@ -10,6 +10,8 @@ void GameHandler::initialize()
 {
     current_screen_width = SCREEN_SIZE_WIDTH;
     current_screen_height = SCREEN_SIZE_HEIGHT;
+    current_screen_scale_x = 1.0f;
+    current_screen_scale_y = 1.0f;
     load_sprite_sheet();
     this->quit_game = false;
     this->player_sprites = SpriteSheet::get_player_sprites();
@@ -53,7 +55,13 @@ void GameHandler::game_loop()
 
 void GameHandler::match_input_vector(Vector2& camera_position)
 {
-    Vector2 scale(1.0f, 1.0f);
+    if(current_screen_scale_x != previous_screen_scale)
+    {
+        this->screen_scale *= current_screen_scale_x;
+        previous_screen_scale = current_screen_scale_x;
+    }
+
+    Vector2 scale(screen_scale);
 
 
     switch ((int)player.direction.x)
