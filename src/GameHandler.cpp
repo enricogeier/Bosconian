@@ -55,13 +55,8 @@ void GameHandler::game_loop()
 
 void GameHandler::match_input_vector(Vector2& camera_position)
 {
-    if(current_screen_scale_x != previous_screen_scale)
-    {
-        this->screen_scale *= current_screen_scale_x;
-        previous_screen_scale = current_screen_scale_x;
-    }
 
-    Vector2 scale(screen_scale);
+    Vector2 scale(sprite_scale);
 
 
     switch ((int)player.direction.x)

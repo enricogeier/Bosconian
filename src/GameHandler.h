@@ -23,8 +23,7 @@ private:
     std::list<SDL_Rect> player_sprites;
     FPSTimer fps_timer;
     long int frame_counter = 1;
-    float previous_screen_scale = 1.0f;
-    float screen_scale = 4.0f;
+    const float sprite_scale = 4.0f;
 
 
 public:
