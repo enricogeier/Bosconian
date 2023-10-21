@@ -1,7 +1,7 @@
+1. Fenster vergrößern => alles andere auch skalieren
+2. Partikel => background, layer
 
-2. neues input implementieren
-
-4. Kamera, Spielfeld implementieren
+4. Spielfeld implementieren
 5. Schießen implementieren: ohne Kollision
 6. Gegner implementieren (dumm), Kollision
 --------------------------------------------------------------------------------

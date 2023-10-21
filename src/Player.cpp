@@ -1,11 +1,8 @@
 #include "Player.h"
 
-Player::Player(Vector2 position,
-               Vector2 direction,
-               int lives,
-               float max_velocity,
-               float min_velocity) : position(position), direction(direction), lives(lives), max_velocity(max_velocity), min_velocity(min_velocity)
+Player::Player(Vector2 direction, int lives) : direction(direction), lives(lives)
 {
+    position = START_POSITION;
 }
 
 void Player::move(Vector2& new_direction, float& delta)
@@ -18,7 +15,7 @@ void Player::move(Vector2& new_direction, float& delta)
 
     this->clamped_direction = this->direction.clamp();
 
-    Vector2 new_position = Vector2(position.x + (clamped_direction.x * max_velocity * delta), position.y + (clamped_direction.y * max_velocity * delta));
+    Vector2 new_position = Vector2(position.x + (clamped_direction.x * MAX_VELOCITY * delta), position.y + (clamped_direction.y * MAX_VELOCITY * delta));
     this->position = new_position;
 
 

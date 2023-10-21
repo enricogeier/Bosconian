@@ -1,5 +1,6 @@
 #include "Input.h"
 
+
 bool Input::is_key_pressed(SDL_KeyCode key)
 {
     if(actually_released.find(key) == actually_released.end())
@@ -25,7 +26,7 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
 }
 
 
- bool Input::handle_user_input(Vector2& keyboard_input_vector, long int& current_frame)
+ bool Input::handle_user_input(Vector2& keyboard_input_vector, long int& current_frame, Renderer& renderer)
  {
     // Handle events on queue. SDL's internal keystates are updated every time SDL PollEvent is called
     while (SDL_PollEvent(&event))
@@ -35,6 +36,28 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
         if (event.type == SDL_QUIT)
         {
             return true;
+
+        }
+        else if(event.type == SDL_WINDOWEVENT)
+        {
+            if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            {
+                int new_width = event.window.data1;
+                int new_height = event.window.data2;
+
+                float scale_x = (float)new_width / (float)current_screen_width;
+                float scale_y = (float)new_height / (float)current_screen_height;
+
+                float scale = scale_x < scale_y ? scale_x : scale_y;
+
+                current_screen_width = (int)((float)current_screen_width * scale);
+                current_screen_height = (int)((float)current_screen_height * scale);
+
+                renderer.update_logical_size(current_screen_width, current_screen_height);
+
+
+
+            }
 
         }
         else if (event.type == SDL_KEYDOWN && event.key.repeat == 0)

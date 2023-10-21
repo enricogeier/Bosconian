@@ -3,13 +3,16 @@
 
 #include <SDL.h>
 #include "Vector2.h"
+#include "Settings.h"
 
 
 class Player
 {
 private:
     Vector2 clamped_direction;
-
+    inline static const Vector2 START_POSITION = Vector2((float)SCREEN_SIZE_WIDTH / 2, (float)SCREEN_SIZE_HEIGHT / 2);
+    inline static const float MAX_VELOCITY = 300.0f;
+    inline static const float MIN_VELOCITY = 100.0f;
 
 public:
 
@@ -18,13 +21,8 @@ public:
     Vector2 position;
     Vector2 direction = Vector2(0.0f, 0.0f);
 
-    float max_velocity{};
-    float min_velocity{};
-
-    SDL_Surface* sprite{}; // will be changed in the future
-
-    explicit Player(Vector2 position = Vector2(0.0f, 0.0f), Vector2 direction = Vector2(0.0f, 0.0f),
-           int lives = 3, float max_velocity = 0.0125f, float min_velocity = 0.0125f);
+    explicit Player(Vector2 direction = Vector2(0.0f, 0.0f),
+           int lives = 3);
 
     void move(Vector2& new_direction, float& delta);
 

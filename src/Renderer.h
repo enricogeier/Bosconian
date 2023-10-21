@@ -24,7 +24,11 @@ public:
 
     void update_screen();
 
-    void render(Vector2& screen_position, SDL_Rect* sprite, SDL_Texture* sprite_sheet_texture, float rotation = 0.0f, Vector2 scale = Vector2(1.0f, 1.0f));
+    void update_logical_size(int& width, int& height);
+
+    void render(Vector2& screen_position, Vector2& camera_position, SDL_Rect* sprite,
+                SDL_Texture* sprite_sheet_texture, float rotation = 0.0f,
+                Vector2 scale = Vector2(1.0f, 1.0f));
 
     SDL_Texture* render_sprite_sheet(SDL_Surface* sprite_sheet_surface);
 

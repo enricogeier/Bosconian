@@ -7,6 +7,7 @@
 #include "Vector2.h"
 #include "SpriteSheet.h"
 #include "SpriteSheetLoader.h"
+#include "Settings.h"
 #include "FPSTimer.h"
 #include "Input.h"
 #include <string>
@@ -31,7 +32,7 @@ public:
 
     void game_loop();
 
-    void match_input_vector();
+    void match_input_vector(Vector2& camera_position);
 
     void load_sprite_sheet();
 
