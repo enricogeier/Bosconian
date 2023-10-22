@@ -10,6 +10,7 @@
 #include "Settings.h"
 #include "FPSTimer.h"
 #include "Input.h"
+#include "Level.h"
 #include <string>
 
 
