@@ -33,6 +33,7 @@ void GameHandler::game_loop()
         }
 
         player.move(keyboard_input_vector, delta);
+        level.set_current_tile(player.position); // rearrange tiles
 
         Vector2 camera_position((player.position.x  + ((float)player_sprites.front().w / 2)) - ((float)current_screen_width / 2),
                                 (player.position.y  + ((float)player_sprites.front().h / 2)) - ((float)current_screen_height / 2));

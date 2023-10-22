@@ -25,6 +25,7 @@ private:
     FPSTimer fps_timer;
     long int frame_counter = 1;
     const float sprite_scale = 4.0f;
+    Level level;
 
 
 public:
