@@ -16,8 +16,6 @@ public:
 
     void update_tile_position() const;
 
-
-
 };
 
 

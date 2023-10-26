@@ -19,7 +19,7 @@ private:
     Player player;
     Renderer renderer;
     Vector2 keyboard_input_vector;
-    bool quit_game;
+    bool quit_game = false;
     std::list<SDL_Rect> player_sprites;
     FPSTimer fps_timer;
     long int frame_counter = 1;
@@ -27,7 +27,7 @@ private:
 
 
 public:
-    GameHandler();
+    GameHandler() = default;
 
     void initialize();
 

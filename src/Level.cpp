@@ -2,25 +2,53 @@
 
 Level::Level()
 {
-    for(int i = 0, tile_index = 0; i < AMOUNT_OF_TILES_X; i++)
+    for(int j = 0, tile_index = 0; j < AMOUNT_OF_TILES_Y; j++)
     {
-        for(int j = 0; j < AMOUNT_OF_TILES_Y; j++)
+        for(int i = 0; i < AMOUNT_OF_TILES_X; i++)
         {
-            tiles[tile_index++].tile_position = Vector2(i * TILE_SIZE_X, j * TILE_SIZE_Y);
-
+            tiles[tile_index++] = Tile(Vector2(i * TILE_SIZE_X, j * TILE_SIZE_Y));
         }
 
     }
 }
 
-void Level::set_current_tile(Vector2 &player_position)
+void Level::set_tile_index(Vector2 &player_position)
 {
-
-    for(auto & tile : tiles)
+    if(player_position.x < 0.0f || player_position.y < 0.0f || player_position.x > LEVEL_SIZE_X || player_position.y > LEVEL_SIZE_Y)
     {
-//        std::cout << tile.tile_position.x << ", " << tile.tile_position.y << std::endl;
+        player_position = Vector2(AMOUNT_OF_TILES_X / 2, AMOUNT_OF_TILES_Y / 2);
+        current_tile_index = (AMOUNT_OF_TILES_X * AMOUNT_OF_TILES_Y) / 2;
+        std::cerr << "Invalid position for player. Position has been set to: ( " << player_position.x << ", " << player_position.y << " )." << std::endl;
+
+    }
+    else
+    {
+        for(int i = 0; i < AMOUNT_OF_TILES_X * AMOUNT_OF_TILES_Y; i++)
+        {
+            if(tiles[i].is_player_within_tile(player_position, Vector2(TILE_SIZE_X, TILE_SIZE_Y)))
+            {
+                if(tiles[i].tile_position == Vector2(LEVEL_SIZE_X - (2 * TILE_SIZE_X), LEVEL_SIZE_Y - (2 * TILE_SIZE_Y)))
+                {
+                    current_tile_index = i;
+                    break;
+                }
+
+                current_tile_index = i;
+                check_tile_positions();
+
+
+
+                break;
+            }
+        }
     }
 
+    std::cout << current_tile_index << std::endl;
+}
+
+
+void Level::set_current_tile(Vector2 &player_position)
+{
 
     if(player_position.y < 0.0f)
     {
@@ -37,15 +65,11 @@ void Level::set_current_tile(Vector2 &player_position)
             {
                 continue;
             }
-            else if(tiles[current_tile_index].is_player_within_tile(player_position, Vector2(TILE_SIZE_X, TILE_SIZE_Y)))
+            else if(tiles[i].is_player_within_tile(player_position, Vector2(TILE_SIZE_X, TILE_SIZE_Y)))
             {
                 current_tile_index = i;
-                Vector2 tile_position = tiles[current_tile_index].tile_position;
-                int n = (int)tile_position.y - TILE_SIZE_Y;
-                int s = (int)tile_position.y + TILE_SIZE_Y;
-                int w = (int)tile_position.x - TILE_SIZE_X;
-                int e = (int)tile_position.x + TILE_SIZE_X;
-                check_tile_positions(n, e, s, w);
+                check_tile_positions();
+
                 break;
             }
         }
@@ -54,8 +78,15 @@ void Level::set_current_tile(Vector2 &player_position)
     std::cout << current_tile_index << std::endl;
 }
 
-void Level::check_tile_positions(int& n, int& e, int& s, int& w) const
+void Level::check_tile_positions()
 {
+    Vector2 tile_position = tiles[current_tile_index].tile_position;
+    int n = (int)tile_position.y - TILE_SIZE_Y;
+    int s = (int)tile_position.y + TILE_SIZE_Y;
+    int w = (int)tile_position.x - TILE_SIZE_X;
+    int e = (int)tile_position.x + TILE_SIZE_X;
+
+
     for(int i = 0; i < AMOUNT_OF_TILES_X * AMOUNT_OF_TILES_Y; i++)
     {
         if(i == current_tile_index)
@@ -63,29 +94,28 @@ void Level::check_tile_positions(int& n, int& e, int& s, int& w) const
             continue;
         }
 
-        Vector2 position = tiles[i].tile_position;
         bool has_changed = false;
 
-        if((int)position.x < w)
+        if((int)tiles[i].tile_position.x < w)
         {
             has_changed = true;
-            position.x += AMOUNT_OF_TILES_X * TILE_SIZE_X;
+            tiles[i].tile_position.x += AMOUNT_OF_TILES_X * TILE_SIZE_X;
         }
-        else if((int)position.x > e)
+        else if((int)tiles[i].tile_position.x > e)
         {
             has_changed = true;
-            position.x -= AMOUNT_OF_TILES_X * TILE_SIZE_X;
+            tiles[i].tile_position.x -= AMOUNT_OF_TILES_X * TILE_SIZE_X;
         }
 
-        if((int)position.y < n)
+        if((int)tiles[i].tile_position.y < n)
         {
             has_changed = true;
-            position.y += AMOUNT_OF_TILES_Y * TILE_SIZE_Y;
+            tiles[i].tile_position.y += AMOUNT_OF_TILES_Y * TILE_SIZE_Y;
         }
-        else if((int)position.y > s)
+        else if((int)tiles[i].tile_position.y > s)
         {
             has_changed = true;
-            position.y -= AMOUNT_OF_TILES_Y * TILE_SIZE_Y;
+            tiles[i].tile_position.y -= AMOUNT_OF_TILES_Y * TILE_SIZE_Y;
         }
 
         if(has_changed)

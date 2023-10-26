@@ -1,13 +1,10 @@
 #include "GameHandler.h"
 
-GameHandler::GameHandler()
-{
-    player = Player(Vector2(0.0f, -1.0f));
-
-}
 
 void GameHandler::initialize()
 {
+    player = Player(Vector2(0.0f, -1.0f));
+    level.set_tile_index(player.position);
     load_sprite_sheet();
     this->quit_game = false;
     this->player_sprites = SpriteSheet::get_player_sprites();
