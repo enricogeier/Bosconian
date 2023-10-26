@@ -1,5 +1,11 @@
 #include "Input.h"
 
+SDL_Event Input::event;
+std::map<SDL_KeyCode, long int> Input::key_pressed = {{SDLK_UP, -1000}, {SDLK_DOWN, -1000}, {SDLK_LEFT, -1000}, {SDLK_RIGHT, -1000}};
+std::map<SDL_KeyCode, long int> Input::key_released = {{SDLK_UP, -1000}, {SDLK_DOWN, -1000}, {SDLK_LEFT, -1000}, {SDLK_RIGHT, -1000}};
+std::set<SDL_KeyCode> Input::actually_released = {SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT};
+std::set<SDL_KeyCode> Input::still_active;
+
 
 bool Input::is_key_pressed(SDL_KeyCode key)
 {

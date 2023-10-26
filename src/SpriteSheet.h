@@ -9,12 +9,12 @@ class SpriteSheet
 {
 private:
 
-    inline static SDL_Texture* sprite_sheet_texture = nullptr;
+   static SDL_Texture* sprite_sheet_texture;
 
 public:
     const static int SPRITE_SHEET_WIDTH = 256;
     const static int SPRITE_SHEET_HEIGHT = 400;
-    inline const static std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
+    const static std::string PATH_TO_SPRITE_SHEET;
 
     // constexpr: value is known at compile-time => for compiler
     constexpr static SDL_Rect sprites[256] = {

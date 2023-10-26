@@ -1,5 +1,10 @@
 #include "Player.h"
 
+const Vector2 Player::START_POSITION = Vector2(170, 170);
+const float Player::MAX_VELOCITY = 300.0f;
+const float Player::MIN_VELOCITY = 100.0f;
+
+
 Player::Player(Vector2 direction) : direction(direction)
 {
     position = START_POSITION;

@@ -27,16 +27,13 @@ add_executable(Test src/main.cpp
         src/Timer.cpp
         src/FPSTimer.h
         src/FPSTimer.cpp
-        src/Settings.h
         src/Input.h
         src/Input.cpp
-        src/Settings.cpp
         src/Tile.h
         src/Tile.cpp
         src/Level.h
         src/Level.cpp
-        src/Rectangle.h
-        src/Rectangle.h)
+        src/SpriteSheet.cpp)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
