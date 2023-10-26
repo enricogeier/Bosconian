@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(Vector2 direction, int lives) : direction(direction), lives(lives)
+Player::Player(Vector2 direction) : direction(direction)
 {
     position = START_POSITION;
 }

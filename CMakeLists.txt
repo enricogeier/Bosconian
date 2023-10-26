@@ -34,7 +34,9 @@ add_executable(Test src/main.cpp
         src/Tile.h
         src/Tile.cpp
         src/Level.h
-        src/Level.cpp)
+        src/Level.cpp
+        src/Rectangle.h
+        src/Rectangle.h)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

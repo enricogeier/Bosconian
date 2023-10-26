@@ -2,12 +2,12 @@
 #define FPSTIMER_H
 
 #include "Timer.h"
-#include "Settings.h"
 
 
 class FPSTimer : public Timer
 {
 private:
+    const int MAX_FPS = 120;
     Uint64 previous_time = 0;
     const Uint64 time_for_frame =  1000 / MAX_FPS;
     Uint64 delta = 0;

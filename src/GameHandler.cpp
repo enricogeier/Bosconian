@@ -2,16 +2,12 @@
 
 GameHandler::GameHandler()
 {
-    player = Player(Vector2(0.0f, -1.0f), PLAYER_LIVES);
+    player = Player(Vector2(0.0f, -1.0f));
 
 }
 
 void GameHandler::initialize()
 {
-    current_screen_width = SCREEN_SIZE_WIDTH;
-    current_screen_height = SCREEN_SIZE_HEIGHT;
-    current_screen_scale_x = 1.0f;
-    current_screen_scale_y = 1.0f;
     load_sprite_sheet();
     this->quit_game = false;
     this->player_sprites = SpriteSheet::get_player_sprites();
@@ -35,10 +31,11 @@ void GameHandler::game_loop()
         player.move(keyboard_input_vector, delta);
         level.set_current_tile(player.position); // rearrange tiles
 
-        Vector2 camera_position((player.position.x  + ((float)player_sprites.front().w / 2)) - ((float)current_screen_width / 2),
-                                (player.position.y  + ((float)player_sprites.front().h / 2)) - ((float)current_screen_height / 2));
+        Vector2 player_sprite_size((float)player_sprites.front().w, (float)player_sprites.front().h);
+        renderer.update_camera(player.position, player_sprite_size);
 
-        match_input_vector(camera_position);
+
+        match_input_vector();
 
 
 
@@ -54,10 +51,8 @@ void GameHandler::game_loop()
     }
 }
 
-void GameHandler::match_input_vector(Vector2& camera_position)
+void GameHandler::match_input_vector()
 {
-
-    Vector2 scale(sprite_scale);
 
 
     switch ((int)player.direction.x)
@@ -66,16 +61,16 @@ void GameHandler::match_input_vector(Vector2& camera_position)
             switch ((int)player.direction.y)
             {
                 case 1:
-                    renderer.render(player.position, camera_position, &this->player_sprites.back(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f, scale);
+                    renderer.render(player.position,&this->player_sprites.back(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f);
                     break;
                 case 0:
-                    renderer.render(player.position, camera_position, &this->player_sprites.front(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f, scale);
+                    renderer.render(player.position, &this->player_sprites.front(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f);
                     break;
                 case -1:
-                    renderer.render(player.position, camera_position, &this->player_sprites.back(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f, scale);
+                    renderer.render(player.position,  &this->player_sprites.back(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 90.0f);
                     break;
             }
             break;
@@ -83,12 +78,12 @@ void GameHandler::match_input_vector(Vector2& camera_position)
             switch ((int)player.direction.y)
             {
                 case 1:
-                    renderer.render(player.position, camera_position, &this->player_sprites.front(),
-                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f, scale);
+                    renderer.render(player.position,  &this->player_sprites.front(),
+                                               SpriteSheet::get_sprite_sheet_texture(), 180.0f);
                     break;
                 case -1:
-                    renderer.render(player.position, camera_position, &this->player_sprites.front(),
-                                    SpriteSheet::get_sprite_sheet_texture(), 0.0f, scale);
+                    renderer.render(player.position, &this->player_sprites.front(),
+                                    SpriteSheet::get_sprite_sheet_texture(), 0.0f);
                     break;
             }
             break;
@@ -96,16 +91,16 @@ void GameHandler::match_input_vector(Vector2& camera_position)
             switch ((int)player.direction.y)
             {
                 case 1:
-                    renderer.render(player.position, camera_position, &this->player_sprites.back(),
-                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f, scale);
+                    renderer.render(player.position,  &this->player_sprites.back(),
+                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f);
                     break;
                 case 0:
-                    renderer.render(player.position, camera_position, &this->player_sprites.front(),
-                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f, scale);
+                    renderer.render(player.position,  &this->player_sprites.front(),
+                                               SpriteSheet::get_sprite_sheet_texture(), -90.0f);
                     break;
                 case -1:
-                    renderer.render(player.position, camera_position, &this->player_sprites.back(),
-                                    SpriteSheet::get_sprite_sheet_texture(), 0.0f, scale);
+                    renderer.render(player.position,  &this->player_sprites.back(),
+                                    SpriteSheet::get_sprite_sheet_texture(), 0.0f);
                     break;
             }
             break;

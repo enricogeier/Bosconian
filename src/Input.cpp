@@ -38,28 +38,6 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
             return true;
 
         }
-        else if(event.type == SDL_WINDOWEVENT)
-        {
-            if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-            {
-                int new_width = event.window.data1;
-                int new_height = event.window.data2;
-
-                current_screen_scale_x = (float)new_width / (float)current_screen_width;
-                current_screen_scale_y = (float)new_height / (float)current_screen_height;
-
-                float scale = current_screen_scale_x < current_screen_scale_y ? current_screen_scale_x : current_screen_scale_y;
-
-                current_screen_width = (int)((float)current_screen_width * scale);
-                current_screen_height = (int)((float)current_screen_height * scale);
-
-                renderer.update_logical_size();
-
-
-
-            }
-
-        }
         else if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
         {
 

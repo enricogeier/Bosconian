@@ -1,12 +1,13 @@
 #include "Level.h"
 
-Level::Level(int current_tile_index): current_tile_index(current_tile_index)
+Level::Level()
 {
     for(int i = 0, tile_index = 0; i < AMOUNT_OF_TILES_X; i++)
     {
         for(int j = 0; j < AMOUNT_OF_TILES_Y; j++)
         {
-            tiles[tile_index++] = Tile(Vector2(i * TILE_SIZE_X, j * TILE_SIZE_Y));
+            tiles[tile_index++].tile_position = Vector2(i * TILE_SIZE_X, j * TILE_SIZE_Y);
+
         }
 
     }
@@ -14,6 +15,20 @@ Level::Level(int current_tile_index): current_tile_index(current_tile_index)
 
 void Level::set_current_tile(Vector2 &player_position)
 {
+
+    for(auto & tile : tiles)
+    {
+//        std::cout << tile.tile_position.x << ", " << tile.tile_position.y << std::endl;
+    }
+
+
+    if(player_position.y < 0.0f)
+    {
+        int a = 0;
+    }
+
+
+
     if(!(tiles[current_tile_index].is_player_within_tile(player_position, Vector2(TILE_SIZE_X, TILE_SIZE_Y))))
     {
         for(int i = 0; i < AMOUNT_OF_TILES_X * AMOUNT_OF_TILES_Y; i++)
@@ -25,7 +40,7 @@ void Level::set_current_tile(Vector2 &player_position)
             else if(tiles[current_tile_index].is_player_within_tile(player_position, Vector2(TILE_SIZE_X, TILE_SIZE_Y)))
             {
                 current_tile_index = i;
-                Vector2& tile_position = tiles[current_tile_index].tile_position;
+                Vector2 tile_position = tiles[current_tile_index].tile_position;
                 int n = (int)tile_position.y - TILE_SIZE_Y;
                 int s = (int)tile_position.y + TILE_SIZE_Y;
                 int w = (int)tile_position.x - TILE_SIZE_X;

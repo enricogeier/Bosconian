@@ -4,11 +4,11 @@ Tile::Tile(Vector2 position) : tile_position(position)
 {
 }
 
+
 bool Tile::is_player_within_tile(Vector2 &player_position, Vector2 tile_size) const
 {
 
-    float posx = tile_position.x;
-    float posy = tile_position.y;
+    Vector2 test = tile_position;
 
 
     if(

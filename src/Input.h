@@ -7,7 +7,6 @@
 #include <optional>
 #include <set>
 #include "Vector2.h"
-#include "Settings.h"
 #include "Renderer.h"
 
 class Input

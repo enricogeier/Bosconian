@@ -7,7 +7,6 @@
 #include "Vector2.h"
 #include "SpriteSheet.h"
 #include "SpriteSheetLoader.h"
-#include "Settings.h"
 #include "FPSTimer.h"
 #include "Input.h"
 #include "Level.h"
@@ -24,7 +23,6 @@ private:
     std::list<SDL_Rect> player_sprites;
     FPSTimer fps_timer;
     long int frame_counter = 1;
-    const float sprite_scale = 4.0f;
     Level level;
 
 
@@ -35,7 +33,7 @@ public:
 
     void game_loop();
 
-    void match_input_vector(Vector2& camera_position);
+    void match_input_vector();
 
     void load_sprite_sheet();
 

@@ -7,6 +7,7 @@
 class Tile
 {
 public:
+
     Vector2 tile_position;
 
     explicit Tile(Vector2 position = Vector2(0.0f, 0.0f));
