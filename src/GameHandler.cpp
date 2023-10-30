@@ -4,7 +4,7 @@
 void GameHandler::initialize()
 {
     player = Player(Vector2(0.0f, -1.0f));
-    level.set_tile_index(player.position);
+    level.initialize_tile_index(player.position);
     load_sprite_sheet();
     this->quit_game = false;
     this->player_sprites = SpriteSheet::get_player_sprites();
@@ -31,11 +31,52 @@ void GameHandler::game_loop()
         Vector2 player_sprite_size((float)player_sprites.front().w, (float)player_sprites.front().h);
         renderer.update_camera(player.position, player_sprite_size);
 
+        {
 
+            // render background particles, for testing
+            std::list<Vector4> test = level.test();
+
+            // 0 -> RED
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0xFF, 0x00, 0x00, 0xFF);
+            test.pop_front();
+
+            // 1 -> GREEN
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0x00, 0xFF, 0x00, 0xFF);
+            test.pop_front();
+
+            // 2 -> BLUE
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0x00, 0x00, 0xFF, 0xFF);
+            test.pop_front();
+
+
+            // 3 -> YELLOW
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0xFF, 0xFF, 0x00, 0xFF);
+            test.pop_front();
+
+            // 4 -> MAGENTA
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0xFF, 0x00, 0xFF, 0xFF);
+            test.pop_front();
+
+            // 5 -> CYAN
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0x00, 0xFF, 0xFF, 0xFF);
+            test.pop_front();
+
+            // 6 -> WHITE
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0xFF, 0xFF, 0xFF, 0xFF);
+            test.pop_front();
+
+            // 7 -> BLACK
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0x00, 0x00, 0x00, 0xFF);
+            test.pop_front();
+
+            // 8 -> ORANGE
+            renderer.render_background_particle({(int)test.front().x,(int)test.front().y,(int)test.front().z,(int)test.front().w}, 0xFF, 0xAA, 0x00, 0xFF);
+            test.pop_front();
+
+            // end of test
+
+        }
         match_input_vector();
-
-
-
 
 
 

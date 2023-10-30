@@ -35,14 +35,18 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
+void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a)
+{
+    rectangle.x -= camera.x;
+    rectangle.y -= camera.y;
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_RenderFillRect(renderer, &rectangle);
+
+}
+
+
 void Renderer::render(Vector2& position, SDL_Rect* sprite, SDL_Texture* sprite_sheet_texture, float rotation)
 {
-    // for testing
-    SDL_Rect rect = {-32 - (int)camera.x, -32 - (int)camera.y, SCREEN_SIZE_WIDTH / 8, SCREEN_SIZE_HEIGHT / 8}; // -32, -32
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-    SDL_RenderFillRect(renderer, &rect);
-
-
 
     SDL_Rect render_quad = {(int)(position.x - camera.x), (int)(position.y - camera.y),
                              sprite->w * (int)scale.x, sprite->h * (int)scale.y};

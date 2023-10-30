@@ -12,7 +12,7 @@ Level::Level()
     }
 }
 
-void Level::set_tile_index(Vector2 &player_position)
+void Level::initialize_tile_index(Vector2 &player_position)
 {
     if(player_position.x < 0.0f || player_position.y < 0.0f || player_position.x > LEVEL_SIZE_X || player_position.y > LEVEL_SIZE_Y)
     {

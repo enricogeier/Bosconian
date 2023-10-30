@@ -33,7 +33,9 @@ add_executable(Test src/main.cpp
         src/Tile.cpp
         src/Level.h
         src/Level.cpp
-        src/SpriteSheet.cpp)
+        src/SpriteSheet.cpp
+        src/Vector4.h
+        src/Vector4.cpp)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
