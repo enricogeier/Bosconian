@@ -1,6 +1,6 @@
 #include "SpriteSheetLoader.h"
 
-SDL_Surface* SpriteSheetLoader::load_sprite_sheet_surface(std::string path)
+void SpriteSheetLoader::load_sprite_sheet_surface(Renderer& renderer, std::string path)
 {
     // Initialize PNG loading
     IMG_Init(IMG_INIT_PNG);
@@ -10,12 +10,11 @@ SDL_Surface* SpriteSheetLoader::load_sprite_sheet_surface(std::string path)
         std::cerr << "sprite sheet could not be loaded! SDL Error: " << SDL_GetError() << std::endl;
     }
 
+    SDL_Texture* sprite_sheet_texture = renderer.render_sprite_sheet(sprite_sheet_surface);
 
-    return sprite_sheet_surface;
-}
+    SDL_FreeSurface(sprite_sheet_surface);
+    sprite_sheet_surface = nullptr;
 
-void SpriteSheetLoader::free_sprite_sheet_surface(SDL_Surface *sprite_sheet)
-{
-    SDL_FreeSurface(sprite_sheet);
-    sprite_sheet = nullptr;
+    renderer.set_sprite_sheet_texture(sprite_sheet_texture);
+
 }

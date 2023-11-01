@@ -1,8 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <list>
 #include "Vector2.h"
-
+#include "Rectangle.h"
 
 
 class Player
@@ -16,6 +17,8 @@ private:
     int player_lives = 3;
 
 public:
+
+    std::list<Rectangle> player_sprites;
 
     Vector2 position;
     Vector2 direction = Vector2(0.0f, 0.0f);

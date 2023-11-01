@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <iostream>
+#include <string>
 #include "Player.h"
 #include "SpriteSheet.h"
 
@@ -18,11 +19,17 @@ private:
     Vector2 camera;
     Vector2 scale = Vector2(4.0f, 4.0f);
 
+    SDL_Texture* sprite_sheet_texture = nullptr;
+
+    const std::string WINDOW_TITLE = "Bosconian";
+
 public:
 
     Renderer();
 
     ~Renderer();
+
+    void set_sprite_sheet_texture(SDL_Texture* texture);
 
     void clear_screen();
 
@@ -30,8 +37,7 @@ public:
 
     void render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a);
 
-    void render(Vector2& screen_position, SDL_Rect* sprite,
-                SDL_Texture* sprite_sheet_texture, float rotation = 0.0f);
+    void render(Vector2& screen_position, SDL_Rect* sprite, float rotation = 0.0f);
 
     SDL_Texture* render_sprite_sheet(SDL_Surface* sprite_sheet_surface);
 

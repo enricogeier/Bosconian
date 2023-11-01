@@ -5,7 +5,8 @@ Renderer::Renderer()
     SDL_Init(SDL_INIT_EVERYTHING);
 
     // create window
-    window = SDL_CreateWindow("Bosconian", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
 
     // create renderer for window
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -23,6 +24,10 @@ Renderer::~Renderer()
     clear();
 }
 
+void Renderer::set_sprite_sheet_texture(SDL_Texture *texture)
+{
+    sprite_sheet_texture = texture;
+}
 void Renderer::clear_screen()
 {
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -45,7 +50,7 @@ void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, 
 }
 
 
-void Renderer::render(Vector2& position, SDL_Rect* sprite, SDL_Texture* sprite_sheet_texture, float rotation)
+void Renderer::render(Vector2& position, SDL_Rect* sprite, float rotation)
 {
 
     SDL_Rect render_quad = {(int)(position.x - camera.x), (int)(position.y - camera.y),
@@ -79,7 +84,6 @@ void Renderer::update_camera(Vector2 &player_position, Vector2 &sprite_size)
 void Renderer::clear()
 {
     // destroy sprite sheet
-    SDL_Texture* sprite_sheet_texture = SpriteSheet::get_sprite_sheet_texture();
 
     if(sprite_sheet_texture != nullptr)
     {

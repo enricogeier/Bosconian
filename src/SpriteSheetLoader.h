@@ -5,14 +5,13 @@
 #include <SDL_image.h>
 #include <string>
 #include <iostream>
-
+#include "Renderer.h"
 
 class SpriteSheetLoader
 {
 public:
-    static SDL_Surface* load_sprite_sheet_surface(std::string path);
 
-    static void free_sprite_sheet_surface(SDL_Surface* sprite_sheet);
+    static void load_sprite_sheet_surface(Renderer& renderer, std::string path);
 
 };
 

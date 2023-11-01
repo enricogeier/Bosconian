@@ -11,6 +11,7 @@
 #include "Input.h"
 #include "Level.h"
 #include "Vector4.h"
+#include "Rectangle.h"
 #include <string>
 
 
@@ -21,7 +22,7 @@ private:
     Renderer renderer;
     Vector2 keyboard_input_vector;
     bool quit_game = false;
-    std::list<SDL_Rect> player_sprites;
+    std::list<Rectangle> player_sprites;
     FPSTimer fps_timer;
     long int frame_counter = 1;
     Level level;

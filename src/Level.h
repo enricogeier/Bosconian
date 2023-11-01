@@ -4,7 +4,6 @@
 #include <iostream>
 #include <list>
 #include "Tile.h"
-#include "Vector4.h"
 
 
 class Level
@@ -30,18 +29,6 @@ public:
     void set_current_tile(Vector2& player_position);
 
     void check_tile_positions();
-
-    std::list<Vector4> test()
-    {
-        std::list<Vector4> result;
-        for(auto& tile : tiles)
-        {
-            result.push_back(Vector4(tile.tile_position.x, tile.tile_position.y, 2000, 2667));
-        }
-
-        return result;
-    }
-
 
 
 };
