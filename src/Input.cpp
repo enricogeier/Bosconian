@@ -5,6 +5,7 @@ std::map<SDL_KeyCode, long int> Input::key_pressed = {{SDLK_UP, -1000}, {SDLK_DO
 std::map<SDL_KeyCode, long int> Input::key_released = {{SDLK_UP, -1000}, {SDLK_DOWN, -1000}, {SDLK_LEFT, -1000}, {SDLK_RIGHT, -1000}};
 std::set<SDL_KeyCode> Input::actually_released = {SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT};
 std::set<SDL_KeyCode> Input::still_active;
+long Input::last_frame_shoot_pressed = -99;
 
 
 bool Input::is_key_pressed(SDL_KeyCode key)
@@ -50,7 +51,15 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
             switch (event.key.keysym.sym)
             {
                 case SDLK_SPACE:
-                    return SHOOT_PRESSED;
+                    if(current_frame - last_frame_shoot_pressed > TIME_BETWEEN_SHOTS)
+                    {
+                        last_frame_shoot_pressed = current_frame;
+                        return SHOOT_PRESSED;
+                    }
+                    else
+                    {
+                        break;
+                    }
 
                 case SDLK_UP:
                     actually_released.erase(SDLK_UP);

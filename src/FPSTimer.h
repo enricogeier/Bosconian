@@ -7,7 +7,7 @@
 class FPSTimer : public Timer
 {
 private:
-    const int MAX_FPS = 120;
+    const int MAX_FPS = 60;
     Uint64 previous_time = 0;
     const Uint64 time_for_frame =  1000 / MAX_FPS;
     Uint64 delta = 0;

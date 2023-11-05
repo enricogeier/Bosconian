@@ -25,7 +25,7 @@ void FPSTimer::clamp_and_print_fps(const long int &amount_of_frames)
 
     // calculate fps
     float fps = ( amount_of_frames / (get_current_time() / 1000.0f));
-    //std::cout << std::to_string(fps) << std::endl;
+    std::cerr << std::to_string(fps) << std::endl;
 
 
 
