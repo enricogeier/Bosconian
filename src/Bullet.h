@@ -6,11 +6,10 @@
 
 class Bullet
 {
-private:
-    const float SPEED = 200.0f;
-    Vector2 direction;
 
 public:
+    Vector2 direction;
+    int speed = 600; // default: 600
     Vector2 position;
     Rectangle sprite;
     // constructor receives CLAMPED DIRECTION!
@@ -20,8 +19,7 @@ public:
 
     void move(float& delta)
     {
-        position += direction * SPEED * delta;
-        int a = 0;
+        position += direction * (float)speed * delta;
     }
 
 };

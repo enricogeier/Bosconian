@@ -5,17 +5,16 @@
 #include <string>
 #include <cmath>
 
-template<typename  T>
 class Vector2
 {
 public:
 
-    T x;
-    T y;
+    float x;
+    float y;
 
-    explicit Vector2(T x, T y);
+    explicit Vector2(float x, float y);
 
-    explicit Vector2(T xy = 0);
+    explicit Vector2(float xy = 0);
 
     bool operator==(const Vector2& other) const;
 
@@ -30,6 +29,8 @@ public:
     float operator*(const Vector2& other) const;
 
     Vector2 operator*(const float& number) const;
+
+    static float distance(Vector2& vector_1, Vector2& vector_2);
 
     Vector2 multiply(float number) const;
 

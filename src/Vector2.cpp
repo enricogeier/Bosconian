@@ -47,6 +47,12 @@ Vector2 Vector2::operator*(const float &number) const
     return Vector2(this->x * number, this->y * number);
 }
 
+float Vector2::distance(Vector2 &vector_1, Vector2 &vector_2)
+{
+    Vector2 sub = vector_1 - vector_2;
+    return sqrtf(powf(sub.x, 2) + powf(sub.y, 2));
+}
+
 Vector2 Vector2::multiply(float number) const
 {
     return Vector2(this->x * number, this->y * number);
@@ -54,7 +60,7 @@ Vector2 Vector2::multiply(float number) const
 
 Vector2 Vector2::clamp() const
 {
-    float length = sqrt(pow(this->x, 2) + pow(this->y, 2));
+    float length = sqrtf(powf(this->x, 2) + powf(this->y, 2));
 
     return multiply(1 / length);
 
