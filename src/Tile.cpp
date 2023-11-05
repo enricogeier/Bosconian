@@ -21,10 +21,13 @@ bool Tile::is_player_within_tile(Vector2 &player_position, Vector2 tile_size) co
     }
 }
 
-void Tile::update_tile_position() const
+void Tile::update_tile_position()
 {
-    // update everything's position
+    // update every GameObject position
 
-
+    for(auto & i : objects_in_tile)
+    {
+        i.position += tile_position;
+    }
 
 }

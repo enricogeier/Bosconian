@@ -5,26 +5,31 @@
 #include <string>
 #include <cmath>
 
+template<typename  T>
 class Vector2
 {
 public:
 
-    float x;
-    float y;
+    T x;
+    T y;
 
-    explicit Vector2(float x, float y);
+    explicit Vector2(T x, T y);
 
-    explicit Vector2(float xy = 0.0f);
+    explicit Vector2(T xy = 0);
 
     bool operator==(const Vector2& other) const;
 
     bool operator!=(const Vector2& other) const;
 
-    Vector2 operator+(Vector2& other) const;
+    Vector2 operator+(const Vector2& other) const;
 
-    Vector2 operator-(Vector2& other) const;
+    Vector2 & operator+=(const Vector2& other);
 
-    float operator*(Vector2& other) const;
+    Vector2 operator-(const Vector2& other) const;
+
+    float operator*(const Vector2& other) const;
+
+    Vector2 operator*(const float& number) const;
 
     Vector2 multiply(float number) const;
 

@@ -1,4 +1,5 @@
 #include "Level.h"
+#include "SpriteSheet.h"
 
 Level::Level()
 {
@@ -120,9 +121,32 @@ void Level::check_tile_positions()
 
         if(has_changed)
         {
+
             tiles[i].update_tile_position();
         }
 
 
     }
+}
+
+void Level::spawn_enemy(Vector2& player_position)
+{
+    // testing
+
+    tiles[0].objects_in_tile.push_back(GameObject(Vector2(250, 250), SpriteSheet::get_e_type(false), SpriteSheet::get_explosion_1()));
+}
+
+std::vector<GameObject> Level::get_all_game_objects() const
+{
+    std::vector<GameObject> game_objects;
+
+    for(auto& tile: tiles)
+    {
+        for(auto& object : tile.objects_in_tile)
+        {
+            game_objects.push_back(object);
+        }
+    }
+
+    return game_objects;
 }

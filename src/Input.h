@@ -8,6 +8,7 @@
 #include <set>
 #include "Vector2.h"
 #include "Renderer.h"
+#include "InputState.h"
 
 class Input
 {
@@ -23,7 +24,7 @@ private:
 
 
 public:
-    static bool handle_user_input(Vector2& keyboard_input_vector, long int& current_frame, Renderer& renderer);
+    static InputState handle_user_input(Vector2& keyboard_input_vector, long int& current_frame);
 
 
 };

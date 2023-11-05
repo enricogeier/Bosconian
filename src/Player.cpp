@@ -1,7 +1,7 @@
 #include "Player.h"
 
 const Vector2 Player::START_POSITION = Vector2(0, 0);
-const float Player::MAX_VELOCITY = 300.0f;
+const float Player::MAX_VELOCITY = 0.0f; // default: 300
 const float Player::MIN_VELOCITY = 100.0f;
 
 

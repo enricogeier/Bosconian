@@ -40,7 +40,9 @@ add_executable(Test src/main.cpp
         src/GameObject.h
         src/Enemy.h
         src/FlyingEnemy.h
-        src/FlyingEnemy.cpp)
+        src/FlyingEnemy.cpp
+        src/InputState.h
+        src/Bullet.h)
 
 # Link against SDL2
 target_link_libraries(Test ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

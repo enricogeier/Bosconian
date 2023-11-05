@@ -19,19 +19,32 @@ bool Vector2::operator!=(const Vector2& other) const
     return (this->x != other.x) || (this->y != other.y);
 }
 
-Vector2 Vector2::operator+(Vector2& other) const
+Vector2 Vector2::operator+(const Vector2& other) const
 {
     return Vector2(this->x +  other.x, this->y + other.y);
 }
 
-Vector2 Vector2::operator-(Vector2& other) const
+Vector2 & Vector2::operator+=(const Vector2 &other)
+{
+    this->x += other.x;
+    this->y += other.y;
+
+    return *this;
+}
+
+Vector2 Vector2::operator-(const Vector2& other) const
 {
     return Vector2(this->x - other.x, this->y - other.y);
 }
 
-float Vector2::operator*(Vector2& other) const
+float Vector2::operator*(const Vector2& other) const
 {
     return (this->x * other.x) + (this->y * other.y);
+}
+
+Vector2 Vector2::operator*(const float &number) const
+{
+    return Vector2(this->x * number, this->y * number);
 }
 
 Vector2 Vector2::multiply(float number) const

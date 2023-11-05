@@ -2,9 +2,9 @@
 #define GAMEHANDLER_H
 
 #include <SDL.h>
+#include <string>
 #include "Player.h"
 #include "Renderer.h"
-#include "Vector2.h"
 #include "SpriteSheet.h"
 #include "SpriteSheetLoader.h"
 #include "FPSTimer.h"
@@ -12,7 +12,8 @@
 #include "Level.h"
 #include "Vector4.h"
 #include "Rectangle.h"
-#include <string>
+#include "InputState.h"
+#include "Bullet.h"
 
 
 class GameHandler
@@ -22,10 +23,11 @@ private:
     Renderer renderer;
     Vector2 keyboard_input_vector;
     bool quit_game = false;
-    std::list<Rectangle> player_sprites;
     FPSTimer fps_timer;
     long int frame_counter = 1;
     Level level;
+
+    std::list<Bullet> bullet_list;
 
 
 public:
@@ -35,7 +37,7 @@ public:
 
     void game_loop();
 
-    void match_input_vector();
+    void match_player_direction(bool& shoot);
 
     void load_sprite_sheet();
 

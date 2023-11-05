@@ -32,7 +32,7 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
 }
 
 
- bool Input::handle_user_input(Vector2& keyboard_input_vector, long int& current_frame, Renderer& renderer)
+ InputState Input::handle_user_input(Vector2& keyboard_input_vector, long int& current_frame)
  {
     // Handle events on queue. SDL's internal keystates are updated every time SDL PollEvent is called
     while (SDL_PollEvent(&event))
@@ -41,7 +41,7 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
         // User requests quit
         if (event.type == SDL_QUIT)
         {
-            return true;
+            return CLOSE_WINDOW;
 
         }
         else if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
@@ -49,6 +49,9 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
 
             switch (event.key.keysym.sym)
             {
+                case SDLK_SPACE:
+                    return SHOOT_PRESSED;
+
                 case SDLK_UP:
                     actually_released.erase(SDLK_UP);
                     keyboard_input_vector.y = -1.0f;
@@ -230,5 +233,5 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
         }
     }
 
-    return false;
+    return NONE;
 }
