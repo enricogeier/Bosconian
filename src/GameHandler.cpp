@@ -89,10 +89,10 @@ void GameHandler::game_loop()
         {
             // testing: always take first sprite of object
             SDL_Rect sprite{
-                object.player_sprites[0].x,
-                object.player_sprites[0].y,
-                object.player_sprites[0].w,
-                object.player_sprites[0].h
+                object.normal_sprites[0].x,
+                object.normal_sprites[0].y,
+                object.normal_sprites[0].w,
+                object.normal_sprites[0].h
             };
 
             renderer.render(object.position, &sprite);

@@ -12,12 +12,12 @@ public:
 
     Vector2 position;
 
-    std::vector<Rectangle> player_sprites;
+    std::vector<Rectangle> normal_sprites;
     std::vector<Rectangle> explosion_sprite;
 
 
-    explicit GameObject(Vector2 position, std::vector<Rectangle> player_sprites, std::vector<Rectangle> explosion_sprite)
-    : position(position), player_sprites(std::move(player_sprites)), explosion_sprite(std::move(explosion_sprite))
+    explicit GameObject(Vector2 position, std::vector<Rectangle> normal_sprites, std::vector<Rectangle> explosion_sprite)
+    : position(position), normal_sprites(std::move(normal_sprites)), explosion_sprite(std::move(explosion_sprite))
     {
     }
 
