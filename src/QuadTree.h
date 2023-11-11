@@ -3,15 +3,16 @@
 
 #include <list>
 #include <functional>
-#include "Rectangle.h"
+#include <iostream>
 #include "GameObject.h"
+
 
 
 class QuadTree
 {
 private:
     Rectangle boundary;
-    const short NODE_CAPACITY = 4;
+    static const short NODE_CAPACITY = 4;
     bool divided = false;
     std::list<std::reference_wrapper<GameObject>> game_objects;
     std::list<QuadTree> quad_trees;
@@ -19,10 +20,11 @@ private:
     void subdivide();
 
 public:
-    explicit QuadTree(Rectangle boundary): boundary(boundary){}
+    explicit QuadTree(Rectangle boundary = {}): boundary(boundary){}
 
     void insert(GameObject& game_object);
 
+    void check_collision(GameObject& game_object);
 
 };
 

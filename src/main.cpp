@@ -3,11 +3,8 @@
 
 int main(int argc, char* args[])
 {
-
-    GameHandler gameHandler;
-
-    gameHandler.run();
+    GameHandler game_handler;
+    game_handler.run();
 
     return 0;
-
 }

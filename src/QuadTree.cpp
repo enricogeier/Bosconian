@@ -26,10 +26,8 @@ void QuadTree::subdivide()
 
     game_objects.clear();
 
-
-
-
 }
+
 
 void QuadTree::insert(GameObject& game_object)
 {
@@ -59,6 +57,55 @@ void QuadTree::insert(GameObject& game_object)
         else
         {
             game_objects.push_back(game_object);
+        }
+    }
+}
+
+void QuadTree::check_collision(GameObject &game_object)
+{
+    if(divided)
+    {
+        for(auto& quad : quad_trees)
+        {
+            if(
+                    game_object.position.x < quad.boundary.x + quad.boundary.w &&
+                    game_object.position.x >= quad.boundary.x &&
+                    game_object.position.y < quad.boundary.y + quad.boundary.h &&
+                    game_object.position.y >= quad.boundary.y
+                    )
+            {
+                quad.check_collision(game_object);
+            }
+        }
+    }
+    else
+    {
+        for(GameObject object : game_objects)
+        {
+            // check collision for each object in quad
+            if(std::find(game_object.collision_circle.can_collide_with.begin(),
+                         game_object.collision_circle.can_collide_with.end(),
+                         object.collision_circle.layer) !=
+                         game_object.collision_circle.can_collide_with.end())
+            {
+
+                if(game_object.collision_circle.radius >= Vector2::distance(
+                        reinterpret_cast<Vector2 &>(game_object), reinterpret_cast<Vector2 &>(object)))
+                {
+
+                    std::cout << "collision detected" << std::endl;
+
+
+                    game_object.state = State::DESTROY;
+                    object.state = State::DESTROY;
+
+                    // TODO: delete collided object in QuadTree
+
+
+                    return;
+
+                }
+            }
         }
     }
 }

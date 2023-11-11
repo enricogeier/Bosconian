@@ -1,5 +1,5 @@
 #include "Level.h"
-#include "SpriteSheet.h"
+
 
 Level::Level()
 {
@@ -133,7 +133,12 @@ void Level::spawn_enemy(Vector2& player_position)
 {
     // testing
 
-    tiles[0].objects_in_tile.push_back(GameObject(Vector2(250, 250), SpriteSheet::get_e_type(false), SpriteSheet::get_explosion_1()));
+    tiles[0].objects_in_tile.push_back(Enemy(
+            Vector2(250, 250),
+            SpriteSheet::get_e_type(false),
+            SpriteSheet::get_explosion_1(),
+            CollisionManager::get_e_type_collision()
+            ));
 }
 
 std::vector<GameObject> Level::get_all_game_objects() const

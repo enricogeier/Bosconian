@@ -5,21 +5,31 @@
 #include <vector>
 #include "Vector2.h"
 #include "Rectangle.h"
+#include "CollisionCircle.h"
+
+enum class State{
+    NORMAL,
+    DESTROY
+};
+
+
 
 class GameObject
 {
 public:
 
     Vector2 position;
-
+    CollisionCircle collision_circle;
     std::vector<Rectangle> normal_sprites;
-    std::vector<Rectangle> explosion_sprite;
+    State state = State::NORMAL;
 
-
-    explicit GameObject(Vector2 position, std::vector<Rectangle> normal_sprites, std::vector<Rectangle> explosion_sprite)
-    : position(position), normal_sprites(std::move(normal_sprites)), explosion_sprite(std::move(explosion_sprite))
+    explicit GameObject(Vector2 position, std::vector<Rectangle> normal_sprites, CollisionCircle collision_circle)
+    : position(position), normal_sprites(std::move(normal_sprites)),
+      collision_circle(std::move(collision_circle))
     {
     }
+
+    virtual ~GameObject()= default;
 
 
 };
