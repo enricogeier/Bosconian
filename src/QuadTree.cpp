@@ -1,4 +1,5 @@
 #include "QuadTree.h"
+#include "Bullet.h"
 
 void QuadTree::subdivide()
 {
@@ -82,6 +83,11 @@ void QuadTree::check_collision(GameObject &game_object)
     {
         for(GameObject object : game_objects)
         {
+
+            if(object.collision_circle.layer == Layer::PLAYER_BULLET)
+            {
+                int a = 0;
+            }
             // check collision for each object in quad
             if(std::find(game_object.collision_circle.can_collide_with.begin(),
                          game_object.collision_circle.can_collide_with.end(),
@@ -89,8 +95,8 @@ void QuadTree::check_collision(GameObject &game_object)
                          game_object.collision_circle.can_collide_with.end())
             {
 
-                if(game_object.collision_circle.radius >= Vector2::distance(
-                        reinterpret_cast<Vector2 &>(game_object), reinterpret_cast<Vector2 &>(object)))
+                if(game_object.collision_circle.radius >=
+                Vector2::distance(game_object.collision_circle.origin, object.collision_circle.origin))
                 {
 
                     std::cout << "collision detected" << std::endl;

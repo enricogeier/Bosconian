@@ -45,7 +45,6 @@ add_executable(Test src/main.cpp
         src/QuadTree.h
         src/QuadTree.cpp
         src/CollisionCircle.h
-        src/CelestialObject.h
         src/CollisionManager.h
         src/CollisionManager.cpp
         src/Bullet.cpp

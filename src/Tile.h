@@ -2,7 +2,7 @@
 #define TILE_H
 
 #include "Vector2.h"
-#include "GameObject.h"
+#include "Enemy.h"
 #include <vector>
 
 
@@ -12,7 +12,7 @@ public:
 
     Vector2 tile_position;
 
-    std::vector<GameObject> objects_in_tile;
+    std::vector<Enemy> objects_in_tile;
 
     explicit Tile(Vector2 position = Vector2(0.0f, 0.0f));
 

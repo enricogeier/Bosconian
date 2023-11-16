@@ -28,7 +28,9 @@ public:
 
     static CollisionCircle get_mine_explosion_collision();
 
-    static CollisionCircle get_bullet_collision();
+    static CollisionCircle get_player_bullet_collision();
+
+    static CollisionCircle get_enemy_bullet_collision();
 
 };
 

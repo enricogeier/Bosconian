@@ -24,6 +24,11 @@ Renderer::~Renderer()
     clear();
 }
 
+void Renderer::set_scale(Vector2 scale_sprites)
+{
+    scale = scale_sprites;
+}
+
 void Renderer::set_sprite_sheet_texture(SDL_Texture *texture)
 {
     sprite_sheet_texture = texture;
@@ -58,6 +63,41 @@ void Renderer::render(Vector2& position, SDL_Rect* sprite, float rotation)
 
     SDL_RenderCopyEx(renderer, sprite_sheet_texture, sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
+}
+
+void Renderer::render_collision_box(GameObject &game_object)
+{
+    // TODO: delete
+
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+    SDL_RenderDrawLineF(
+            renderer,
+            game_object.collision_circle.origin.x - camera.x,
+            game_object.collision_circle.origin.y -  camera.y,
+            game_object.collision_circle.origin.x + game_object.collision_circle.radius - camera.x,
+            game_object.collision_circle.origin.y - camera.y
+            );
+    SDL_RenderDrawLineF(
+            renderer,
+            game_object.collision_circle.origin.x - camera.x,
+            game_object.collision_circle.origin.y - camera.y,
+            game_object.collision_circle.origin.x - game_object.collision_circle.radius - camera.x,
+            game_object.collision_circle.origin.y - camera.y
+    );
+    SDL_RenderDrawLineF(
+            renderer,
+            game_object.collision_circle.origin.x - camera.x,
+            game_object.collision_circle.origin.y - camera.y,
+            game_object.collision_circle.origin.x - camera.x,
+            game_object.collision_circle.origin.y + game_object.collision_circle.radius  - camera.y
+    );
+    SDL_RenderDrawLineF(
+            renderer,
+            game_object.collision_circle.origin.x - camera.x,
+            game_object.collision_circle.origin.y - camera.y,
+            game_object.collision_circle.origin.x - camera.x,
+            game_object.collision_circle.origin.y - game_object.collision_circle.radius  - camera.y
+    );
 }
 
 

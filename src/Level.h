@@ -33,9 +33,9 @@ public:
 
     void check_tile_positions();
 
-    void spawn_enemy(Vector2& player_position);
+    void set_enemy(Enemy& enemy);
 
-    std::vector<GameObject> get_all_game_objects() const;
+    std::vector<Enemy> get_all_game_objects() const;
 
 
 };

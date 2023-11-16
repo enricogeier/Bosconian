@@ -17,7 +17,7 @@ private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     Vector2 camera;
-    Vector2 scale = Vector2(4.0f, 4.0f);
+    Vector2 scale;
 
     SDL_Texture* sprite_sheet_texture = nullptr;
 
@@ -29,6 +29,8 @@ public:
 
     ~Renderer();
 
+    void set_scale(Vector2 scale);
+
     void set_sprite_sheet_texture(SDL_Texture* texture);
 
     void clear_screen();
@@ -38,6 +40,8 @@ public:
     void render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a);
 
     void render(Vector2& screen_position, SDL_Rect* sprite, float rotation = 0.0f);
+
+    void render_collision_box(GameObject& game_object);
 
     SDL_Texture* render_sprite_sheet(SDL_Surface* sprite_sheet_surface);
 
