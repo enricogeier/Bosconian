@@ -1,5 +1,4 @@
 #include "QuadTree.h"
-#include "Bullet.h"
 
 void QuadTree::subdivide()
 {
@@ -79,15 +78,22 @@ void QuadTree::check_collision(GameObject &game_object)
             }
         }
     }
+    else if(game_object.state == State::DESTROY)
+    {
+        return;
+    }
     else
     {
-        for(GameObject object : game_objects)
-        {
 
-            if(object.collision_circle.layer == Layer::PLAYER_BULLET)
+        for(auto iterator = game_objects.begin(); iterator != game_objects.end(); ++iterator)
+        {
+            GameObject& object = *iterator;
+
+            if(object.state == State::DESTROY)
             {
-                int a = 0;
+                continue;
             }
+
             // check collision for each object in quad
             if(std::find(game_object.collision_circle.can_collide_with.begin(),
                          game_object.collision_circle.can_collide_with.end(),
@@ -105,13 +111,12 @@ void QuadTree::check_collision(GameObject &game_object)
                     game_object.state = State::DESTROY;
                     object.state = State::DESTROY;
 
-                    // TODO: delete collided object in QuadTree
-
-
                     return;
 
                 }
             }
         }
+
+
     }
 }

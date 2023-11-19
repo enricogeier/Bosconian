@@ -1,16 +1,20 @@
 #ifndef COLLISIONMANAGER_H
 #define COLLISIONMANAGER_H
 
-#include <vector>
 #include "CollisionCircle.h"
+#include "SpriteSheet.h"
 
 
 class CollisionManager
 {
 private:
-    static const std::vector<CollisionCircle> collision_circles;
+    static std::vector<CollisionCircle> collision_circles;
 
 public:
+
+    static Vector2 scale;
+
+    static void create_collision_circles();
 
     static CollisionCircle get_player_collision();
 

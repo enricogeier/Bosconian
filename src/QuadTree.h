@@ -2,6 +2,7 @@
 #define QUADTREE_H
 
 #include <list>
+#include <map>
 #include <functional>
 #include <iostream>
 #include "GameObject.h"

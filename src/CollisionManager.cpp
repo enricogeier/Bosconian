@@ -1,82 +1,84 @@
 #include "CollisionManager.h"
 
-const std::vector<CollisionCircle> CollisionManager::collision_circles{
-    //TODO: implement Collision Circles
-
-    CollisionCircle  // player
-    {Vector2(),
-     20.0f,
-     Layer::PLAYER,
-     std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::ENEMY, Layer::ENEMY_BULLET}
-     },
-     CollisionCircle // e type
-     {
-        Vector2(),
-        20.0f,
-        Layer::ENEMY,
-        std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-     },
-    CollisionCircle // i type
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::ENEMY,
-                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-            },
-    CollisionCircle // p type
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::ENEMY,
-                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-            },
-    CollisionCircle // spy
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::ENEMY,
-                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-            },
-    CollisionCircle // mine
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::CELESTIAL_OBJECT,
-                    std::list<Layer>{Layer::ENEMY, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-            },
-    CollisionCircle // asteroid
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::CELESTIAL_OBJECT,
-                    std::list<Layer>{Layer::ENEMY, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-            },
-    CollisionCircle // mine explosion
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::CELESTIAL_OBJECT,
-                    std::list<Layer>{Layer::ENEMY, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
-            },
-    CollisionCircle // player bullet
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::PLAYER_BULLET,
-                    std::list<Layer>{Layer::ENEMY, Layer::CELESTIAL_OBJECT}
-            },
-
-    CollisionCircle // enemy bullet
-            {
-                    Vector2(),
-                    20.0f,
-                    Layer::ENEMY_BULLET,
-                    std::list<Layer>{Layer::PLAYER, Layer::CELESTIAL_OBJECT}
-            },
+Vector2 CollisionManager::scale = Vector2(1.0f, 1.0f);
+std::vector<CollisionCircle> CollisionManager::collision_circles;
 
 
+void CollisionManager::create_collision_circles()
+{
 
-};
+    collision_circles = { CollisionCircle  // player
+                                  {Vector2(7 * scale.x, 8 * scale.y),
+                                   7.0f * scale.x,
+                                   Layer::PLAYER,
+                                   std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::ENEMY, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // e type
+                                  {
+                                          Vector2(7 * scale.x, 7 * scale.y),
+                                          10.0f * scale.x,
+                                          Layer::ENEMY,
+                                          std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // i type
+                                  {
+                                          Vector2(8 * scale.x, 8 * scale.y),
+                                          7.0f * scale.x,
+                                          Layer::ENEMY,
+                                          std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // p type
+                                  {
+                                          Vector2(7 * scale.x, 8 * scale.y),
+                                          8.0f * scale.x,
+                                          Layer::ENEMY,
+                                          std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // spy
+                                  {
+                                          Vector2(7 * scale.x, 8 * scale.y),
+                                          8.0f * scale.x,
+                                          Layer::ENEMY,
+                                          std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // mine
+                                  {
+                                          Vector2(7.0f * scale.x, 7.0f * scale.y),
+                                          7.0f * scale.x,
+                                          Layer::CELESTIAL_OBJECT,
+                                          std::list<Layer>{Layer::ENEMY, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // asteroid
+                                  {
+                                          Vector2(7.0f * scale.x, 6.0f * scale.y),
+                                          8.0f * scale.x,
+                                          Layer::CELESTIAL_OBJECT,
+                                          std::list<Layer>{Layer::ENEMY, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // mine explosion
+                                  {
+                                          Vector2(7.0f * scale.x, 8.0f * scale.y),
+                                          8.0f * scale.x,
+                                          Layer::CELESTIAL_OBJECT,
+                                          std::list<Layer>{Layer::ENEMY, Layer::PLAYER, Layer::PLAYER_BULLET, Layer::ENEMY_BULLET}
+                                  },
+                          CollisionCircle // player bullet
+                                  {
+                                          Vector2(6.0f * scale.x, 7.0f * scale.y),
+                                          4.0f * scale.x,
+                                          Layer::PLAYER_BULLET,
+                                          std::list<Layer>{Layer::ENEMY, Layer::CELESTIAL_OBJECT}
+                                  },
+
+                          CollisionCircle // enemy bullet
+                                  {
+                                          Vector2(6.0f * scale.x, 7.0f * scale.y),
+                                          4.0f * scale.x,
+                                          Layer::ENEMY_BULLET,
+                                          std::list<Layer>{Layer::PLAYER, Layer::CELESTIAL_OBJECT}
+                                  },};
+}
+
 
 
 CollisionCircle CollisionManager::get_player_collision()

@@ -1,14 +1,13 @@
-2. Gegner darstellen => Enemy-Klasse (Super-Klasse), ...
-3. Schießen
-4. Schießkollision / Kollision mit Gegner
+4. Enemy Liste ähnlich wie bullet Liste, Tiles speichern enemy - Referenz
 5. Beschleunigung am Anfang
 6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik)
 7. Raumbasen, andere Gegner, Hindernisse, Objekte, ...
 8. Level aus Text-Datei einlesen
-9. Leben implementieren, Spiel neu starten
-10. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
-11. google-Tests
-12. Sound
+9. Gegner bewegen
+10. Leben implementieren, Spiel neu starten
+11. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
+12. google-Tests
+13. Sound
 --------------------------------------------------------------------------------
 Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
 
