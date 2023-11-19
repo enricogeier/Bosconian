@@ -424,18 +424,6 @@ void GameHandler::run() {
 
 }
 
-void GameHandler::spawn_random_enemy()
-{
-    // TODO: testing
-    Enemy enemy = Enemy(
-            Vector2(250, 250),
-            SpriteSheet::get_e_type(false),
-            SpriteSheet::get_explosion_1(),
-            CollisionManager::get_e_type_collision()
-    );
-
-    level.set_enemy(enemy);
-}
 
 void GameHandler::initialize()
 {
@@ -448,11 +436,11 @@ void GameHandler::initialize()
 
     player = Player(SpriteSheet::get_player_sprites(), SpriteSheet::get_explosion_1(), CollisionManager::get_player_collision());
 
-    level.initialize_tile_index(player.position);
+    level_manager.initialize_tile_index(player.position);
 
 
     // TODO: testing
-    spawn_random_enemy();
+    level_manager.spawn_random_enemy();
 
 }
 
@@ -466,7 +454,7 @@ void GameHandler::game_loop()
 
         float delta = fps_timer.get_delta();
 
-        quad_tree = QuadTree({0, 0, level.LEVEL_SIZE_X, level.LEVEL_SIZE_Y});
+        quad_tree = QuadTree({0, 0, Level::LEVEL_SIZE_X, Level::LEVEL_SIZE_Y});
 
         // input handling
         bool shoot = false;
@@ -486,7 +474,7 @@ void GameHandler::game_loop()
         player.move(keyboard_input_vector, delta);
         quad_tree.insert(player);
 
-        level.set_current_tile(player.position); // rearrange tiles
+        level_manager.set_current_tile(player.position); // rearrange tiles
         Vector2 player_sprite_size((float)player.normal_sprites.front().w, (float)player.normal_sprites.front().h);
         renderer.update_camera(player.position, player_sprite_size);
 
@@ -494,7 +482,7 @@ void GameHandler::game_loop()
         move_bullets(delta);
 
         // move enemies
-        std::vector<Enemy> enemies = level.get_all_game_objects();
+        std::vector<Enemy> enemies = level_manager.get_all_game_objects();
         move_enemies(enemies, delta);
 
         // check player collision

@@ -63,7 +63,11 @@ void QuadTree::insert(GameObject& game_object)
 
 void QuadTree::check_collision(GameObject &game_object)
 {
-    if(divided)
+    if(game_object.state == State::DESTROY)
+    {
+        return;
+    }
+    else if(divided)
     {
         for(auto& quad : quad_trees)
         {
@@ -77,10 +81,6 @@ void QuadTree::check_collision(GameObject &game_object)
                 quad.check_collision(game_object);
             }
         }
-    }
-    else if(game_object.state == State::DESTROY)
-    {
-        return;
     }
     else
     {

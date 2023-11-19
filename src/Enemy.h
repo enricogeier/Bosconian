@@ -13,8 +13,11 @@ private:
     std::vector<Rectangle> explosion_sprites;
 public:
 
+    Vector2 start_position;
+
     explicit Enemy(Vector2 position, const std::vector<Rectangle>& player_sprite, const std::vector<Rectangle>& explosion_sprite, CollisionCircle collision_circle)
-    : GameObject(position, player_sprite, std::move(collision_circle)), explosion_sprites(explosion_sprite)
+    : GameObject(position, player_sprite, std::move(collision_circle)), explosion_sprites(explosion_sprite),
+      start_position(position)
     {
     }
 

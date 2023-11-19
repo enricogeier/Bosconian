@@ -25,9 +25,9 @@ void Tile::update_tile_position()
 {
     // update every GameObject position
 
-    for(auto & i : objects_in_tile)
+    for(auto & object : objects_in_tile)
     {
-        i.position += tile_position;
+        object.position = object.start_position + tile_position;
     }
 
 }

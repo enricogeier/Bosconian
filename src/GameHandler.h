@@ -7,7 +7,7 @@
 #include "SpriteSheetLoader.h"
 #include "FPSTimer.h"
 #include "Input.h"
-#include "Level.h"
+#include "LevelManager.h"
 #include "Bullet.h"
 #include "QuadTree.h"
 
@@ -21,7 +21,7 @@ private:
      bool quit_game = false;
      FPSTimer fps_timer;
      long frame_counter = 1;
-     Level level;
+     LevelManager level_manager;
      std::list<Bullet> bullet_list;
      QuadTree quad_tree;
      Vector2 scale = Vector2(4.0f, 4.0f);
@@ -46,9 +46,6 @@ private:
     void render_bullets();
 
     void render_enemies(std::vector<Enemy>& enemies);
-
-    void spawn_random_enemy();
-
 
 
 

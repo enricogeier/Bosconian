@@ -31,8 +31,8 @@ add_executable(Test src/main.cpp
         src/Input.cpp
         src/Tile.h
         src/Tile.cpp
-        src/Level.h
-        src/Level.cpp
+        src/LevelManager.h
+        src/LevelManager.cpp
         src/SpriteSheet.cpp
         src/Vector4.h
         src/Vector4.cpp
@@ -48,6 +48,7 @@ add_executable(Test src/main.cpp
         src/CollisionManager.h
         src/CollisionManager.cpp
         src/Bullet.cpp
+        src/Level.h
 )
 
 # Link against SDL2

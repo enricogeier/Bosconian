@@ -1,8 +1,9 @@
-4. Enemy Liste ähnlich wie bullet Liste, Tiles speichern enemy - Referenz
+3. State::DESTROY => State::EXPLODE
+4. Enemy Liste ähnlich wie bullet Liste, Tiles speichern enemy - Referenz; danach CollisionBox anpassen
 5. Beschleunigung am Anfang
 6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik)
 7. Raumbasen, andere Gegner, Hindernisse, Objekte, ...
-8. Level aus Text-Datei einlesen
+8. LevelManager aus Text-Datei einlesen
 9. Gegner bewegen
 10. Leben implementieren, Spiel neu starten
 11. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
