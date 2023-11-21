@@ -3,7 +3,6 @@
 
 #include <string>
 #include "Player.h"
-#include "Renderer.h"
 #include "SpriteSheetLoader.h"
 #include "FPSTimer.h"
 #include "Input.h"
@@ -37,15 +36,9 @@ private:
 
     void move_bullets(float& delta);
 
-    void move_enemies(std::vector<Enemy>& enemies, float& delta);
-
     void check_bullet_collisions();
 
-    void check_enemy_collisions(std::vector<Enemy>& enemies);
-
     void render_bullets();
-
-    void render_enemies(std::vector<Enemy>& enemies);
 
     void initialize_quad_tree();
 

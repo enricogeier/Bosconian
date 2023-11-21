@@ -1,5 +1,4 @@
-3. LevelManager: neue Funktionen, State::DESTROY => State::EXPLODE
-4. Enemy Liste ähnlich wie bullet Liste, Tiles speichern enemy - Referenz; danach CollisionBox anpassen
+4. State::DESTROY => State::EXPLODE
 5. Beschleunigung am Anfang
 6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik)
 7. Raumbasen, andere Gegner, Hindernisse, Objekte, ...

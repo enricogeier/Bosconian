@@ -129,12 +129,65 @@ void LevelManager::check_tile_positions()
 void LevelManager::spawn_random_enemy()
 {
     // TODO: testing
+
+
     tiles[0].objects_in_tile.push_back(Enemy(
             Vector2(250, 250),
-            SpriteSheet::get_e_type(false),
+            SpriteSheet::get_asteroid(),
             SpriteSheet::get_explosion_1(),
-            CollisionManager::get_e_type_collision()
+            CollisionManager::get_asteroid_collision()
     ));
+
+}
+
+void LevelManager::move_enemies(float &delta, QuadTree &quad_tree)
+{
+    for(auto& tile : tiles)
+    {
+        for(auto& enemy : tile.objects_in_tile)
+        {
+            Vector2 move_direction(0.0f, 0.0f);
+            enemy.move(move_direction, delta);
+
+            quad_tree.insert(enemy);
+        }
+    }
+}
+
+void LevelManager::check_enemy_collisions(QuadTree &quad_tree)
+{
+    for(auto& tile : tiles)
+    {
+        for(auto& enemy : tile.objects_in_tile)
+        {
+            quad_tree.check_collision(enemy);
+        }
+    }
+}
+
+void LevelManager::render_enemies(Renderer &renderer)
+{
+    for(auto& tile : tiles)
+    {
+        for(auto& enemy : tile.objects_in_tile)
+        {
+            // testing: always take first sprite of object
+            SDL_Rect sprite{
+                    enemy.normal_sprites[0].x,
+                    enemy.normal_sprites[0].y,
+                    enemy.normal_sprites[0].w,
+                    enemy.normal_sprites[0].h
+            };
+
+            // TODO: implement explosion (enum) then remove element from objects
+
+
+            renderer.render(enemy.position, &sprite);
+
+            // TODO: delete
+            renderer.render_collision_box(enemy);
+        }
+    }
 }
 
 

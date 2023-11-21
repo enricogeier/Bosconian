@@ -4,6 +4,11 @@
 
 void Enemy::move(Vector2& move_direction, float &delta)
 {
+    if(collision_circle.layer == Layer::ENEMY)
+    {
+
+    }
+
     if(state == State::NORMAL)
     {
 

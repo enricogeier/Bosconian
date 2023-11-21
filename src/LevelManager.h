@@ -8,7 +8,8 @@
 #include "SpriteSheet.h"
 #include "CollisionManager.h"
 #include "Level.h"
-
+#include "QuadTree.h"
+#include "Renderer.h"
 
 class LevelManager
 {
@@ -31,7 +32,11 @@ public:
 
     void spawn_random_enemy();
 
-    void move_enemies(float& delta);
+    void move_enemies(float& delta, QuadTree& quad_tree);
+
+    void check_enemy_collisions(QuadTree& quad_tree);
+
+    void render_enemies(Renderer& renderer);
 
     std::vector<Enemy> get_all_game_objects() const;
 

@@ -202,16 +202,22 @@ public:
 
     }
 
-    static Rectangle get_mine()
+    static std::vector<Rectangle> get_mine()
     {
-        return sprites[44];
+        std::vector<Rectangle> sprite_list;
+
+        sprite_list.push_back(sprites[44]);
+        return sprite_list;
     }
 
-    static Rectangle get_asteroid(short sprite = 0)
+    static std::vector<Rectangle> get_asteroid(short sprite = 0)
     {
         if(sprite >= 0 && sprite < 3)
         {
-            return sprites[45 +  sprite];
+            std::vector<Rectangle> sprite_list;
+
+            sprite_list.push_back(sprites[45 +  sprite]);
+            return sprite_list;
         }
         else
         {

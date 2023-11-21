@@ -34,35 +34,11 @@ void GameHandler::move_bullets(float& delta)
 }
 
 
-void GameHandler::move_enemies(std::vector<Enemy>& enemies, float &delta)
-{
-
-    for(auto& enemy : enemies)
-    {
-        if(enemy.collision_circle.layer == Layer::ENEMY)
-        {
-            Vector2 move_direction(0.0f, 0.0f);
-            enemy.move(move_direction, delta);
-
-        }
-
-        quad_tree.insert(enemy);
-    }
-}
-
 void GameHandler::check_bullet_collisions()
 {
     for(auto& bullet: bullet_list)
     {
          quad_tree.check_collision(bullet);
-    }
-}
-
-void GameHandler::check_enemy_collisions(std::vector<Enemy>& enemies)
-{
-    for(auto& enemy : enemies)
-    {
-        quad_tree.check_collision(enemy);
     }
 }
 
@@ -82,29 +58,6 @@ void GameHandler::render_bullets()
 
     }
 }
-
-void GameHandler::render_enemies(std::vector<Enemy> &enemies)
-{
-    for(auto& enemy : enemies)
-    {
-        // testing: always take first sprite of object
-        SDL_Rect sprite{
-                enemy.normal_sprites[0].x,
-                enemy.normal_sprites[0].y,
-                enemy.normal_sprites[0].w,
-                enemy.normal_sprites[0].h
-        };
-
-        // TODO: implement explosion (enum) then remove element from objects
-
-
-        renderer.render(enemy.position, &sprite);
-
-        // TODO: delete
-        renderer.render_collision_box(enemy);
-    }
-}
-
 
 void GameHandler::match_player_direction(bool& shoot)
 {
@@ -494,8 +447,8 @@ void GameHandler::game_loop()
         move_bullets(delta);
 
         // move enemies
-        std::vector<Enemy> enemies = level_manager.get_all_game_objects();
-        move_enemies(enemies, delta);
+        level_manager.move_enemies(delta, quad_tree);
+
 
         // check player collision
         quad_tree.check_collision(player);
@@ -504,16 +457,13 @@ void GameHandler::game_loop()
         check_bullet_collisions();
 
         // check enemy collisions
-        check_enemy_collisions(enemies);
+        level_manager.check_enemy_collisions(quad_tree);
 
         // render bullets
         render_bullets();
 
         // render enemies
-        render_enemies(enemies);
-
-
-
+        level_manager.render_enemies(renderer);
 
         // render player, create new bullets
         match_player_direction(shoot);
