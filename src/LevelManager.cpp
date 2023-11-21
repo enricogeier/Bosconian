@@ -19,8 +19,9 @@ void LevelManager::initialize_tile_index(Vector2 &player_position)
     {
         player_position = Vector2(Level::AMOUNT_OF_TILES_X / 2, Level::AMOUNT_OF_TILES_Y / 2);
         current_tile_index = (Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y) / 2;
-        std::cerr << "Invalid position for player. Position has been set to: ( " << player_position.x << ", " << player_position.y << " )." << std::endl;
+        current_tile_position = tiles[current_tile_index].tile_position;
 
+        std::cerr << "Invalid position for player. Position has been set to: ( " << player_position.x << ", " << player_position.y << " )." << std::endl;
     }
     else
     {
@@ -31,10 +32,12 @@ void LevelManager::initialize_tile_index(Vector2 &player_position)
                 if(tiles[i].tile_position == Vector2(Level::LEVEL_SIZE_X - (2 * Level::TILE_SIZE_X), Level::LEVEL_SIZE_Y - (2 * Level::TILE_SIZE_Y)))
                 {
                     current_tile_index = i;
+                    current_tile_position = tiles[current_tile_index].tile_position;
                     break;
                 }
 
                 current_tile_index = i;
+                current_tile_position = tiles[current_tile_index].tile_position;
                 check_tile_positions();
 
 
@@ -62,6 +65,7 @@ void LevelManager::set_current_tile(Vector2 &player_position)
             else if(tiles[i].is_player_within_tile(player_position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
             {
                 current_tile_index = i;
+                current_tile_position = tiles[current_tile_index].tile_position;
                 check_tile_positions();
 
                 break;

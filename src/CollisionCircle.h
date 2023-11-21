@@ -19,7 +19,9 @@ enum class Layer
 class CollisionCircle
 {
 public:
+    // origin: position of collision circle's center
     Vector2 origin;
+    // position_in_sprite: position of collision circle's center in local space
     Vector2 position_in_sprite;
 
     float radius;

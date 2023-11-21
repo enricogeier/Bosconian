@@ -19,6 +19,7 @@ private:
 
 public:
 
+    Vector2 current_tile_position = Vector2();
 
     explicit LevelManager();
 

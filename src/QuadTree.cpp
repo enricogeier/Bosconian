@@ -3,10 +3,10 @@
 void QuadTree::subdivide()
 {
 
-    quad_trees.push_back(QuadTree(Rectangle{boundary.x, boundary.y, boundary.w / 2, boundary.h / 2}));
-    quad_trees.push_back(QuadTree(Rectangle{boundary.x + boundary.w, boundary.y, boundary.w / 2, boundary.h / 2}));
-    quad_trees.push_back(QuadTree(Rectangle{boundary.x, boundary.y + boundary.h, boundary.w / 2, boundary.h / 2}));
-    quad_trees.push_back(QuadTree(Rectangle{boundary.x + boundary.w, boundary.y + boundary.h, boundary.w / 2, boundary.h / 2}));
+    quad_trees.push_back(QuadTree(Rectangle{boundary.x, boundary.y, boundary.w / 2, boundary.h / 2}, this));
+    quad_trees.push_back(QuadTree(Rectangle{boundary.x + (boundary.w / 2), boundary.y, boundary.w / 2, boundary.h / 2}, this));
+    quad_trees.push_back(QuadTree(Rectangle{boundary.x, boundary.y + (boundary.h / 2), boundary.w / 2, boundary.h / 2}, this));
+    quad_trees.push_back(QuadTree(Rectangle{boundary.x + (boundary.w / 2), boundary.y + (boundary.h / 2), boundary.w / 2, boundary.h / 2}, this));
 
     for(GameObject& object : game_objects)
     {
@@ -20,6 +20,7 @@ void QuadTree::subdivide()
                     )
             {
                 quad.insert(object);
+                break;
             }
         }
     }
@@ -27,6 +28,55 @@ void QuadTree::subdivide()
     game_objects.clear();
 
 }
+
+void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObject &game_object)
+{
+    for(auto& quad : quad_trees)
+    {
+        if(checked_quad != &quad)
+        {
+            quad.do_collision_calculation(game_object);
+        }
+
+    }
+}
+
+void QuadTree::do_collision_calculation(GameObject &game_object)
+{
+    for(auto iterator = game_objects.begin(); iterator != game_objects.end(); ++iterator)
+    {
+        GameObject& object = *iterator;
+
+        if(object.state == State::DESTROY)
+        {
+            continue;
+        }
+
+        // check collision for each object in quad
+        if(std::find(game_object.collision_circle.can_collide_with.begin(),
+                     game_object.collision_circle.can_collide_with.end(),
+                     object.collision_circle.layer) !=
+           game_object.collision_circle.can_collide_with.end())
+        {
+
+            float max_radius = game_object.collision_circle.radius > object.collision_circle.radius ? game_object.collision_circle.radius : object.collision_circle.radius;
+            if(max_radius >=
+               Vector2::distance(game_object.collision_circle.origin, object.collision_circle.origin))
+            {
+
+                std::cout << "collision detected" << std::endl;
+
+
+                game_object.state = State::DESTROY;
+                object.state = State::DESTROY;
+
+                return;
+
+            }
+        }
+    }
+}
+
 
 
 void QuadTree::insert(GameObject& game_object)
@@ -85,38 +135,23 @@ void QuadTree::check_collision(GameObject &game_object)
     else
     {
 
-        for(auto iterator = game_objects.begin(); iterator != game_objects.end(); ++iterator)
+        do_collision_calculation(game_object);
+
+
+        // no collision found, check if game object is near border of quad
+        if(parent != nullptr)
         {
-            GameObject& object = *iterator;
 
-            if(object.state == State::DESTROY)
+            if(
+                    game_object.collision_circle.origin.x + game_object.collision_circle.radius >= boundary.x + boundary.w
+                    || game_object.collision_circle.origin.x - game_object.collision_circle.radius <= boundary.x
+                    || game_object.collision_circle.origin.y + game_object.collision_circle.radius >= boundary.y + boundary.h
+                    || game_object.collision_circle.origin.y - game_object.collision_circle.radius <= boundary.y
+
+                    )
             {
-                continue;
-            }
-
-            // check collision for each object in quad
-            if(std::find(game_object.collision_circle.can_collide_with.begin(),
-                         game_object.collision_circle.can_collide_with.end(),
-                         object.collision_circle.layer) !=
-                         game_object.collision_circle.can_collide_with.end())
-            {
-
-                if(game_object.collision_circle.radius >=
-                Vector2::distance(game_object.collision_circle.origin, object.collision_circle.origin))
-                {
-
-                    std::cout << "collision detected" << std::endl;
-
-
-                    game_object.state = State::DESTROY;
-                    object.state = State::DESTROY;
-
-                    return;
-
-                }
+                parent->check_collision_in_neighbour_tile(this, game_object);
             }
         }
-
-
     }
 }

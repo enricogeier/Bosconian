@@ -47,6 +47,8 @@ private:
 
     void render_enemies(std::vector<Enemy>& enemies);
 
+    void initialize_quad_tree();
+
 
 
 public:

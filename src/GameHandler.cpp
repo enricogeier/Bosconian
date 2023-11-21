@@ -54,7 +54,7 @@ void GameHandler::check_bullet_collisions()
 {
     for(auto& bullet: bullet_list)
     {
-        quad_tree.check_collision(bullet);
+         quad_tree.check_collision(bullet);
     }
 }
 
@@ -414,6 +414,18 @@ void GameHandler::load_sprite_sheet()
 
 }
 
+
+void GameHandler::initialize_quad_tree()
+{
+    quad_tree = QuadTree(
+            {
+                    (int)level_manager.current_tile_position.x - (int(Level::AMOUNT_OF_TILES_X / 2) * Level::TILE_SIZE_X ),
+                    (int)level_manager.current_tile_position.y - (int(Level::AMOUNT_OF_TILES_Y / 2) * Level::TILE_SIZE_Y ),
+                Level::LEVEL_SIZE_X,
+                Level::LEVEL_SIZE_Y
+            });
+}
+
 void GameHandler::run() {
 
     initialize();
@@ -454,8 +466,6 @@ void GameHandler::game_loop()
 
         float delta = fps_timer.get_delta();
 
-        quad_tree = QuadTree({0, 0, Level::LEVEL_SIZE_X, Level::LEVEL_SIZE_Y});
-
         // input handling
         bool shoot = false;
 
@@ -472,9 +482,11 @@ void GameHandler::game_loop()
 
 
         player.move(keyboard_input_vector, delta);
+        level_manager.set_current_tile(player.position); // rearrange tiles
+
+        initialize_quad_tree();
         quad_tree.insert(player);
 
-        level_manager.set_current_tile(player.position); // rearrange tiles
         Vector2 player_sprite_size((float)player.normal_sprites.front().w, (float)player.normal_sprites.front().h);
         renderer.update_camera(player.position, player_sprite_size);
 
