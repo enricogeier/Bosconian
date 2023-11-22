@@ -11,4 +11,5 @@
 --------------------------------------------------------------------------------
 Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
 
-1. fps korrekt clampen (120 anstatt 123 fps)
+1. QuadTree: optimieren parent: Suche, wenn parent-und-Grenz-Prüfung in do_collision_calculation()
+2. fps korrekt clampen (120 anstatt 123 fps)

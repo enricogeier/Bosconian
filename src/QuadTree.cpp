@@ -33,7 +33,11 @@ void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObj
 {
     for(auto& quad : quad_trees)
     {
-        if(checked_quad != &quad)
+        if(quad.divided)
+        {
+            quad.check_collision_in_neighbour_tile(nullptr, game_object);
+        }
+        else if(checked_quad != &quad)
         {
             quad.do_collision_calculation(game_object);
         }

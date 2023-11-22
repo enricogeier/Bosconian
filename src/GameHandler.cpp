@@ -38,7 +38,7 @@ void GameHandler::check_bullet_collisions()
 {
     for(auto& bullet: bullet_list)
     {
-         quad_tree.check_collision(bullet);
+             quad_tree.check_collision(bullet);
     }
 }
 
@@ -459,11 +459,13 @@ void GameHandler::game_loop()
         // check enemy collisions
         level_manager.check_enemy_collisions(quad_tree);
 
-        // render bullets
-        render_bullets();
 
         // render enemies
         level_manager.render_enemies(renderer);
+
+        // render bullets
+        render_bullets();
+
 
         // render player, create new bullets
         match_player_direction(shoot);
