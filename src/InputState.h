@@ -1,8 +1,6 @@
 #ifndef INPUTSTATE_H
 #define INPUTSTATE_H
 
-#pragma once
-
 enum InputState
 {
     NONE,

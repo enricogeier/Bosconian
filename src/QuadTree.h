@@ -24,7 +24,7 @@ private:
 
     void subdivide();
 
-    void check_collision_in_neighbour_tile(QuadTree* checked_quad, GameObject& gameObject);
+    void check_collision_in_neighbour_tile(QuadTree* checked_quad, GameObject& gameObject, Vector2& border_position);
 
     void do_collision_calculation(GameObject& game_object);
 
