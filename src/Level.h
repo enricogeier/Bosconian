@@ -20,11 +20,11 @@ private:
 
 public:
 
-    const int LEVEL_SIZE_X = 6000;
-    const int LEVEL_SIZE_Y = 8000;
+    const int LEVEL_SIZE_X = 4500;
+    const int LEVEL_SIZE_Y = 7800;
 
-    const int TILE_SIZE_X = 2000; // default: 2000
-    const int TILE_SIZE_Y = 2667; // default: 2667
+    const int TILE_SIZE_X = 1500; // default: 2000
+    const int TILE_SIZE_Y = 2600; // default: 2667
     const int AMOUNT_OF_TILES_X = 3;
     const int AMOUNT_OF_TILES_Y = 3;
 
