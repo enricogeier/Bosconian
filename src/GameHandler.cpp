@@ -59,6 +59,42 @@ void GameHandler::render_bullets()
     }
 }
 
+void GameHandler::render_enemies()
+{
+    std::vector<Enemy> game_objects = level.get_all_game_objects();
+    for(auto& object : game_objects)
+    {
+        // testing: always take first sprite of object
+        SDL_Rect sprite{
+                object.normal_sprites[0].x,
+                object.normal_sprites[0].y,
+                object.normal_sprites[0].w,
+                object.normal_sprites[0].h
+        };
+
+        // TODO: implement explosion (enum) then remove element from objects
+
+
+        renderer.render(object.position, &sprite);
+
+        // TODO: delete
+        renderer.render_collision_box(object);
+    }
+
+}
+
+void GameHandler::spawn_random_enemy()
+{
+    // TODO: testing, implement this!
+    std::vector<Rectangle> sprites = renderer.get_asteroid();
+    std::vector<Rectangle> explosion_sprites = renderer.get_explosion_1();
+    CollisionCircle collision = collision_manager.get_asteroid_collision();
+
+    level.set_enemy(sprites, explosion_sprites, collision);
+}
+
+
+
 void GameHandler::match_player_direction(bool& shoot)
 {
 
@@ -78,16 +114,16 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + 5, player.position.y),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[1],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[1],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + player.normal_sprites.back().w + 5,
                                         player.position.y + player.normal_sprites.back().h - 1),
                                 player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[1],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[1],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -116,16 +152,16 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x - 15, player.position.y + (player.normal_sprites.back().h / 2) - y_precision ),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[2],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[2],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + player.normal_sprites.back().w,
                                         player.position.y + (player.normal_sprites.back().h / 2) - y_precision),
                                 player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[2],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[2],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -150,8 +186,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + player.normal_sprites.back().w - 12, player.position.y),
                                 player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[3],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[3],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -160,8 +196,8 @@ void GameHandler::match_player_direction(bool& shoot)
                                 Vector2(player.position.x - 12,
                                         player.position.y + player.normal_sprites.back().h - 1),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[3],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[3],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                     }
@@ -197,15 +233,15 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + (player.normal_sprites.back().w / 2) , player.position.y - 15),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[0],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[0],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + (player.normal_sprites.back().w / 2) , player.position.y + player.normal_sprites.back().h),
                                 Vector2(0, 1),
-                                SpriteSheet::get_p1_shoot()[0],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[0],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -220,8 +256,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + (player.normal_sprites.back().w / 2) - y_precision, player.position.y - 15),
                                 player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[0],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[0],
+                                collision_manager.get_player_bullet_collision()
 
                         ));
 
@@ -230,8 +266,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + (player.normal_sprites.back().w / 2) - y_precision, player.position.y + player.normal_sprites.back().h),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[0],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[0],
+                                collision_manager.get_player_bullet_collision()
                         ));
                     }
 
@@ -250,8 +286,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + player.normal_sprites.back().w - 5, player.position.y),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[3],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[3],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
 
@@ -260,8 +296,8 @@ void GameHandler::match_player_direction(bool& shoot)
                                 Vector2(player.position.x - 5,
                                         player.position.y + player.normal_sprites.back().h - 1),
                                 player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[3],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[3],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -286,8 +322,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x, player.position.y + (player.normal_sprites.back().h / 2) - y_precision ),
                                         player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[2],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[2],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -295,8 +331,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x + player.normal_sprites.back().w, player.position.y + (player.normal_sprites.back().h / 2) - y_precision ),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[2],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[2],
+                                collision_manager.get_player_bullet_collision()
                         ));
                     }
 
@@ -319,8 +355,8 @@ void GameHandler::match_player_direction(bool& shoot)
                         bullet_list.push_back(Bullet(
                                 Vector2(player.position.x, player.position.y),
                                 player.clamped_direction,
-                                SpriteSheet::get_p1_shoot()[1],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[1],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
                         bullet_list.back().speed *= 2;
@@ -330,8 +366,8 @@ void GameHandler::match_player_direction(bool& shoot)
                                 Vector2(player.position.x + player.normal_sprites.back().w,
                                         player.position.y + player.normal_sprites.back().h - 1),
                                 player.clamped_direction * (-1),
-                                SpriteSheet::get_p1_shoot()[1],
-                                CollisionManager::get_player_bullet_collision()
+                                renderer.get_p1_shoot()[1],
+                                collision_manager.get_player_bullet_collision()
                         ));
 
 
@@ -361,23 +397,20 @@ void GameHandler::match_player_direction(bool& shoot)
     renderer.render_collision_box(player);
 }
 
-void GameHandler::load_sprite_sheet()
-{
-    SpriteSheetLoader::load_sprite_sheet_surface(renderer, SpriteSheet::PATH_TO_SPRITE_SHEET);
-
-}
-
 
 void GameHandler::initialize_quad_tree()
 {
     quad_tree = QuadTree(
             {
-                    (int)level_manager.current_tile_position.x - (int(Level::AMOUNT_OF_TILES_X / 2) * Level::TILE_SIZE_X ),
-                    (int)level_manager.current_tile_position.y - (int(Level::AMOUNT_OF_TILES_Y / 2) * Level::TILE_SIZE_Y ),
-                Level::LEVEL_SIZE_X,
-                Level::LEVEL_SIZE_Y
+                    (int)level.current_tile_position.x - (int(level.AMOUNT_OF_TILES_X / 2) * level.TILE_SIZE_X ),
+                    (int)level.current_tile_position.y - (int(level.AMOUNT_OF_TILES_Y / 2) * level.TILE_SIZE_Y ),
+                    level.LEVEL_SIZE_X,
+                    level.LEVEL_SIZE_Y
             });
 }
+
+
+
 
 void GameHandler::run() {
 
@@ -385,27 +418,23 @@ void GameHandler::run() {
 
     game_loop();
 
-    renderer.clear();
-
 }
 
 
 void GameHandler::initialize()
 {
 
-    load_sprite_sheet();
+    scale = renderer.scale;
 
-    renderer.set_scale(scale);
-    CollisionManager::scale = scale;
-    CollisionManager::create_collision_circles();
+    collision_manager = CollisionManager(scale);
 
-    player = Player(SpriteSheet::get_player_sprites(), SpriteSheet::get_explosion_1(), CollisionManager::get_player_collision());
+    player = Player(renderer.get_player_sprites(), renderer.get_explosion_1(), collision_manager.get_player_collision());
 
-    level_manager.initialize_tile_index(player.position);
+    level.initialize_tile_index(player.position);
 
 
     // TODO: testing
-    level_manager.spawn_random_enemy();
+    spawn_random_enemy();
 
 }
 
@@ -435,7 +464,7 @@ void GameHandler::game_loop()
 
 
         player.move(keyboard_input_vector, delta);
-        level_manager.set_current_tile(player.position); // rearrange tiles
+        level.set_current_tile(player.position); // rearrange tiles
 
         initialize_quad_tree();
         quad_tree.insert(player);
@@ -447,7 +476,7 @@ void GameHandler::game_loop()
         move_bullets(delta);
 
         // move enemies
-        level_manager.move_enemies(delta, quad_tree);
+        level.move_enemies(delta, quad_tree);
 
 
         // check player collision
@@ -457,11 +486,11 @@ void GameHandler::game_loop()
         check_bullet_collisions();
 
         // check enemy collisions
-        level_manager.check_enemy_collisions(quad_tree);
+        level.check_enemy_collisions(quad_tree);
 
 
         // render enemies
-        level_manager.render_enemies(renderer);
+        render_enemies();
 
         // render bullets
         render_bullets();
@@ -478,4 +507,6 @@ void GameHandler::game_loop()
         frame_counter++;
 
     }
+
+    renderer.clear();
 }

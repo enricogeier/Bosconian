@@ -1,7 +1,10 @@
 #include "CollisionManager.h"
 
-Vector2 CollisionManager::scale = Vector2(1.0f, 1.0f);
-std::vector<CollisionCircle> CollisionManager::collision_circles;
+CollisionManager::CollisionManager(Vector2 scale)
+{
+    this->scale = scale;
+    create_collision_circles();
+}
 
 
 void CollisionManager::create_collision_circles()
@@ -10,7 +13,7 @@ void CollisionManager::create_collision_circles()
     collision_circles = { CollisionCircle  // player
                                   {Vector2(7 * scale.x, 8 * scale.y),
                                    7.0f * scale.x,
-                                   Layer::PLAYER,
+                                    Layer::PLAYER,
                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::ENEMY, Layer::ENEMY_BULLET}
                                   },
                           CollisionCircle // e type

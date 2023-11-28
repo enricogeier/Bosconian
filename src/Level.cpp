@@ -1,7 +1,7 @@
-#include "LevelManager.h"
+#include "Level.h"
 
 
-LevelManager::LevelManager()
+Level::Level()
 {
     for(int j = 0, tile_index = 0; j < Level::AMOUNT_OF_TILES_Y; j++)
     {
@@ -13,7 +13,7 @@ LevelManager::LevelManager()
     }
 }
 
-void LevelManager::initialize_tile_index(Vector2 &player_position)
+void Level::initialize_tile_index(Vector2 &player_position)
 {
     if(player_position.x < 0.0f || player_position.y < 0.0f || player_position.x > Level::LEVEL_SIZE_X || player_position.y > Level::LEVEL_SIZE_Y)
     {
@@ -51,7 +51,7 @@ void LevelManager::initialize_tile_index(Vector2 &player_position)
 }
 
 
-void LevelManager::set_current_tile(Vector2 &player_position)
+void Level::set_current_tile(Vector2 &player_position)
 {
 
     if(!(tiles[current_tile_index].is_player_within_tile(player_position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y))))
@@ -76,7 +76,7 @@ void LevelManager::set_current_tile(Vector2 &player_position)
     std::cout << current_tile_index << std::endl;
 }
 
-void LevelManager::check_tile_positions()
+void Level::check_tile_positions()
 {
     Vector2 tile_position = tiles[current_tile_index].tile_position;
     int n = (int)tile_position.y - Level::TILE_SIZE_Y;
@@ -126,21 +126,17 @@ void LevelManager::check_tile_positions()
     }
 }
 
-void LevelManager::spawn_random_enemy()
+void Level::set_enemy(std::vector<Rectangle>& sprites, std::vector<Rectangle>& explosion_sprites, CollisionCircle& collision)
 {
-    // TODO: testing
-
-
+    // TODO: testing, implement this!
     tiles[0].objects_in_tile.push_back(Enemy(
             Vector2(250, 250),
-            SpriteSheet::get_asteroid(),
-            SpriteSheet::get_explosion_1(),
-            CollisionManager::get_asteroid_collision()
-    ));
+            sprites, explosion_sprites, collision
+            ));
 
 }
 
-void LevelManager::move_enemies(float &delta, QuadTree &quad_tree)
+void Level::move_enemies(float &delta, QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
@@ -154,7 +150,7 @@ void LevelManager::move_enemies(float &delta, QuadTree &quad_tree)
     }
 }
 
-void LevelManager::check_enemy_collisions(QuadTree &quad_tree)
+void Level::check_enemy_collisions(QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
@@ -165,34 +161,8 @@ void LevelManager::check_enemy_collisions(QuadTree &quad_tree)
     }
 }
 
-void LevelManager::render_enemies(Renderer &renderer)
-{
-    for(auto& tile : tiles)
-    {
-        for(auto& enemy : tile.objects_in_tile)
-        {
-            // testing: always take first sprite of object
-            SDL_Rect sprite{
-                    enemy.normal_sprites[0].x,
-                    enemy.normal_sprites[0].y,
-                    enemy.normal_sprites[0].w,
-                    enemy.normal_sprites[0].h
-            };
 
-            // TODO: implement explosion (enum) then remove element from objects
-
-
-            renderer.render(enemy.position, &sprite);
-
-            // TODO: delete
-            renderer.render_collision_box(enemy);
-        }
-    }
-}
-
-
-
-std::vector<Enemy> LevelManager::get_all_game_objects() const
+std::vector<Enemy> Level::get_all_game_objects() const
 {
     std::vector<Enemy> enemies;
 

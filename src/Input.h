@@ -8,7 +8,14 @@
 #include <set>
 #include "Vector2.h"
 #include "Renderer.h"
-#include "InputState.h"
+
+enum InputState
+{
+    NONE,
+    SHOOT_PRESSED,
+    CLOSE_WINDOW
+};
+
 
 class Input
 {

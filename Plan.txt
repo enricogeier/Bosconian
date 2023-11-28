@@ -1,15 +1,14 @@
-4. State::DESTROY => State::EXPLODE
+4. State::DESTROY => State::EXPLODE; Animationen; Mine-Explosion mit Kollision
 5. Beschleunigung am Anfang
 6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik)
-7. Raumbasen, andere Gegner, Hindernisse, Objekte, ...
+7. Raumbasen rendern, Raumbasen: Kollision
 8. LevelManager aus Text-Datei einlesen
-9. Gegner bewegen
-10. Leben implementieren, Spiel neu starten
-11. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
+9. Gegner-Logik: Move, Raumbasen, Schießen, ...
+10. Leben implementieren, Spiel neu starten, ...
+11. korrekte Implementierung des Viewports (Buchstaben, Ziffern, Karte)
 12. google-Tests
 13. Sound
 --------------------------------------------------------------------------------
 Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
 
-1. QuadTree: optimieren parent: Suche, wenn parent-und-Grenz-Prüfung in do_collision_calculation()
 2. fps korrekt clampen (120 anstatt 123 fps)

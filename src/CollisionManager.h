@@ -1,40 +1,43 @@
 #ifndef COLLISIONMANAGER_H
 #define COLLISIONMANAGER_H
 
+#include <vector>
 #include "CollisionCircle.h"
-#include "SpriteSheet.h"
+
 
 
 class CollisionManager
 {
 private:
-    static std::vector<CollisionCircle> collision_circles;
+    std::vector<CollisionCircle> collision_circles;
 
 public:
 
-    static Vector2 scale;
+    explicit CollisionManager(Vector2 scale = Vector2(1.0f, 1.0f));
 
-    static void create_collision_circles();
+    Vector2 scale = Vector2(1.0f, 1.0f);
 
-    static CollisionCircle get_player_collision();
+    void create_collision_circles();
 
-    static CollisionCircle get_e_type_collision();
+    CollisionCircle get_player_collision();
 
-    static CollisionCircle get_i_type_collision();
+    CollisionCircle get_e_type_collision();
 
-    static CollisionCircle get_p_type_collision();
+    CollisionCircle get_i_type_collision();
 
-    static CollisionCircle get_spy_collision();
+    CollisionCircle get_p_type_collision();
 
-    static CollisionCircle get_mine_collision();
+    CollisionCircle get_spy_collision();
 
-    static CollisionCircle get_asteroid_collision();
+    CollisionCircle get_mine_collision();
 
-    static CollisionCircle get_mine_explosion_collision();
+    CollisionCircle get_asteroid_collision();
 
-    static CollisionCircle get_player_bullet_collision();
+    CollisionCircle get_mine_explosion_collision();
 
-    static CollisionCircle get_enemy_bullet_collision();
+    CollisionCircle get_player_bullet_collision();
+
+    CollisionCircle get_enemy_bullet_collision();
 
 };
 

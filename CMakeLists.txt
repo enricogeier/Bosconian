@@ -20,9 +20,6 @@ add_executable(Test src/main.cpp
         src/GameHandler.cpp
         src/Renderer.h
         src/Renderer.cpp
-        src/SpriteSheet.h
-        src/SpriteSheetLoader.h
-        src/SpriteSheetLoader.cpp
         src/Timer.h
         src/Timer.cpp
         src/FPSTimer.h
@@ -31,16 +28,14 @@ add_executable(Test src/main.cpp
         src/Input.cpp
         src/Tile.h
         src/Tile.cpp
-        src/LevelManager.h
-        src/LevelManager.cpp
-        src/SpriteSheet.cpp
+        src/Level.h
+        src/Level.cpp
         src/Vector4.h
         src/Vector4.cpp
         src/Rectangle.h
         src/GameObject.h
         src/Enemy.h
         src/Enemy.cpp
-        src/InputState.h
         src/Bullet.h
         src/QuadTree.h
         src/QuadTree.cpp
@@ -48,7 +43,7 @@ add_executable(Test src/main.cpp
         src/CollisionManager.h
         src/CollisionManager.cpp
         src/Bullet.cpp
-        src/Level.h
+
 )
 
 # Link against SDL2

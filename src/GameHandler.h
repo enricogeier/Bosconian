@@ -3,12 +3,12 @@
 
 #include <string>
 #include "Player.h"
-#include "SpriteSheetLoader.h"
 #include "FPSTimer.h"
 #include "Input.h"
-#include "LevelManager.h"
+#include "Level.h"
 #include "Bullet.h"
 #include "QuadTree.h"
+#include "CollisionManager.h"
 
 
 class GameHandler
@@ -20,10 +20,11 @@ private:
      bool quit_game = false;
      FPSTimer fps_timer;
      long frame_counter = 1;
-     LevelManager level_manager;
+     Level level;
      std::list<Bullet> bullet_list;
      QuadTree quad_tree;
-     Vector2 scale = Vector2(4.0f, 4.0f);
+     CollisionManager collision_manager;
+     Vector2 scale;
 
 
     void initialize();
@@ -32,8 +33,6 @@ private:
 
     void match_player_direction(bool& shoot);
 
-    void load_sprite_sheet();
-
     void move_bullets(float& delta);
 
     void check_bullet_collisions();
@@ -41,6 +40,10 @@ private:
     void render_bullets();
 
     void initialize_quad_tree();
+
+    void render_enemies();
+
+    void spawn_random_enemy();
 
 
 
