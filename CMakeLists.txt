@@ -43,6 +43,7 @@ add_executable(Test src/main.cpp
         src/CollisionManager.h
         src/CollisionManager.cpp
         src/Bullet.cpp
+        src/GameObject.cpp
 
 )
 

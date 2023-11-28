@@ -1,5 +1,29 @@
 #include "Renderer.h"
 
+#include <utility>
+
+SDL_Rect *AnimationPlayer::get_animation_sprite(long &current_frame)
+{
+    if(animation_state == AnimationState::PLAY && frame != explosion_sprites.size())
+    {
+        if(current_frame -  start_frame > speed)
+        {
+            start_frame = current_frame;
+            return &explosion_sprites[frame++];
+        }
+        else
+        {
+            return &explosion_sprites[frame];
+        }
+
+    }
+    else if(frame == explosion_sprites.size())
+    {
+        animation_state = AnimationState::FINISHED;
+    }
+}
+
+
 Renderer::Renderer()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -62,6 +86,11 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
+void Renderer::add_animation(std::vector<SDL_Rect> animation_sprites, long &start_frame, Vector2 &position)
+{
+    animations.push_back(AnimationPlayer(std::move(animation_sprites), start_frame, position));
+}
+
 void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a)
 {
     rectangle.x -= camera.x;
@@ -82,11 +111,31 @@ void Renderer::render(Vector2& position, SDL_Rect* sprite, float rotation)
 
 }
 
+void Renderer::render_animations(long int &current_frame)
+{
+    for(auto animation = animations.begin(); animation != animations.end();)
+    {
+        SDL_Rect* sprite = animation->get_animation_sprite(current_frame);
+        SDL_Rect render_quad = {(int)(animation->position.x - camera.x), (int)(animation->position.y - camera.y),
+                                sprite->w * (int)scale.x, sprite->h * (int)scale.y};
+
+        SDL_RenderCopy(renderer, sprite_sheet_texture, sprite, &render_quad);
+
+        if(animation->animation_state == AnimationState::FINISHED)
+        {
+            animation = animations.erase(animation);
+        }
+        else
+        {
+            animation++;
+        }
+    }
+}
+
 void Renderer::render_collision_box(GameObject &game_object)
 {
-    // TODO: delete
 
-    /*
+
     SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderDrawLineF(
             renderer,
@@ -117,7 +166,7 @@ void Renderer::render_collision_box(GameObject &game_object)
             game_object.collision_circle.origin.y - game_object.collision_circle.radius  - camera.y
     );
 
-    */
+
 
 
 }

@@ -46,6 +46,8 @@ public:
 
     std::vector<Enemy> get_all_game_objects() const;
 
+    void delete_enemy(Enemy& enemy);
+
 
 };
 

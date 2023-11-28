@@ -1,9 +1,9 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include <limits>
 #include "Vector2.h"
 #include "Enemy.h"
-#include <vector>
 
 
 class Tile
@@ -12,7 +12,7 @@ public:
 
     Vector2 tile_position;
 
-    std::vector<Enemy> objects_in_tile;
+    std::list<Enemy> objects_in_tile;
 
     explicit Tile(Vector2 position = Vector2(0.0f, 0.0f));
 

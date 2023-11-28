@@ -4,8 +4,48 @@
 #include <SDL.h>
 #include <iostream>
 #include <string>
+#include <utility>
 #include <SDL_image.h>
 #include "Player.h"
+
+
+enum AnimationState
+{
+    PLAY,
+    FINISHED
+};
+
+
+class AnimationPlayer
+{
+private:
+    unsigned int speed = 5;
+    unsigned int frame = 0;
+    long start_frame;
+    std::vector<SDL_Rect> explosion_sprites;
+
+
+
+public:
+
+    AnimationState animation_state = AnimationState::PLAY;
+    Vector2 position;
+
+    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, long& start_frame, Vector2& position)
+            : explosion_sprites(std::move(explosion_sprites)), start_frame(start_frame), position(position)
+    {
+    }
+
+
+    SDL_Rect* get_animation_sprite(long& current_frame);
+
+
+
+
+};
+
+
+
 
 
 class Renderer
@@ -21,6 +61,9 @@ private:
     SDL_Texture* sprite_sheet_texture = nullptr;
 
     const std::string WINDOW_TITLE = "Bosconian";
+
+    std::list<AnimationPlayer> animations;
+
 
 public:
 
@@ -121,9 +164,13 @@ public:
 
     void update_screen();
 
+    void add_animation(std::vector<SDL_Rect> animation_sprites, long& start_frame, Vector2& position);
+
     void render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a);
 
     void render(Vector2& screen_position, SDL_Rect* sprite, float rotation = 0.0f);
+
+    void render_animations(long& current_frame);
 
     void render_collision_box(GameObject& game_object);
 
@@ -157,6 +204,9 @@ public:
     std::vector<Rectangle> get_p2_shoot();
 
 };
+
+
+
 
 
 

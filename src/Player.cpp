@@ -22,13 +22,5 @@ void Player::move(Vector2& new_direction, float& delta)
 
         collision_circle.origin = collision_circle.position_in_sprite + position;
     }
-    else
-    {
-        // TODO: implement player explosion
-        // for testing
-        state = State::NORMAL;
-        move(new_direction, delta);
-    }
-
 
 }

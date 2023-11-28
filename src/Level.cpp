@@ -140,12 +140,22 @@ void Level::move_enemies(float &delta, QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
-        for(auto& enemy : tile.objects_in_tile)
+        for(auto enemy = tile.objects_in_tile.begin(); enemy != tile.objects_in_tile.end();)
         {
-            Vector2 move_direction(0.0f, 0.0f);
-            enemy.move(move_direction, delta);
+            if(enemy->state == State::NORMAL)
+            {
 
-            quad_tree.insert(enemy);
+                Vector2 move_direction(0.0f, 0.0f);
+                enemy->move(move_direction, delta);
+
+                quad_tree.insert(*enemy);
+
+                ++enemy;
+            }
+            else
+            {
+                enemy = tile.objects_in_tile.erase(enemy);
+            }
         }
     }
 }
@@ -175,4 +185,19 @@ std::vector<Enemy> Level::get_all_game_objects() const
     }
 
     return enemies;
+}
+
+void Level::delete_enemy(Enemy &enemy)
+{
+    for(auto& tile : tiles)
+    {
+        for(auto& enemy_in_tile : tile.objects_in_tile)
+        {
+            if(enemy_in_tile == enemy)
+            {
+                tile.objects_in_tile.remove(enemy_in_tile);
+                return;
+            }
+        }
+    }
 }

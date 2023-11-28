@@ -36,6 +36,12 @@ public:
     {
     }
 
+    bool operator==(const CollisionCircle& other) const
+    {
+        return this->origin == other.origin && this->position_in_sprite == other.position_in_sprite
+        && this->radius == other.radius && this->layer == other.layer && this->can_collide_with == other.can_collide_with;
+    }
+
 };
 
 #endif

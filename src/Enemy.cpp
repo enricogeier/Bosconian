@@ -15,8 +15,11 @@ void Enemy::move(Vector2& move_direction, float &delta)
     }
     else
     {
-        // TODO: undo this
-        state = State::NORMAL;
+        // TODO: play explosion
+
+
+        state = State::DESTROY;
+
     }
 
     collision_circle.origin = collision_circle.position_in_sprite + position;

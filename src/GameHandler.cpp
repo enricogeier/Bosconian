@@ -7,7 +7,7 @@ void GameHandler::move_bullets(float& delta)
     {
         float border = 1000.0f;
 
-        if(Vector2::distance(player.position, bullet->position) > border || bullet->state == State::DESTROY)
+        if(Vector2::distance(player.position, bullet->position) > border || bullet->state == State::EXPLODE)
         {
             bullet = bullet_list.erase(bullet);
         }
@@ -64,21 +64,41 @@ void GameHandler::render_enemies()
     std::vector<Enemy> game_objects = level.get_all_game_objects();
     for(auto& object : game_objects)
     {
-        // testing: always take first sprite of object
-        SDL_Rect sprite{
-                object.normal_sprites[0].x,
-                object.normal_sprites[0].y,
-                object.normal_sprites[0].w,
-                object.normal_sprites[0].h
-        };
+        if(object.state == State::NORMAL)
+        {
+            // TODO: testing: always take first sprite of object
+            SDL_Rect sprite{
+                    object.normal_sprites[0].x,
+                    object.normal_sprites[0].y,
+                    object.normal_sprites[0].w,
+                    object.normal_sprites[0].h
+            };
 
-        // TODO: implement explosion (enum) then remove element from objects
+            renderer.render(object.position, &sprite);
+
+        }
+        else
+        {
+
+           std::vector<SDL_Rect> explosion_sprites;
+
+           for(int i = 0; i < object.explosion_sprites.size(); i++)
+           {
+               explosion_sprites.push_back(SDL_Rect{
+
+                       object.explosion_sprites[i].x,
+                       object.explosion_sprites[i].y,
+                       object.explosion_sprites[i].w,
+                       object.explosion_sprites[i].h
+
+               });
+           }
 
 
-        renderer.render(object.position, &sprite);
 
-        // TODO: delete
-        renderer.render_collision_box(object);
+            renderer.add_animation(explosion_sprites, frame_counter, object.position);
+
+        }
     }
 
 }
@@ -393,8 +413,6 @@ void GameHandler::match_player_direction(bool& shoot)
 
     }
 
-    // TODO: delete
-    renderer.render_collision_box(player);
 }
 
 
@@ -409,7 +427,12 @@ void GameHandler::initialize_quad_tree()
             });
 }
 
+void GameHandler::player_explode_animation()
+{
+    // TODO: implement this!
 
+    player.state = State::DESTROY;
+}
 
 
 void GameHandler::run() {
@@ -451,26 +474,30 @@ void GameHandler::game_loop()
         // input handling
         bool shoot = false;
 
-        switch (Input::handle_user_input(keyboard_input_vector, frame_counter))
+        if(player.state == State::NORMAL)
         {
-            case NONE:
-                break;
-            case SHOOT_PRESSED:
-                shoot = true;
-                break;
-            case CLOSE_WINDOW:
-                quit_game = true;
+
+
+            switch (Input::handle_user_input(keyboard_input_vector, frame_counter))
+            {
+                case NONE:
+                    break;
+                case SHOOT_PRESSED:
+                    shoot = true;
+                    break;
+                case CLOSE_WINDOW:
+                    quit_game = true;
+            }
+
+            player.move(keyboard_input_vector, delta);
+            level.set_current_tile(player.position); // rearrange tiles
+            initialize_quad_tree();
+            quad_tree.insert(player);
+
+            Vector2 player_sprite_size((float)player.normal_sprites.front().w, (float)player.normal_sprites.front().h);
+            renderer.update_camera(player.position, player_sprite_size);
         }
 
-
-        player.move(keyboard_input_vector, delta);
-        level.set_current_tile(player.position); // rearrange tiles
-
-        initialize_quad_tree();
-        quad_tree.insert(player);
-
-        Vector2 player_sprite_size((float)player.normal_sprites.front().w, (float)player.normal_sprites.front().h);
-        renderer.update_camera(player.position, player_sprite_size);
 
         // move bullets
         move_bullets(delta);
@@ -488,6 +515,8 @@ void GameHandler::game_loop()
         // check enemy collisions
         level.check_enemy_collisions(quad_tree);
 
+        // render animations
+        renderer.render_animations(frame_counter);
 
         // render enemies
         render_enemies();
@@ -497,9 +526,19 @@ void GameHandler::game_loop()
 
 
         // render player, create new bullets
-        match_player_direction(shoot);
+        switch (player.state)
+        {
+            case State::NORMAL:
+                match_player_direction(shoot);
+                break;
+            case State::EXPLODE:
+                player.state = State::DESTROY;
+                break;
+            case State::DESTROY:
+                // TODO: reload level, ...
 
-
+                break;
+        }
 
 
         renderer.update_screen();

@@ -73,7 +73,7 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
     {
         GameObject& object = *iterator;
 
-        if(object.state == State::DESTROY)
+        if(object.state == State::EXPLODE)
         {
             continue;
         }
@@ -93,8 +93,8 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                 std::cout << "collision detected" << std::endl;
 
 
-                game_object.state = State::DESTROY;
-                object.state = State::DESTROY;
+                game_object.state = State::EXPLODE;
+                object.state = State::EXPLODE;
 
                 return;
 
@@ -124,7 +124,7 @@ void QuadTree::insert(GameObject& game_object)
     }
     else
     {
-        if(game_objects.size() == 4)
+        if(game_objects.size() == NODE_CAPACITY)
         {
             subdivide();
             divided = true;
@@ -139,7 +139,7 @@ void QuadTree::insert(GameObject& game_object)
 
 void QuadTree::check_collision(GameObject &game_object)
 {
-    if(game_object.state == State::DESTROY)
+    if(game_object.state == State::EXPLODE)
     {
         return;
     }

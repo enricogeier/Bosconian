@@ -11,6 +11,7 @@
 #include "CollisionManager.h"
 
 
+
 class GameHandler
 {
 private:
@@ -22,6 +23,7 @@ private:
      long frame_counter = 1;
      Level level;
      std::list<Bullet> bullet_list;
+     std::list<AnimationPlayer> animation_list;
      QuadTree quad_tree;
      CollisionManager collision_manager;
      Vector2 scale;
@@ -44,6 +46,8 @@ private:
     void render_enemies();
 
     void spawn_random_enemy();
+
+    void player_explode_animation();
 
 
 

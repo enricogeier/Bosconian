@@ -1,4 +1,4 @@
-4. State::DESTROY => State::EXPLODE; Animationen; Mine-Explosion mit Kollision
+4. Mine-Explosion mit Kollision
 5. Beschleunigung am Anfang
 6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik)
 7. Raumbasen rendern, Raumbasen: Kollision
