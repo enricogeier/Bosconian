@@ -2,13 +2,21 @@
 
 #include <utility>
 
-SDL_Rect *AnimationPlayer::get_animation_sprite(long &current_frame)
+SDL_Rect *AnimationPlayer::get_animation_sprite()
 {
+    auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+    auto current_frame_time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+
     if(animation_state == AnimationState::PLAY && frame != explosion_sprites.size())
     {
-        if(current_frame -  start_frame > speed)
+        if(start_time == std::chrono::microseconds(0))
         {
-            start_frame = current_frame;
+            start_time = current_frame_time;
+        }
+
+        if(std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time - start_time) > frame_time)
+        {
+            start_time = current_frame_time;
             return &explosion_sprites[frame++];
         }
         else
@@ -102,7 +110,7 @@ void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, 
 
 }
 
-void Renderer::render_player(Player& object)
+void Renderer::render_player(Player object)
 {
 
     if(object.state == State::NORMAL)
@@ -173,16 +181,28 @@ void Renderer::render_player(Player& object)
     }
     else if(object.state == State::EXPLODE)
     {
-        // TODO: implement explosion animation
+        bool found = false;
 
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
 
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+        }
 
 
     }
 
 }
 
-void Renderer::render_e_type(Enemy &object)
+void Renderer::render_e_type(Enemy object)
 {
     if(object.state == State::NORMAL)
     {
@@ -199,7 +219,23 @@ void Renderer::render_e_type(Enemy &object)
     }
     else if(object.state == State::EXPLODE)
     {
-        // TODO: implement explosion animation
+
+
+        bool found = false;
+
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+        }
 
 
 
@@ -207,7 +243,7 @@ void Renderer::render_e_type(Enemy &object)
     }
 }
 
-void Renderer::render_p_type(Enemy &object)
+void Renderer::render_p_type(Enemy object)
 {
     if(object.state == State::NORMAL)
     {
@@ -224,15 +260,28 @@ void Renderer::render_p_type(Enemy &object)
     }
     else if(object.state == State::EXPLODE)
     {
-        // TODO: implement explosion animation
+        bool found = false;
 
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+        }
 
 
 
     }
 }
 
-void Renderer::render_i_type(Enemy &object)
+void Renderer::render_i_type(Enemy object)
 {
     if(object.state == State::NORMAL)
     {
@@ -249,7 +298,21 @@ void Renderer::render_i_type(Enemy &object)
     }
     else if(object.state == State::EXPLODE)
     {
-        // TODO: implement explosion animation
+        bool found = false;
+
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+        }
 
 
 
@@ -257,7 +320,7 @@ void Renderer::render_i_type(Enemy &object)
     }
 }
 
-void Renderer::render_spy(Enemy &object)
+void Renderer::render_spy(Enemy object)
 {
     if(object.state == State::NORMAL)
     {
@@ -274,7 +337,21 @@ void Renderer::render_spy(Enemy &object)
     }
     else if(object.state == State::EXPLODE)
     {
-        // TODO: implement explosion animation
+        bool found = false;
+
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+        }
 
 
 
@@ -282,7 +359,7 @@ void Renderer::render_spy(Enemy &object)
     }
 }
 
-void Renderer::render_asteroid(CelestialObject &object)
+void Renderer::render_asteroid(CelestialObject object)
 {
     if(object.state == State::NORMAL)
     {
@@ -297,7 +374,21 @@ void Renderer::render_asteroid(CelestialObject &object)
     }
     else if(object.state == State::EXPLODE)
     {
-        // TODO: implement explosion animation
+        bool found = false;
+
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+        }
 
 
 
@@ -305,7 +396,7 @@ void Renderer::render_asteroid(CelestialObject &object)
     }
 }
 
-void Renderer::render_mine(CelestialObject &object)
+void Renderer::render_mine(CelestialObject object)
 {
     if(object.state == State::NORMAL)
     {
@@ -328,13 +419,13 @@ void Renderer::render_mine(CelestialObject &object)
     }
 }
 
-void Renderer::render_space_station(Enemy &object)
+void Renderer::render_space_station(Enemy object)
 {
     // TODO: implement this!
 }
 
 
-void Renderer::render_bullet(Vector2& position, Vector2& direction)
+void Renderer::render_bullet(Vector2 position, Vector2 direction)
 {
     SDL_Rect sprite;
 
@@ -382,12 +473,12 @@ void Renderer::render_bullet(Vector2& position, Vector2& direction)
 }
 
 
-/*
-void Renderer::render_animations(long int &current_frame)
+
+void Renderer::render_animations()
 {
     for(auto animation = animations.begin(); animation != animations.end();)
     {
-        SDL_Rect* sprite = animation->get_animation_sprite(current_frame);
+        SDL_Rect* sprite = animation->get_animation_sprite();
         SDL_Rect render_quad = {(int)(animation->position.x - camera.x), (int)(animation->position.y - camera.y),
                                 sprite->w * (int)scale.x, sprite->h * (int)scale.y};
 
@@ -403,10 +494,12 @@ void Renderer::render_animations(long int &current_frame)
         }
     }
 }
-*/
 
 
-void Renderer::render_collision_box(GameObject &game_object)
+
+
+
+void Renderer::render_collision_box(GameObject game_object)
 {
 
 
@@ -446,7 +539,7 @@ void Renderer::render_collision_box(GameObject &game_object)
 }
 
 
-void Renderer::update_camera(Vector2 &position)
+void Renderer::update_camera(Vector2 position)
 {
     SDL_Rect sprite = get_player_sprites().front();
     Vector2 sprite_size((float)sprite.w, (float)sprite.h);

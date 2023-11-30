@@ -85,7 +85,7 @@ void GameHandler::initialize()
     level.initialize_tile_index(player.position);
 
 
-    // TODO: testing
+    // TODO: testing, delete this!
     level.set_enemy(collision_manager);
 
 }
@@ -168,6 +168,9 @@ void GameHandler::game_loop()
 
         // check object collisions
         level.check_enemy_collisions(quad_tree);
+
+        // render animations
+        renderer.render_animations();
 
         // render game objects
         render_game_objects();

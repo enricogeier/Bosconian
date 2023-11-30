@@ -6,11 +6,11 @@
 #include <string>
 #include <utility>
 #include <SDL_image.h>
+#include <chrono>
 #include "Enemy.h"
 #include "Player.h"
 #include "Bullet.h"
 #include "CelestialObject.h"
-
 
 
 enum AnimationState
@@ -23,9 +23,9 @@ enum AnimationState
 class AnimationPlayer
 {
 private:
-    unsigned int speed = 5;
-    unsigned int frame = 0;
-    long start_frame;
+    std::chrono::microseconds frame_time = std::chrono::microseconds(30000); // 0.2s
+    u_short frame = 0;
+    std::chrono::microseconds start_time = std::chrono::microseconds(0);
     std::vector<SDL_Rect> explosion_sprites;
 
 
@@ -34,14 +34,13 @@ public:
 
     AnimationState animation_state = AnimationState::PLAY;
     Vector2 position;
+    unsigned int id;
 
-    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, long& start_frame, Vector2& position)
-            : explosion_sprites(std::move(explosion_sprites)), start_frame(start_frame), position(position)
-    {
-    }
+    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, Vector2 position, unsigned int id)
+    : explosion_sprites(std::move(explosion_sprites)), position(position), id(id)
+    {}
 
-
-    SDL_Rect* get_animation_sprite(long& current_frame);
+    SDL_Rect* get_animation_sprite();
 
 
 
@@ -197,32 +196,33 @@ public:
 
     void render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a);
 
-    void render_player(Player& object);
+    void render_player(Player object);
 
-    void render_e_type(Enemy& object);
+    void render_e_type(Enemy object);
 
-    void render_p_type(Enemy& object);
+    void render_p_type(Enemy object);
 
-    void render_i_type(Enemy& object);
+    void render_i_type(Enemy object);
 
-    void render_spy(Enemy& object);
+    void render_spy(Enemy object);
 
-    void render_asteroid(CelestialObject& object);
+    void render_asteroid(CelestialObject object);
 
-    void render_mine(CelestialObject& object);
+    void render_mine(CelestialObject object);
 
-    void render_space_station(Enemy& object);
+    void render_space_station(Enemy object);
 
-    void render_bullet(Vector2& position, Vector2& direction);
+    void render_bullet(Vector2 position, Vector2 direction);
 
+    void render_animations();
 
     //void render_collision_box(GameObject& game_object);
 
-    void update_camera(Vector2& position);
+    void update_camera(Vector2 position);
 
     void clear();
 
-    void render_collision_box(GameObject &game_object);
+    void render_collision_box(GameObject game_object);
 
     void set_scale(Vector2 scale_sprites);
 };
