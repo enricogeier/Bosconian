@@ -8,7 +8,8 @@
 #include "Level.h"
 #include "Bullet.h"
 #include "QuadTree.h"
-#include "CollisionManager.h"
+#include "BulletHandler.h"
+
 
 
 
@@ -22,32 +23,22 @@ private:
      FPSTimer fps_timer;
      long frame_counter = 1;
      Level level;
-     std::list<Bullet> bullet_list;
-     std::list<AnimationPlayer> animation_list;
+     BulletHandler bullet_handler;
+     Input input;
      QuadTree quad_tree;
      CollisionManager collision_manager;
-     Vector2 scale;
+     Vector2 scale = Vector2(4.0f, 4.0f);
 
 
     void initialize();
 
     void game_loop();
 
-    void match_player_direction(bool& shoot);
-
-    void move_bullets(float& delta);
-
-    void check_bullet_collisions();
-
     void render_bullets();
 
     void initialize_quad_tree();
 
-    void render_enemies();
-
-    void spawn_random_enemy();
-
-    void player_explode_animation();
+    void render_game_objects();
 
 
 
@@ -58,10 +49,6 @@ public:
    void run();
 
 };
-
-
-
-
 
 
 #endif

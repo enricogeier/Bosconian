@@ -6,7 +6,11 @@
 #include <string>
 #include <utility>
 #include <SDL_image.h>
+#include "Enemy.h"
 #include "Player.h"
+#include "Bullet.h"
+#include "CelestialObject.h"
+
 
 
 enum AnimationState
@@ -51,6 +55,8 @@ public:
 class Renderer
 {
 private:
+    Vector2 scale = Vector2(1.0f, 1.0f);
+
     const int SCREEN_SIZE_WIDTH = 1920;   // small: 960
     const int SCREEN_SIZE_HEIGHT = 1080; // 540
 
@@ -65,16 +71,33 @@ private:
     std::list<AnimationPlayer> animations;
 
 
-public:
+    std::vector<SDL_Rect> get_player_sprites();
 
-    Vector2 scale = Vector2(4.0f, 4.0f);
+    std::vector<SDL_Rect> get_e_type(bool leader = false);
 
-    const int SPRITE_SHEET_WIDTH = 256;
-    const int SPRITE_SHEET_HEIGHT = 400;
-    const std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
+    std::vector<SDL_Rect> get_i_type(bool leader = false);
+
+    std::vector<SDL_Rect> get_p_type(bool leader = false);
+
+    std::vector<SDL_Rect> get_spy();
+
+    SDL_Rect get_mine() const;
+
+    std::vector<SDL_Rect> get_asteroid(short sprite = 0);
+
+    SDL_Rect get_p1_life();
+
+    SDL_Rect get_p2_life();
+
+    std::vector<SDL_Rect> get_explosion_1();
+
+    std::vector<SDL_Rect> get_p1_shoot();
+
+    std::vector<SDL_Rect> get_p2_shoot();
+
 
     // constexpr: value is known at compile-time => for compiler
-    const Rectangle sprites[256] = {
+    const SDL_Rect sprites[256] = {
             {0, 0, 16, 16}, // player normal
             {16, 0, 16, 16}, // player diagonal
 
@@ -154,55 +177,54 @@ public:
 
     };
 
+    void load_sprite_sheet();
+
+
+public:
+
+    const int SPRITE_SHEET_WIDTH = 256;
+    const int SPRITE_SHEET_HEIGHT = 400;
+    const std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
+
+
     Renderer();
 
     ~Renderer();
-
-    void load_sprite_sheet();
 
     void clear_screen();
 
     void update_screen();
 
-    void add_animation(std::vector<SDL_Rect> animation_sprites, long& start_frame, Vector2& position);
-
     void render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a);
 
-    void render(Vector2& screen_position, SDL_Rect* sprite, float rotation = 0.0f);
+    void render_player(Player& object);
 
-    void render_animations(long& current_frame);
+    void render_e_type(Enemy& object);
 
-    void render_collision_box(GameObject& game_object);
+    void render_p_type(Enemy& object);
 
-    void update_camera(Vector2& player_position, Vector2& sprite_size);
+    void render_i_type(Enemy& object);
+
+    void render_spy(Enemy& object);
+
+    void render_asteroid(CelestialObject& object);
+
+    void render_mine(CelestialObject& object);
+
+    void render_space_station(Enemy& object);
+
+    void render_bullet(Vector2& position, Vector2& direction);
+
+
+    //void render_collision_box(GameObject& game_object);
+
+    void update_camera(Vector2& position);
 
     void clear();
 
+    void render_collision_box(GameObject &game_object);
 
-    std::vector<Rectangle> get_player_sprites();
-
-    std::vector<Rectangle> get_e_type(bool leader = false);
-
-    std::vector<Rectangle> get_i_type(bool leader = false);
-
-    std::vector<Rectangle> get_p_type(bool leader = false);
-
-    std::vector<Rectangle> get_spy();
-
-    std::vector<Rectangle> get_mine();
-
-    std::vector<Rectangle> get_asteroid(short sprite = 0);
-
-    Rectangle get_p1_life();
-
-    Rectangle get_p2_life();
-
-    std::vector<Rectangle> get_explosion_1();
-
-    std::vector<Rectangle> get_p1_shoot();
-
-    std::vector<Rectangle> get_p2_shoot();
-
+    void set_scale(Vector2 scale_sprites);
 };
 
 

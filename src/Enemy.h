@@ -4,19 +4,29 @@
 #include <utility>
 #include "GameObject.h"
 
+enum Type
+{
+    E_TYPE,
+    P_TYPE,
+    I_TYPE,
+    SPY
+};
+
+
 class Enemy : public GameObject
 {
 private:
     bool leader_of_formation = false;
 public:
 
-    std::vector<Rectangle> explosion_sprites;
     Vector2 start_position;
+    Vector2 direction;
+
+    Type type;
 
 
-    explicit Enemy(Vector2 position, const std::vector<Rectangle>& player_sprite, const std::vector<Rectangle>& explosion_sprite, CollisionCircle collision_circle)
-    : GameObject(position, player_sprite, std::move(collision_circle)), explosion_sprites(explosion_sprite),
-      start_position(position)
+    explicit Enemy(Vector2 position, CollisionCircle collision_circle, Vector2 direction = Vector2(), Type type = Type::E_TYPE)
+    : GameObject(position, std::move(collision_circle)), direction(direction), type(type)
     {
     }
 

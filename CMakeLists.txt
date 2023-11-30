@@ -44,6 +44,9 @@ add_executable(Test src/main.cpp
         src/CollisionManager.cpp
         src/Bullet.cpp
         src/GameObject.cpp
+        src/BulletHandler.h
+        src/BulletHandler.cpp
+        src/CelestialObject.h
 
 )
 

@@ -17,12 +17,9 @@ private:
 public:
 
     Vector2 clamped_direction;
-    std::vector<Rectangle> explosion_sprites;
-
     Vector2 direction = Vector2(0.0f, -1.0f);
 
-    explicit Player(std::vector<Rectangle> normal_sprites = {}, std::vector<Rectangle> explosion_sprites = {}, CollisionCircle collision_circle = CollisionCircle())
-    : explosion_sprites(std::move(explosion_sprites)),  GameObject(START_POSITION, std::move(normal_sprites), std::move(collision_circle))
+    explicit Player(CollisionCircle collisionCircle = CollisionCircle()) : GameObject(START_POSITION, std::move(collisionCircle))
     {
     }
 

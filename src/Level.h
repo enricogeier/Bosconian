@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Level.h"
 #include "QuadTree.h"
+#include "CollisionManager.h"
 
 
 
@@ -38,15 +39,17 @@ public:
 
     void check_tile_positions();
 
-    void set_enemy(std::vector<Rectangle>& sprites, std::vector<Rectangle>& explosion_sprites, CollisionCircle& collision);
+    void set_enemy(CollisionManager& collision_manager);
 
     void move_enemies(float& delta, QuadTree& quad_tree);
 
     void check_enemy_collisions(QuadTree& quad_tree);
 
-    std::vector<Enemy> get_all_game_objects() const;
+    std::vector<CelestialObject> get_all_game_objects() const;
 
-    void delete_enemy(Enemy& enemy);
+    std::vector<Enemy> get_all_enemies() const;
+
+
 
 
 };

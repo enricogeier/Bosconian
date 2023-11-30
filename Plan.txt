@@ -11,4 +11,5 @@
 --------------------------------------------------------------------------------
 Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
 
+1. GameObject Fassade: Level
 2. fps korrekt clampen (120 anstatt 123 fps)

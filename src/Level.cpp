@@ -126,45 +126,62 @@ void Level::check_tile_positions()
     }
 }
 
-void Level::set_enemy(std::vector<Rectangle>& sprites, std::vector<Rectangle>& explosion_sprites, CollisionCircle& collision)
+void Level::set_enemy(CollisionManager& collision_manager)
 {
     // TODO: testing, implement this!
-    tiles[0].objects_in_tile.push_back(Enemy(
-            Vector2(250, 250),
-            sprites, explosion_sprites, collision
-            ));
 
+    tiles[0].enemies_in_tile.push_back(Enemy(
+            Vector2(250, 250),
+            collision_manager.get_e_type_collision()
+            ));
 }
 
 void Level::move_enemies(float &delta, QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
-        for(auto enemy = tile.objects_in_tile.begin(); enemy != tile.objects_in_tile.end();)
+        for(auto enemy = tile.enemies_in_tile.begin(); enemy != tile.enemies_in_tile.end();)
         {
+
             if(enemy->state == State::NORMAL)
             {
 
-                Vector2 move_direction(0.0f, 0.0f);
-                enemy->move(move_direction, delta);
+                    Vector2 move_direction(0.0f, 0.0f);
+                    enemy->move(move_direction, delta);
 
-                quad_tree.insert(*enemy);
+                    quad_tree.insert(*enemy);
 
-                ++enemy;
+                    ++enemy;
             }
             else
             {
-                enemy = tile.objects_in_tile.erase(enemy);
+                    enemy = tile.enemies_in_tile.erase(enemy);
+            }
+
+
+        }
+
+        for(auto object = tile.objects_in_tile.begin(); object != tile.objects_in_tile.end(); )
+        {
+            if(object->state == State::NORMAL)
+            {
+                quad_tree.insert(*object);
+                ++object;
+            }
+            else
+            {
+                object = tile.objects_in_tile.erase(object);
             }
         }
     }
+
 }
 
 void Level::check_enemy_collisions(QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
-        for(auto& enemy : tile.objects_in_tile)
+        for(auto& enemy : tile.enemies_in_tile)
         {
             quad_tree.check_collision(enemy);
         }
@@ -172,13 +189,27 @@ void Level::check_enemy_collisions(QuadTree &quad_tree)
 }
 
 
-std::vector<Enemy> Level::get_all_game_objects() const
+std::vector<CelestialObject> Level::get_all_game_objects() const
 {
-    std::vector<Enemy> enemies;
+    std::vector<CelestialObject> game_objects;
 
     for(auto& tile: tiles)
     {
-        for(auto& enemy : tile.objects_in_tile)
+        for(auto& game_object : tile.objects_in_tile)
+        {
+            game_objects.push_back(game_object);
+        }
+    }
+
+    return game_objects;
+}
+
+std::vector<Enemy> Level::get_all_enemies() const
+{
+    std::vector<Enemy> enemies;
+    for(auto& tile : tiles)
+    {
+        for(auto& enemy : tile.enemies_in_tile)
         {
             enemies.push_back(enemy);
         }
@@ -187,17 +218,3 @@ std::vector<Enemy> Level::get_all_game_objects() const
     return enemies;
 }
 
-void Level::delete_enemy(Enemy &enemy)
-{
-    for(auto& tile : tiles)
-    {
-        for(auto& enemy_in_tile : tile.objects_in_tile)
-        {
-            if(enemy_in_tile == enemy)
-            {
-                tile.objects_in_tile.remove(enemy_in_tile);
-                return;
-            }
-        }
-    }
-}

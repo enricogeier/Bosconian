@@ -86,10 +86,12 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
+/*
 void Renderer::add_animation(std::vector<SDL_Rect> animation_sprites, long &start_frame, Vector2 &position)
 {
     animations.push_back(AnimationPlayer(std::move(animation_sprites), start_frame, position));
 }
+*/
 
 void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a)
 {
@@ -100,17 +102,287 @@ void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, 
 
 }
 
-
-void Renderer::render(Vector2& position, SDL_Rect* sprite, float rotation)
+void Renderer::render_player(Player& object)
 {
 
-    SDL_Rect render_quad = {(int)(position.x - camera.x), (int)(position.y - camera.y),
-                             sprite->w * (int)scale.x, sprite->h * (int)scale.y};
+    if(object.state == State::NORMAL)
+    {
 
-    SDL_RenderCopyEx(renderer, sprite_sheet_texture, sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+        bool diagonal_sprite = false;
+        float rotation = 0;
+
+        if(object.direction.x == 0.0f)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                rotation = 180.0f;
+            }
+        }
+        else if(object.direction.x == 1.0f)
+        {
+
+            if(object.direction.y == 0.0f)
+            {
+                rotation = 90.0f;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                diagonal_sprite = true;
+                rotation = 180.0f;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                rotation = 90.0f;
+                diagonal_sprite = true;
+            }
+        }
+        else if(object.direction.x == -1.0f)
+        {
+
+            if(object.direction.y == 0.0f)
+            {
+                rotation = -90.0f;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                diagonal_sprite = true;
+                rotation = -90.0f;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                diagonal_sprite = true;
+            }
+        }
+
+        SDL_Rect  sprite;
+
+        if(diagonal_sprite)
+        {
+            sprite = get_player_sprites()[1];
+        }
+        else
+        {
+            sprite = get_player_sprites()[0];
+        }
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+
+    }
 
 }
 
+void Renderer::render_e_type(Enemy &object)
+{
+    if(object.state == State::NORMAL)
+    {
+        // TODO: Testing, change in each moving enemy render function!
+
+        float rotation = 0.0f;
+        SDL_Rect sprite = get_e_type()[0];
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+
+    }
+}
+
+void Renderer::render_p_type(Enemy &object)
+{
+    if(object.state == State::NORMAL)
+    {
+        // TODO: Testing, change in each moving enemy render function!
+
+        float rotation = 0.0f;
+        SDL_Rect sprite = get_p_type()[0];
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+
+    }
+}
+
+void Renderer::render_i_type(Enemy &object)
+{
+    if(object.state == State::NORMAL)
+    {
+        // TODO: Testing, change in each moving enemy render function!
+
+        float rotation = 0.0f;
+        SDL_Rect sprite = get_i_type()[0];
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+
+    }
+}
+
+void Renderer::render_spy(Enemy &object)
+{
+    if(object.state == State::NORMAL)
+    {
+        // TODO: Testing, change in each moving enemy render function!
+
+        float rotation = 0.0f;
+        SDL_Rect sprite = get_spy()[0];
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+
+    }
+}
+
+void Renderer::render_asteroid(CelestialObject &object)
+{
+    if(object.state == State::NORMAL)
+    {
+        // TODO: always take first sprite, change this!
+        SDL_Rect sprite = get_asteroid()[0];
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+
+    }
+}
+
+void Renderer::render_mine(CelestialObject &object)
+{
+    if(object.state == State::NORMAL)
+    {
+        // TODO: Testing, change in each moving enemy render function!
+
+        SDL_Rect sprite = get_mine();
+
+        SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
+                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+        SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+    }
+    else if(object.state == State::EXPLODE)
+    {
+        // TODO: implement explosion animation
+
+
+
+    }
+}
+
+void Renderer::render_space_station(Enemy &object)
+{
+    // TODO: implement this!
+}
+
+
+void Renderer::render_bullet(Vector2& position, Vector2& direction)
+{
+    SDL_Rect sprite;
+
+    if(direction.x == 0.0f)
+    {
+        sprite = get_p1_shoot()[0];
+    }
+    else if(direction.x == 1.0f)
+    {
+        if(direction.y == 1.0f)
+        {
+            sprite = get_p1_shoot()[1];
+        }
+        else if(direction.y == -1.0f)
+        {
+            sprite = get_p1_shoot()[3];
+        }
+        else if(direction.y == 0.0f)
+        {
+            sprite = get_p1_shoot()[2];
+        }
+    }
+    else if(direction.x == -1.0f)
+    {
+
+        if(direction.y == 1.0f)
+        {
+            sprite = get_p1_shoot()[3];
+        }
+        else if(direction.y == -1.0f)
+        {
+            sprite = get_p1_shoot()[1];
+        }
+        else if(direction.y == 0.0f)
+        {
+            sprite = get_p1_shoot()[2];
+        }
+    }
+
+    SDL_Rect render_quad = {(int)(position.x - camera.x), (int)(position.y - camera.y),
+                            sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+}
+
+
+/*
 void Renderer::render_animations(long int &current_frame)
 {
     for(auto animation = animations.begin(); animation != animations.end();)
@@ -131,6 +403,8 @@ void Renderer::render_animations(long int &current_frame)
         }
     }
 }
+*/
+
 
 void Renderer::render_collision_box(GameObject &game_object)
 {
@@ -172,10 +446,13 @@ void Renderer::render_collision_box(GameObject &game_object)
 }
 
 
-void Renderer::update_camera(Vector2 &player_position, Vector2 &sprite_size)
+void Renderer::update_camera(Vector2 &position)
 {
-    camera = Vector2((player_position.x + (sprite_size.x / 2)) - ((float)SCREEN_SIZE_WIDTH / 2),
-                     (player_position.y + (sprite_size.y / 2)) - ((float)SCREEN_SIZE_HEIGHT / 2));
+    SDL_Rect sprite = get_player_sprites().front();
+    Vector2 sprite_size((float)sprite.w, (float)sprite.h);
+
+    camera = Vector2((position.x + (sprite_size.x / 2)) - ((float)SCREEN_SIZE_WIDTH / 2),
+                     (position.y + (sprite_size.y / 2)) - ((float)SCREEN_SIZE_HEIGHT / 2));
 }
 
 
@@ -199,9 +476,9 @@ void Renderer::clear()
     SDL_Quit();
 }
 
-std::vector<Rectangle> Renderer::get_player_sprites()
+std::vector<SDL_Rect> Renderer::get_player_sprites()
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     sprite_list.push_back(sprites[0]);
     sprite_list.push_back(sprites[1]);
@@ -209,9 +486,9 @@ std::vector<Rectangle> Renderer::get_player_sprites()
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_e_type(bool leader)
+std::vector<SDL_Rect> Renderer::get_e_type(bool leader)
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     if(!leader)
     {
@@ -235,9 +512,9 @@ std::vector<Rectangle> Renderer::get_e_type(bool leader)
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_i_type(bool leader)
+std::vector<SDL_Rect> Renderer::get_i_type(bool leader)
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     if(!leader)
     {
@@ -261,9 +538,9 @@ std::vector<Rectangle> Renderer::get_i_type(bool leader)
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_p_type(bool leader)
+std::vector<SDL_Rect> Renderer::get_p_type(bool leader)
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     if(!leader)
     {
@@ -287,9 +564,9 @@ std::vector<Rectangle> Renderer::get_p_type(bool leader)
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_spy()
+std::vector<SDL_Rect> Renderer::get_spy()
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     sprite_list.push_back(sprites[38]);
     sprite_list.push_back(sprites[39]);
@@ -301,19 +578,16 @@ std::vector<Rectangle> Renderer::get_spy()
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_mine()
+SDL_Rect Renderer::get_mine() const
 {
-    std::vector<Rectangle> sprite_list;
-
-    sprite_list.push_back(sprites[44]);
-    return sprite_list;
+    return sprites[44];
 }
 
-std::vector<Rectangle> Renderer::get_asteroid(short sprite)
+std::vector<SDL_Rect> Renderer::get_asteroid(short sprite)
 {
     if(sprite >= 0 && sprite < 3)
     {
-        std::vector<Rectangle> sprite_list;
+        std::vector<SDL_Rect> sprite_list;
 
         sprite_list.push_back(sprites[45 +  sprite]);
         return sprite_list;
@@ -324,19 +598,19 @@ std::vector<Rectangle> Renderer::get_asteroid(short sprite)
     }
 }
 
-Rectangle Renderer::get_p1_life()
+SDL_Rect Renderer::get_p1_life()
 {
     return sprites[48];
 }
 
-Rectangle Renderer::get_p2_life()
+SDL_Rect Renderer::get_p2_life()
 {
     return sprites[49];
 }
 
-std::vector<Rectangle> Renderer::get_explosion_1()
+std::vector<SDL_Rect> Renderer::get_explosion_1()
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     sprite_list.push_back(sprites[50]);
     sprite_list.push_back(sprites[51]);
@@ -345,9 +619,9 @@ std::vector<Rectangle> Renderer::get_explosion_1()
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_p1_shoot()
+std::vector<SDL_Rect> Renderer::get_p1_shoot()
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     sprite_list.push_back(sprites[53]);
     sprite_list.push_back(sprites[54]);
@@ -357,9 +631,9 @@ std::vector<Rectangle> Renderer::get_p1_shoot()
     return sprite_list;
 }
 
-std::vector<Rectangle> Renderer::get_p2_shoot()
+std::vector<SDL_Rect> Renderer::get_p2_shoot()
 {
-    std::vector<Rectangle> sprite_list;
+    std::vector<SDL_Rect> sprite_list;
 
     sprite_list.push_back(sprites[57]);
     sprite_list.push_back(sprites[58]);
@@ -367,4 +641,9 @@ std::vector<Rectangle> Renderer::get_p2_shoot()
     sprite_list.push_back(sprites[60]);
 
     return sprite_list;
+}
+
+void Renderer::set_scale(Vector2 scale_sprites)
+{
+    this->scale = scale_sprites;
 }

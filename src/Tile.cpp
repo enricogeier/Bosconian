@@ -27,7 +27,11 @@ void Tile::update_tile_position()
 
     for(auto & object : objects_in_tile)
     {
-        object.position = object.start_position + tile_position;
+        object.position = object.position + tile_position;
+    }
+    for(auto& enemy : enemies_in_tile)
+    {
+        enemy.position = enemy.position + tile_position;
     }
 
 }

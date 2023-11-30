@@ -20,21 +20,26 @@ enum InputState
 class Input
 {
 private:
-    static SDL_Event event;
-    static std::map<SDL_KeyCode, long int> key_pressed;
-    static std::map<SDL_KeyCode, long int> key_released;
-    static std::set<SDL_KeyCode> still_active;
-    static std::set<SDL_KeyCode> actually_released;
+    SDL_Event event;
+    std::map<SDL_KeyCode, long int> key_pressed  = {{SDLK_UP, -1000}, {SDLK_DOWN, -1000}, {SDLK_LEFT, -1000}, {SDLK_RIGHT, -1000}};;
+    std::map<SDL_KeyCode, long int> key_released = {{SDLK_UP, -1000}, {SDLK_DOWN, -1000}, {SDLK_LEFT, -1000}, {SDLK_RIGHT, -1000}};;
+    std::set<SDL_KeyCode> still_active;
+    std::set<SDL_KeyCode> actually_released = {SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT};;
 
-    static bool is_key_pressed(SDL_KeyCode key);
-    static SDL_KeyCode find_entry(std::map<SDL_KeyCode, long int>& key_map, SDL_KeyCode key_code, long int& frame_number);
+    bool is_key_pressed(SDL_KeyCode key);
+    SDL_KeyCode find_entry(std::map<SDL_KeyCode, long int>& key_map, SDL_KeyCode key_code, long int& frame_number);
 
-    static long last_frame_shoot_pressed;
+    long last_frame_shoot_pressed = -99;
 
-    static const int TIME_BETWEEN_SHOTS = 8;
+    const int TIME_BETWEEN_SHOTS = 8;
 
 public:
-    static InputState handle_user_input(Vector2& keyboard_input_vector, long int& current_frame);
+    Input() = default;
+
+    InputState handle_user_input(Vector2& keyboard_input_vector, long int& current_frame);
+
+    InputState handle_user_destroyed_input();
+
 
 
 };

@@ -1,419 +1,55 @@
 #include "GameHandler.h"
 
 
-void GameHandler::move_bullets(float& delta)
-{
-    for(auto bullet = bullet_list.begin(); bullet != bullet_list.end();)
-    {
-        float border = 1000.0f;
-
-        if(Vector2::distance(player.position, bullet->position) > border || bullet->state == State::EXPLODE)
-        {
-            bullet = bullet_list.erase(bullet);
-        }
-        else
-        {
-
-            if(bullet->speed != 1200 && bullet->direction == player.clamped_direction)
-            {
-                bullet->speed *= 2;
-            }
-            else if(bullet->speed == 1200 && bullet->direction != player.clamped_direction)
-            {
-                bullet->speed /= 2;
-            }
-
-            bullet->move(delta);
-            quad_tree.insert(*bullet);
-
-            ++bullet;
-        }
-
-    }
-
-}
-
-
-void GameHandler::check_bullet_collisions()
-{
-    for(auto& bullet: bullet_list)
-    {
-             quad_tree.check_collision(bullet);
-    }
-}
-
-
 void GameHandler::render_bullets()
 {
+    std::list<Bullet> bullet_list = bullet_handler.get_bullets();
     for(auto& bullet : bullet_list)
     {
-        SDL_Rect bullet_sprite = {
-                bullet.normal_sprites.back().x,
-                bullet.normal_sprites.back().y,
-                bullet.normal_sprites.back().w,
-                bullet.normal_sprites.back().h
-        };
-
-        renderer.render(bullet.position, &bullet_sprite);
-
+        renderer.render_bullet(bullet.position, bullet.direction);
     }
 }
 
-void GameHandler::render_enemies()
+void GameHandler::render_game_objects()
 {
-    std::vector<Enemy> game_objects = level.get_all_game_objects();
-    for(auto& object : game_objects)
+    std::vector<Enemy> enemies = level.get_all_enemies();
+    for(auto& enemy : enemies)
     {
-        if(object.state == State::NORMAL)
+            switch (enemy.type)
+            {
+                case Type::E_TYPE:
+                    renderer.render_e_type(enemy);
+                    break;
+                case Type::P_TYPE:
+                    renderer.render_p_type(enemy);
+                    break;
+                case Type::I_TYPE:
+                    renderer.render_i_type(enemy);
+                    break;
+                case Type::SPY:
+                    renderer.render_spy(enemy);
+                    break;
+            }
+
+
+    }
+
+    std::vector<CelestialObject> objects = level.get_all_game_objects();
+    for(auto& object : objects)
+    {
+        switch(object.type)
         {
-            // TODO: testing: always take first sprite of object
-            SDL_Rect sprite{
-                    object.normal_sprites[0].x,
-                    object.normal_sprites[0].y,
-                    object.normal_sprites[0].w,
-                    object.normal_sprites[0].h
-            };
-
-            renderer.render(object.position, &sprite);
-
-        }
-        else
-        {
-
-           std::vector<SDL_Rect> explosion_sprites;
-
-           for(int i = 0; i < object.explosion_sprites.size(); i++)
-           {
-               explosion_sprites.push_back(SDL_Rect{
-
-                       object.explosion_sprites[i].x,
-                       object.explosion_sprites[i].y,
-                       object.explosion_sprites[i].w,
-                       object.explosion_sprites[i].h
-
-               });
-           }
-
-
-
-            renderer.add_animation(explosion_sprites, frame_counter, object.position);
-
+            case CelestialType::ASTEROID:
+                renderer.render_asteroid(object);
+                break;
+            case CelestialType::MINE:
+                renderer.render_mine(object);
+                break;
         }
     }
 
 }
 
-void GameHandler::spawn_random_enemy()
-{
-    // TODO: testing, implement this!
-    std::vector<Rectangle> sprites = renderer.get_asteroid();
-    std::vector<Rectangle> explosion_sprites = renderer.get_explosion_1();
-    CollisionCircle collision = collision_manager.get_asteroid_collision();
-
-    level.set_enemy(sprites, explosion_sprites, collision);
-}
-
-
-
-void GameHandler::match_player_direction(bool& shoot)
-{
-
-    SDL_Rect player_sprite;
-    short y_precision = 5;
-
-    switch ((int)player.direction.x)
-    {
-        case 1:
-            switch ((int)player.direction.y)
-            {
-                case 1:
-                    if(shoot)
-                    {
-
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + 5, player.position.y),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[1],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + player.normal_sprites.back().w + 5,
-                                        player.position.y + player.normal_sprites.back().h - 1),
-                                player.clamped_direction,
-                                renderer.get_p1_shoot()[1],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-
-
-                    }
-
-
-
-                    player_sprite = {
-                            player.normal_sprites.back().x,
-                            player.normal_sprites.back().y,
-                            player.normal_sprites.back().w,
-                            player.normal_sprites.back().h
-
-                    };
-
-                    renderer.render(player.position, &player_sprite, 180.0f);
-                    break;
-                case 0:
-                    if(shoot)
-                    {
-
-
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x - 15, player.position.y + (player.normal_sprites.back().h / 2) - y_precision ),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[2],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + player.normal_sprites.back().w,
-                                        player.position.y + (player.normal_sprites.back().h / 2) - y_precision),
-                                player.clamped_direction,
-                                renderer.get_p1_shoot()[2],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-                    }
-
-
-                    player_sprite = {
-                            player.normal_sprites.front().x,
-                            player.normal_sprites.front().y,
-                            player.normal_sprites.front().w,
-                            player.normal_sprites.front().h
-
-                    };
-
-                    renderer.render(player.position, &player_sprite, 90.0f);
-                    break;
-                case -1:
-
-                    if(shoot)
-                    {
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + player.normal_sprites.back().w - 12, player.position.y),
-                                player.clamped_direction,
-                                renderer.get_p1_shoot()[3],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x - 12,
-                                        player.position.y + player.normal_sprites.back().h - 1),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[3],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                    }
-
-                    player_sprite = {
-                            player.normal_sprites.back().x,
-                            player.normal_sprites.back().y,
-                            player.normal_sprites.back().w,
-                            player.normal_sprites.back().h
-
-                    };
-
-                    renderer.render(player.position,  &player_sprite,90.0f);
-                    break;
-            }
-            break;
-        case 0:
-
-            player_sprite = {
-                    player.normal_sprites.front().x,
-                    player.normal_sprites.front().y,
-                    player.normal_sprites.front().w,
-                    player.normal_sprites.front().h
-
-            };
-
-            switch ((int)player.direction.y)
-            {
-                case 1:
-                    if(shoot)
-                    {
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + (player.normal_sprites.back().w / 2) , player.position.y - 15),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[0],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + (player.normal_sprites.back().w / 2) , player.position.y + player.normal_sprites.back().h),
-                                Vector2(0, 1),
-                                renderer.get_p1_shoot()[0],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-                    }
-
-                    renderer.render(player.position,  &player_sprite, 180.0f);
-                    break;
-                case -1:
-                    if(shoot)
-                    {
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + (player.normal_sprites.back().w / 2) - y_precision, player.position.y - 15),
-                                player.clamped_direction,
-                                renderer.get_p1_shoot()[0],
-                                collision_manager.get_player_bullet_collision()
-
-                        ));
-
-                        bullet_list.back().speed *= 2;
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + (player.normal_sprites.back().w / 2) - y_precision, player.position.y + player.normal_sprites.back().h),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[0],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-                    }
-
-                    renderer.render(player.position, &player_sprite, 0.0f);
-                    break;
-            }
-            break;
-        case -1:
-            switch ((int)player.direction.y)
-            {
-                case 1:
-
-                    if(shoot)
-                    {
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + player.normal_sprites.back().w - 5, player.position.y),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[3],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x - 5,
-                                        player.position.y + player.normal_sprites.back().h - 1),
-                                player.clamped_direction,
-                                renderer.get_p1_shoot()[3],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-
-                    }
-
-                    player_sprite = {
-                            player.normal_sprites.back().x,
-                            player.normal_sprites.back().y,
-                            player.normal_sprites.back().w,
-                            player.normal_sprites.back().h
-
-                    };
-
-                    renderer.render(player.position,  &player_sprite, -90.0f);
-                    break;
-                case 0:
-
-                    if(shoot)
-                    {
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x, player.position.y + (player.normal_sprites.back().h / 2) - y_precision ),
-                                        player.clamped_direction,
-                                renderer.get_p1_shoot()[2],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + player.normal_sprites.back().w, player.position.y + (player.normal_sprites.back().h / 2) - y_precision ),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[2],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-                    }
-
-
-                    player_sprite = {
-                            player.normal_sprites.front().x,
-                            player.normal_sprites.front().y,
-                            player.normal_sprites.front().w,
-                            player.normal_sprites.front().h
-
-                    };
-
-                    renderer.render(player.position,  &player_sprite, -90.0f);
-                    break;
-                case -1:
-
-                    if(shoot)
-                    {
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x, player.position.y),
-                                player.clamped_direction,
-                                renderer.get_p1_shoot()[1],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-                        bullet_list.back().speed *= 2;
-
-
-                        bullet_list.push_back(Bullet(
-                                Vector2(player.position.x + player.normal_sprites.back().w,
-                                        player.position.y + player.normal_sprites.back().h - 1),
-                                player.clamped_direction * (-1),
-                                renderer.get_p1_shoot()[1],
-                                collision_manager.get_player_bullet_collision()
-                        ));
-
-
-
-
-
-                    }
-
-
-
-                    player_sprite = {
-                            player.normal_sprites.back().x,
-                            player.normal_sprites.back().y,
-                            player.normal_sprites.back().w,
-                            player.normal_sprites.back().h
-
-                    };
-
-                    renderer.render(player.position, &player_sprite, 0.0f);
-                    break;
-            }
-            break;
-
-    }
-
-}
 
 
 void GameHandler::initialize_quad_tree()
@@ -425,13 +61,6 @@ void GameHandler::initialize_quad_tree()
                     level.LEVEL_SIZE_X,
                     level.LEVEL_SIZE_Y
             });
-}
-
-void GameHandler::player_explode_animation()
-{
-    // TODO: implement this!
-
-    player.state = State::DESTROY;
 }
 
 
@@ -447,17 +76,17 @@ void GameHandler::run() {
 void GameHandler::initialize()
 {
 
-    scale = renderer.scale;
+    renderer.set_scale(scale);
 
     collision_manager = CollisionManager(scale);
 
-    player = Player(renderer.get_player_sprites(), renderer.get_explosion_1(), collision_manager.get_player_collision());
+    player = Player(collision_manager.get_player_collision());
 
     level.initialize_tile_index(player.position);
 
 
     // TODO: testing
-    spawn_random_enemy();
+    level.set_enemy(collision_manager);
 
 }
 
@@ -470,15 +99,13 @@ void GameHandler::game_loop()
         renderer.clear_screen();
 
         float delta = fps_timer.get_delta();
-
-        // input handling
-        bool shoot = false;
+        initialize_quad_tree();
 
         if(player.state == State::NORMAL)
         {
+            bool shoot = false;
 
-
-            switch (Input::handle_user_input(keyboard_input_vector, frame_counter))
+            switch (input.handle_user_input(keyboard_input_vector, frame_counter))
             {
                 case NONE:
                     break;
@@ -491,55 +118,65 @@ void GameHandler::game_loop()
 
             player.move(keyboard_input_vector, delta);
             level.set_current_tile(player.position); // rearrange tiles
-            initialize_quad_tree();
             quad_tree.insert(player);
 
-            Vector2 player_sprite_size((float)player.normal_sprites.front().w, (float)player.normal_sprites.front().h);
-            renderer.update_camera(player.position, player_sprite_size);
+            renderer.update_camera(player.position);
+
+            if(shoot)
+            {
+                bullet_handler.insert_player_bullets(player.position,
+                                                     player.direction,
+                                                     player.clamped_direction,
+                                                     collision_manager.get_player_bullet_collision()
+                                                     );
+            }
+
+        }
+        else
+        {
+            if(player.state == State::EXPLODE)
+            {
+                player.state = State::DESTROY;
+            }
+
+            switch(input.handle_user_destroyed_input())
+            {
+                case NONE:
+                    break;
+                case CLOSE_WINDOW:
+                    quit_game = true;
+                case SHOOT_PRESSED:
+                    break;
+            }
         }
 
 
         // move bullets
-        move_bullets(delta);
+        bullet_handler.move_player_bullet(player.position, player.clamped_direction, quad_tree, delta);
 
         // move enemies
         level.move_enemies(delta, quad_tree);
 
-
         // check player collision
-        quad_tree.check_collision(player);
+        if(player.state == State::NORMAL)
+        {
+            quad_tree.check_collision(player);
+        }
 
         // check bullet collisions
-        check_bullet_collisions();
+        bullet_handler.check_collisions(quad_tree);
 
-        // check enemy collisions
+        // check object collisions
         level.check_enemy_collisions(quad_tree);
 
-        // render animations
-        renderer.render_animations(frame_counter);
-
-        // render enemies
-        render_enemies();
+        // render game objects
+        render_game_objects();
 
         // render bullets
         render_bullets();
 
-
-        // render player, create new bullets
-        switch (player.state)
-        {
-            case State::NORMAL:
-                match_player_direction(shoot);
-                break;
-            case State::EXPLODE:
-                player.state = State::DESTROY;
-                break;
-            case State::DESTROY:
-                // TODO: reload level, ...
-
-                break;
-        }
-
+        // render player
+        renderer.render_player(player);
 
         renderer.update_screen();
         fps_timer.clamp_and_print_fps(frame_counter);
