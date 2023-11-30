@@ -359,7 +359,7 @@ void Renderer::render_spy(Enemy object)
     }
 }
 
-void Renderer::render_asteroid(CelestialObject object)
+void Renderer::render_asteroid(GameObject object)
 {
     if(object.state == State::NORMAL)
     {
@@ -396,7 +396,7 @@ void Renderer::render_asteroid(CelestialObject object)
     }
 }
 
-void Renderer::render_mine(CelestialObject object)
+void Renderer::render_mine(Mine object)
 {
     if(object.state == State::NORMAL)
     {

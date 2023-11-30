@@ -45,11 +45,11 @@ public:
 
     void check_enemy_collisions(QuadTree& quad_tree);
 
-    std::vector<CelestialObject> get_all_game_objects() const;
+    std::vector<GameObject> get_all_game_objects() const;
 
     std::vector<Enemy> get_all_enemies() const;
 
-
+    std::vector<Mine> get_all_mines() const;
 
 
 };

@@ -10,7 +10,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Bullet.h"
-#include "CelestialObject.h"
+#include "Mine.h"
 
 
 enum AnimationState
@@ -206,9 +206,9 @@ public:
 
     void render_spy(Enemy object);
 
-    void render_asteroid(CelestialObject object);
+    void render_asteroid(GameObject object);
 
-    void render_mine(CelestialObject object);
+    void render_mine(Mine object);
 
     void render_space_station(Enemy object);
 

@@ -12,7 +12,7 @@ void Enemy::move(Vector2& move_direction, float &delta)
 
 
 
-    collision_circle.origin = collision_circle.position_in_sprite + position;
+    collision_circle.origin = collision_circle.last_origin + position;
 
 
 }

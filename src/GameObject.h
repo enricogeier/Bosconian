@@ -13,6 +13,21 @@ enum class State{
     DESTROY
 };
 
+enum Type
+{
+    PLAYER,
+    E_TYPE,
+    P_TYPE,
+    I_TYPE,
+    SPY,
+    ASTEROID,
+    MINE,
+    SPACE_STATION,
+    CANNON,
+    BULLET,
+};
+
+
 
 
 class GameObject
@@ -22,15 +37,18 @@ public:
     Vector2 position;
     CollisionCircle collision_circle;
     State state = State::NORMAL;
+    Type type;
 
     unsigned int id;
     static unsigned int id_counter;
 
 
-    explicit GameObject(Vector2 position, CollisionCircle collision_circle)
-    : position(position), collision_circle(std::move(collision_circle))
+    explicit GameObject(Vector2 position, CollisionCircle collision_circle, Type type)
+    : position(position), type(type)
     {
         id = id_counter++;
+        collision_circle.origin = collision_circle.last_origin + position;
+        this->collision_circle = collision_circle;
     }
 
     bool operator==(const GameObject& other) const

@@ -12,38 +12,37 @@ void GameHandler::render_bullets()
 
 void GameHandler::render_game_objects()
 {
-    std::vector<Enemy> enemies = level.get_all_enemies();
-    for(auto& enemy : enemies)
+    std::vector<GameObject> asteroids = level.get_all_game_objects();
+
+    for(auto& asteroid : asteroids)
     {
-            switch (enemy.type)
-            {
-                case Type::E_TYPE:
-                    renderer.render_e_type(enemy);
-                    break;
-                case Type::P_TYPE:
-                    renderer.render_p_type(enemy);
-                    break;
-                case Type::I_TYPE:
-                    renderer.render_i_type(enemy);
-                    break;
-                case Type::SPY:
-                    renderer.render_spy(enemy);
-                    break;
-            }
-
-
+        renderer.render_asteroid(asteroid);
     }
 
-    std::vector<CelestialObject> objects = level.get_all_game_objects();
-    for(auto& object : objects)
+    std::vector<Mine> mines = level.get_all_mines();
+
+    for(auto& mine : mines)
     {
-        switch(object.type)
+        renderer.render_mine(mine);
+    }
+
+    std::vector<Enemy> enemies = level.get_all_enemies();
+
+    for(auto& enemy : enemies)
+    {
+        switch (enemy.type)
         {
-            case CelestialType::ASTEROID:
-                renderer.render_asteroid(object);
+            case E_TYPE:
+                renderer.render_e_type(enemy);
                 break;
-            case CelestialType::MINE:
-                renderer.render_mine(object);
+            case P_TYPE:
+                renderer.render_p_type(enemy);
+                break;
+            case I_TYPE:
+                renderer.render_i_type(enemy);
+                break;
+            case SPY:
+                renderer.render_spy(enemy);
                 break;
         }
     }

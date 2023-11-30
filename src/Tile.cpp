@@ -29,9 +29,13 @@ void Tile::update_tile_position()
     {
         object.position = object.position + tile_position;
     }
+    for(auto& mine : mines_in_tile)
+    {
+        mine.position = mine.position + tile_position;
+    }
     for(auto& enemy : enemies_in_tile)
     {
-        enemy.position = enemy.position + tile_position;
+        enemies_in_tile.remove(enemy);
     }
 
 }

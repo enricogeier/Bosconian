@@ -132,8 +132,35 @@ void Level::set_enemy(CollisionManager& collision_manager)
 
     tiles[0].enemies_in_tile.push_back(Enemy(
             Vector2(250, 250),
-            collision_manager.get_e_type_collision()
+            collision_manager.get_e_type_collision(),
+            Vector2(),
+            Type::E_TYPE
             ));
+
+
+    tiles[0].mines_in_tile.push_back(Mine(
+            Vector2(250, 612),
+               collision_manager.get_mine_collision(),
+               Type::MINE
+               ));
+
+
+
+    tiles[0].enemies_in_tile.push_back(Enemy(
+            Vector2(512, 612),
+            collision_manager.get_spy_collision(),
+            Vector2(0, 0),
+            Type::SPY
+            ));
+
+
+    tiles[0].objects_in_tile.push_back(GameObject(
+            Vector2(612, 250),
+            collision_manager.get_asteroid_collision(),
+            Type::ASTEROID
+            ));
+
+
 }
 
 void Level::move_enemies(float &delta, QuadTree &quad_tree)
@@ -173,6 +200,19 @@ void Level::move_enemies(float &delta, QuadTree &quad_tree)
                 object = tile.objects_in_tile.erase(object);
             }
         }
+
+        for(auto mine = tile.mines_in_tile.begin(); mine != tile.mines_in_tile.end();)
+        {
+            if(mine->state == State::NORMAL)
+            {
+                quad_tree.insert(*mine);
+                ++mine;
+            }
+            else
+            {
+                mine = tile.mines_in_tile.erase(mine);
+            }
+        }
     }
 
 }
@@ -189,16 +229,17 @@ void Level::check_enemy_collisions(QuadTree &quad_tree)
 }
 
 
-std::vector<CelestialObject> Level::get_all_game_objects() const
+std::vector<GameObject> Level::get_all_game_objects() const
 {
-    std::vector<CelestialObject> game_objects;
+    std::vector<GameObject> game_objects;
 
     for(auto& tile: tiles)
     {
-        for(auto& game_object : tile.objects_in_tile)
+        for(auto& asteroid : tile.objects_in_tile)
         {
-            game_objects.push_back(game_object);
+            game_objects.push_back(asteroid);
         }
+
     }
 
     return game_objects;
@@ -207,14 +248,30 @@ std::vector<CelestialObject> Level::get_all_game_objects() const
 std::vector<Enemy> Level::get_all_enemies() const
 {
     std::vector<Enemy> enemies;
+
     for(auto& tile : tiles)
     {
-        for(auto& enemy : tile.enemies_in_tile)
+        for(auto& enemy: tile.enemies_in_tile)
         {
             enemies.push_back(enemy);
         }
     }
 
     return enemies;
+}
+
+std::vector<Mine> Level::get_all_mines() const
+{
+    std::vector<Mine> mines;
+
+    for(auto& tile : tiles)
+    {
+        for(auto& mine : tile.mines_in_tile)
+        {
+            mines.push_back(mine);
+        }
+    }
+
+    return mines;
 }
 

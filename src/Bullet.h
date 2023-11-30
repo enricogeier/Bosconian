@@ -18,7 +18,7 @@ public:
 
     // constructor receives CLAMPED DIRECTION!
     Bullet(Vector2 position, Vector2 bullet_direction, CollisionCircle collision_circle) :
-    GameObject(position, std::move(collision_circle)), clamped_direction(bullet_direction)
+    GameObject(position, std::move(collision_circle), Type::BULLET), clamped_direction(bullet_direction)
     {
         if(bullet_direction.x > 0.0f)
         {

@@ -46,7 +46,7 @@ add_executable(Test src/main.cpp
         src/GameObject.cpp
         src/BulletHandler.h
         src/BulletHandler.cpp
-        src/CelestialObject.h
+        src/Mine.h
 
 )
 
