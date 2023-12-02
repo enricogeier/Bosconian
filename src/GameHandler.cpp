@@ -1,17 +1,10 @@
 #include "GameHandler.h"
 
 
-void GameHandler::render_bullets()
+void GameHandler::render()
 {
-    std::list<Bullet> bullet_list = bullet_handler.get_bullets();
-    for(auto& bullet : bullet_list)
-    {
-        renderer.render_bullet(bullet);
-    }
-}
+    renderer.render_animations();
 
-void GameHandler::render_game_objects()
-{
     std::vector<GameObject> asteroids = level.get_all_game_objects();
 
     for(auto& asteroid : asteroids)
@@ -47,48 +40,20 @@ void GameHandler::render_game_objects()
         }
     }
 
-}
+    std::list<Bullet> bullet_list = level.get_bullets();
+    for(auto& bullet : bullet_list)
+    {
+        renderer.render_bullet(bullet);
+    }
 
+    renderer.render_player(level.get_player());
 
-
-void GameHandler::initialize_quad_tree()
-{
-    quad_tree = QuadTree(
-            {
-                    (int)level.current_tile_position.x - (int(level.AMOUNT_OF_TILES_X / 2) * level.TILE_SIZE_X ),
-                    (int)level.current_tile_position.y - (int(level.AMOUNT_OF_TILES_Y / 2) * level.TILE_SIZE_Y ),
-                    level.LEVEL_SIZE_X,
-                    level.LEVEL_SIZE_Y
-            });
+    renderer.update_screen();
 }
 
 
 void GameHandler::run() {
 
-    initialize();
-
-    game_loop();
-
-}
-
-
-void GameHandler::initialize()
-{
-
-
-    collision_manager = CollisionManager();
-
-    player = Player(collision_manager.get_player_collision(), collision_manager.scale);
-
-    level.initialize_tile_index(player.position);
-
-    // TODO: testing, delete this!
-    level.set_enemy(collision_manager);
-
-}
-
-void GameHandler::game_loop()
-{
     fps_timer.start();
     while(!quit_game)
     {
@@ -96,9 +61,10 @@ void GameHandler::game_loop()
         renderer.clear_screen();
 
         float delta = fps_timer.get_delta();
-        initialize_quad_tree();
 
-        if(player.state == State::NORMAL)
+        level.initialize_quad_tree();
+
+        if(level.get_player().state == State::NORMAL)
         {
             bool shoot = false;
 
@@ -113,24 +79,14 @@ void GameHandler::game_loop()
                     quit_game = true;
             }
 
-            player.move(keyboard_input_vector, delta);
-            level.set_current_tile(player.position); // rearrange tiles
-            quad_tree.insert(player);
+            level.update_player(keyboard_input_vector, delta, shoot);
 
-            renderer.update_camera(player.position);
-
-            if(shoot)
-            {
-                bullet_handler.insert_player_bullets(player, collision_manager);
-            }
+            renderer.update_camera(level.get_player().position);
 
         }
         else
         {
-            if(player.state == State::EXPLODE)
-            {
-                player.state = State::DESTROY;
-            }
+            level.handle_player_state();
 
             switch(input.handle_user_destroyed_input())
             {
@@ -144,41 +100,18 @@ void GameHandler::game_loop()
         }
 
 
-        // move bullets
-        bullet_handler.move_player_bullet(player.position, player.clamped_direction, quad_tree, delta);
+       level.update(delta);
 
-        // move enemies
-        level.move_enemies(delta, quad_tree);
+        render();
 
-        // check player collision
-        if(player.state == State::NORMAL)
-        {
-            quad_tree.check_collision(player);
-        }
 
-        // check bullet collisions
-        bullet_handler.check_collisions(quad_tree);
 
-        // check object collisions
-        level.check_enemy_collisions(quad_tree);
-
-        // render animations
-        renderer.render_animations();
-
-        // render game objects
-        render_game_objects();
-
-        // render bullets
-        render_bullets();
-
-        // render player
-        renderer.render_player(player);
-
-        renderer.update_screen();
         fps_timer.clamp_and_print_fps(frame_counter);
         frame_counter++;
 
     }
 
     renderer.clear();
+
 }
+

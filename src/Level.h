@@ -5,10 +5,12 @@
 #include <list>
 #include "Tile.h"
 #include "Enemy.h"
+#include "BulletHandler.h"
+#include "Bullet.h"
 #include "Level.h"
 #include "QuadTree.h"
 #include "CollisionManager.h"
-
+#include "Player.h"
 
 
 
@@ -18,6 +20,23 @@ private:
 
     Tile tiles[9];
     int current_tile_index = 0;
+    QuadTree quad_tree;
+    CollisionManager collision_manager;
+    BulletHandler bullet_handler;
+    Player player;
+
+    void initialize_tile_index();
+
+    void set_current_tile();
+
+    void check_tile_positions();
+
+    void set_enemy();
+
+    void move_enemies(float& delta);
+
+    void check_enemy_collisions();
+
 
 public:
 
@@ -33,23 +52,23 @@ public:
 
     explicit Level();
 
-    void initialize_tile_index(Vector2& player_position);
+    void initialize_quad_tree();
 
-    void set_current_tile(Vector2& player_position);
+    void update_player(Vector2& player_direction, float& delta, bool& shoot);
 
-    void check_tile_positions();
+    void handle_player_state();
 
-    void set_enemy(CollisionManager& collision_manager);
+    void update(float& delta);
 
-    void move_enemies(float& delta, QuadTree& quad_tree);
+    [[nodiscard]] std::vector<GameObject> get_all_game_objects() const;
 
-    void check_enemy_collisions(QuadTree& quad_tree);
+    [[nodiscard]] std::vector<Enemy> get_all_enemies() const;
 
-    std::vector<GameObject> get_all_game_objects() const;
+    [[nodiscard]] std::vector<Mine> get_all_mines() const;
 
-    std::vector<Enemy> get_all_enemies() const;
+    [[nodiscard]] Player get_player() const;
 
-    std::vector<Mine> get_all_mines() const;
+    std::list<Bullet> get_bullets();
 
 
 };

@@ -11,23 +11,84 @@ Level::Level()
         }
 
     }
+
+    player = Player(collision_manager.get_player_collision(), collision_manager.scale);
+    initialize_tile_index();
+
+    // TODO: testing, delete this
+    set_enemy();
 }
 
-void Level::initialize_tile_index(Vector2 &player_position)
+void Level::initialize_quad_tree()
 {
-    if(player_position.x < 0.0f || player_position.y < 0.0f || player_position.x > Level::LEVEL_SIZE_X || player_position.y > Level::LEVEL_SIZE_Y)
+    quad_tree = QuadTree(
+            {
+                    (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
+                    (int)current_tile_position.y - (int(AMOUNT_OF_TILES_Y / 2) * TILE_SIZE_Y ),
+                    LEVEL_SIZE_X,
+                    LEVEL_SIZE_Y
+            });
+}
+
+void Level::update_player(Vector2& player_direction, float &delta, bool& shoot)
+{
+
+    player.move(player_direction, delta);
+    set_current_tile();
+    quad_tree.insert(player);
+
+    if(shoot)
     {
-        player_position = Vector2(Level::AMOUNT_OF_TILES_X / 2, Level::AMOUNT_OF_TILES_Y / 2);
+        bullet_handler.insert_player_bullets(player, collision_manager);
+    }
+
+}
+
+void Level::handle_player_state()
+{
+    if(player.state == State::EXPLODE)
+    {
+        player.state = State::DESTROY;
+    }
+
+}
+
+void Level::update(float& delta)
+{
+    // move bullets
+    bullet_handler.move_player_bullet(player.position, player.clamped_direction, quad_tree, delta);
+
+    // move enemies
+    move_enemies(delta);
+
+    // check player collision
+    if(player.state == State::NORMAL)
+    {
+        quad_tree.check_collision(player);
+    }
+
+    // check bullet collisions
+    bullet_handler.check_collisions(quad_tree);
+
+    // check object collisions
+    check_enemy_collisions();
+}
+
+void Level::initialize_tile_index()
+{
+    if(player.position.x < 0.0f || player.position.y < 0.0f || player.position.x > Level::LEVEL_SIZE_X || player.position.y > Level::LEVEL_SIZE_Y)
+    {
+        player.position = Vector2(Level::AMOUNT_OF_TILES_X / 2, Level::AMOUNT_OF_TILES_Y / 2);
         current_tile_index = (Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y) / 2;
         current_tile_position = tiles[current_tile_index].tile_position;
 
-        std::cerr << "Invalid position for player. Position has been set to: ( " << player_position.x << ", " << player_position.y << " )." << std::endl;
+        std::cerr << "Invalid position for player. Position has been set to: ( " << player.position.x << ", " << player.position.y << " )." << std::endl;
     }
     else
     {
         for(int i = 0; i < Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y; i++)
         {
-            if(tiles[i].is_player_within_tile(player_position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
+            if(tiles[i].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
             {
                 if(tiles[i].tile_position == Vector2(Level::LEVEL_SIZE_X - (2 * Level::TILE_SIZE_X), Level::LEVEL_SIZE_Y - (2 * Level::TILE_SIZE_Y)))
                 {
@@ -51,10 +112,10 @@ void Level::initialize_tile_index(Vector2 &player_position)
 }
 
 
-void Level::set_current_tile(Vector2 &player_position)
+void Level::set_current_tile()
 {
 
-    if(!(tiles[current_tile_index].is_player_within_tile(player_position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y))))
+    if(!(tiles[current_tile_index].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y))))
     {
         for(int i = 0; i < Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y; i++)
         {
@@ -62,7 +123,7 @@ void Level::set_current_tile(Vector2 &player_position)
             {
                 continue;
             }
-            else if(tiles[i].is_player_within_tile(player_position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
+            else if(tiles[i].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
             {
                 current_tile_index = i;
                 current_tile_position = tiles[current_tile_index].tile_position;
@@ -126,7 +187,7 @@ void Level::check_tile_positions()
     }
 }
 
-void Level::set_enemy(CollisionManager& collision_manager)
+void Level::set_enemy()
 {
     // TODO: testing, implement this!
 
@@ -167,7 +228,7 @@ void Level::set_enemy(CollisionManager& collision_manager)
 
 }
 
-void Level::move_enemies(float &delta, QuadTree &quad_tree)
+void Level::move_enemies(float& delta)
 {
     for(auto& tile : tiles)
     {
@@ -245,7 +306,7 @@ void Level::move_enemies(float &delta, QuadTree &quad_tree)
 
 }
 
-void Level::check_enemy_collisions(QuadTree &quad_tree)
+void Level::check_enemy_collisions()
 {
     for(auto& tile : tiles)
     {
@@ -303,3 +364,12 @@ std::vector<Mine> Level::get_all_mines() const
     return mines;
 }
 
+Player Level::get_player() const
+{
+    return player;
+}
+
+std::list<Bullet> Level::get_bullets()
+{
+    return bullet_handler.get_bullets();
+}
