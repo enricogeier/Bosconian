@@ -27,7 +27,6 @@ private:
      Input input;
      QuadTree quad_tree;
      CollisionManager collision_manager;
-     Vector2 scale = Vector2(4.0f, 4.0f);
 
 
     void initialize();

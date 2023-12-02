@@ -37,16 +37,20 @@ class GameObject
 public:
 
     Vector2 position;
+    Vector2 scale = Vector2(1.0f, 1.0f);
+
     CollisionCircle collision_circle;
     State state = State::NORMAL;
     Type type;
+
+
 
     unsigned int id;
     static unsigned int id_counter;
 
 
-    explicit GameObject(Vector2 position, CollisionCircle collision_circle, Type type)
-    : position(position), type(type)
+    explicit GameObject(Vector2 position, CollisionCircle collision_circle, Type type, Vector2 scale = Vector2(1.0f, 1.0f))
+    : position(position), type(type), scale(scale)
     {
         id = id_counter++;
         collision_circle.origin = collision_circle.initial_origin + position;

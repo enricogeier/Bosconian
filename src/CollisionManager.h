@@ -13,9 +13,9 @@ private:
 
 public:
 
-    explicit CollisionManager(Vector2 scale = Vector2(1.0f, 1.0f));
+    Vector2 scale = Vector2(4.0f, 4.0f);
 
-    Vector2 scale = Vector2(1.0f, 1.0f);
+    explicit CollisionManager();
 
     void create_collision_circles();
 

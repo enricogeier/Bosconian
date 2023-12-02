@@ -97,23 +97,8 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
-/*
-void Renderer::add_animation(std::vector<SDL_Rect> animation_sprites, long &start_frame, Vector2 &position)
-{
-    animations.push_back(AnimationPlayer(std::move(animation_sprites), start_frame, position));
-}
-*/
 
-void Renderer::render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a)
-{
-    rectangle.x -= camera.x;
-    rectangle.y -= camera.y;
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
-    SDL_RenderFillRect(renderer, &rectangle);
-
-}
-
-void Renderer::render_player(Player object)
+void Renderer::render_player(const Player& object)
 {
 
     if(object.state == State::NORMAL)
@@ -177,7 +162,7 @@ void Renderer::render_player(Player object)
         }
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
@@ -197,7 +182,7 @@ void Renderer::render_player(Player object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) object));
         }
 
 
@@ -205,7 +190,7 @@ void Renderer::render_player(Player object)
 
 }
 
-void Renderer::render_e_type(Enemy object)
+void Renderer::render_e_type(const Enemy& object)
 {
     if(object.state == State::NORMAL)
     {
@@ -215,7 +200,7 @@ void Renderer::render_e_type(Enemy object)
         SDL_Rect sprite = get_e_type()[0];
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
@@ -237,7 +222,7 @@ void Renderer::render_e_type(Enemy object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) object));
         }
 
 
@@ -246,7 +231,7 @@ void Renderer::render_e_type(Enemy object)
     }
 }
 
-void Renderer::render_p_type(Enemy object)
+void Renderer::render_p_type(const Enemy& object)
 {
     if(object.state == State::NORMAL)
     {
@@ -256,7 +241,7 @@ void Renderer::render_p_type(Enemy object)
         SDL_Rect sprite = get_p_type()[0];
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
@@ -276,7 +261,7 @@ void Renderer::render_p_type(Enemy object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) object));
         }
 
 
@@ -284,7 +269,7 @@ void Renderer::render_p_type(Enemy object)
     }
 }
 
-void Renderer::render_i_type(Enemy object)
+void Renderer::render_i_type(const Enemy& object)
 {
     if(object.state == State::NORMAL)
     {
@@ -294,7 +279,7 @@ void Renderer::render_i_type(Enemy object)
         SDL_Rect sprite = get_i_type()[0];
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
@@ -314,7 +299,7 @@ void Renderer::render_i_type(Enemy object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) object));
         }
 
 
@@ -323,7 +308,7 @@ void Renderer::render_i_type(Enemy object)
     }
 }
 
-void Renderer::render_spy(Enemy object)
+void Renderer::render_spy(const Enemy& object)
 {
     if(object.state == State::NORMAL)
     {
@@ -333,7 +318,7 @@ void Renderer::render_spy(Enemy object)
         SDL_Rect sprite = get_spy()[0];
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
@@ -353,7 +338,7 @@ void Renderer::render_spy(Enemy object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) object));
         }
 
 
@@ -362,15 +347,15 @@ void Renderer::render_spy(Enemy object)
     }
 }
 
-void Renderer::render_asteroid(GameObject object)
+void Renderer::render_asteroid(const GameObject& object)
 {
     if(object.state == State::NORMAL)
     {
-        // TODO: always take first sprite, change this!
-        SDL_Rect sprite = get_asteroid()[0];
+
+        SDL_Rect sprite = get_asteroid(object.id % 3);
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -390,7 +375,7 @@ void Renderer::render_asteroid(GameObject object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_explosion_1(), object.position, object.id));
+            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject& )object));
         }
 
 
@@ -399,16 +384,14 @@ void Renderer::render_asteroid(GameObject object)
     }
 }
 
-void Renderer::render_mine(Mine object)
+void Renderer::render_mine(const Mine& object)
 {
     if(object.state == State::NORMAL)
     {
-        // TODO: Testing, change in each moving enemy render function!
-
         SDL_Rect sprite = get_mine();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -429,61 +412,61 @@ void Renderer::render_mine(Mine object)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_mine_explosion(), object.position, object.id, object.explosion_duration));
+            animations.push_back(AnimationPlayer(get_mine_explosion(), (GameObject &) object, object.explosion_duration));
         }
 
 
     }
 }
 
-void Renderer::render_space_station(Enemy object)
+void Renderer::render_space_station(const Enemy& object)
 {
     // TODO: implement this!
 }
 
 
-void Renderer::render_bullet(Vector2 position, Vector2 direction)
+void Renderer::render_bullet(const Bullet& bullet)
 {
     SDL_Rect sprite;
 
-    if(direction.x == 0.0f)
+    if(bullet.direction.x == 0.0f)
     {
         sprite = get_p1_shoot()[0];
     }
-    else if(direction.x == 1.0f)
+    else if(bullet.direction.x == 1.0f)
     {
-        if(direction.y == 1.0f)
+        if(bullet.direction.y == 1.0f)
         {
             sprite = get_p1_shoot()[1];
         }
-        else if(direction.y == -1.0f)
+        else if(bullet.direction.y == -1.0f)
         {
             sprite = get_p1_shoot()[3];
         }
-        else if(direction.y == 0.0f)
+        else if(bullet.direction.y == 0.0f)
         {
             sprite = get_p1_shoot()[2];
         }
     }
-    else if(direction.x == -1.0f)
+    else if(bullet.direction.x == -1.0f)
     {
 
-        if(direction.y == 1.0f)
+        if(bullet.direction.y == 1.0f)
         {
             sprite = get_p1_shoot()[3];
         }
-        else if(direction.y == -1.0f)
+        else if(bullet.direction.y == -1.0f)
         {
             sprite = get_p1_shoot()[1];
         }
-        else if(direction.y == 0.0f)
+        else if(bullet.direction.y == 0.0f)
         {
             sprite = get_p1_shoot()[2];
         }
     }
 
-    SDL_Rect render_quad = {(int)(position.x - camera.x), (int)(position.y - camera.y),
-                            sprite.w * (int)scale.x, sprite.h * (int)scale.y};
+    SDL_Rect render_quad = {(int)(bullet.position.x - camera.x), (int)(bullet.position.y - camera.y),
+                            sprite.w * (int)bullet.scale.x, sprite.h * (int)bullet.scale.y};
 
     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -497,7 +480,7 @@ void Renderer::render_animations()
     {
         SDL_Rect* sprite = animation->get_animation_sprite();
         SDL_Rect render_quad = {(int)(animation->position.x - camera.x), (int)(animation->position.y - camera.y),
-                                sprite->w * (int)scale.x, sprite->h * (int)scale.y};
+                                sprite->w * (int)animation->scale.x, sprite->h * (int)animation->scale.y};
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, sprite, &render_quad);
 
@@ -516,7 +499,7 @@ void Renderer::render_animations()
 
 
 
-void Renderer::render_collision_box(GameObject game_object)
+void Renderer::render_collision_box(const GameObject& game_object)
 {
 
 
@@ -556,7 +539,7 @@ void Renderer::render_collision_box(GameObject game_object)
 }
 
 
-void Renderer::update_camera(Vector2 position)
+void Renderer::update_camera(const Vector2& position)
 {
     SDL_Rect sprite = get_player_sprites().front();
     Vector2 sprite_size((float)sprite.w, (float)sprite.h);
@@ -586,7 +569,7 @@ void Renderer::clear()
     SDL_Quit();
 }
 
-std::vector<SDL_Rect> Renderer::get_player_sprites()
+std::vector<SDL_Rect> Renderer::get_player_sprites() const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -596,7 +579,7 @@ std::vector<SDL_Rect> Renderer::get_player_sprites()
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_e_type(bool leader)
+std::vector<SDL_Rect> Renderer::get_e_type(bool leader) const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -622,7 +605,7 @@ std::vector<SDL_Rect> Renderer::get_e_type(bool leader)
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_i_type(bool leader)
+std::vector<SDL_Rect> Renderer::get_i_type(bool leader) const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -648,7 +631,7 @@ std::vector<SDL_Rect> Renderer::get_i_type(bool leader)
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_p_type(bool leader)
+std::vector<SDL_Rect> Renderer::get_p_type(bool leader) const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -674,7 +657,7 @@ std::vector<SDL_Rect> Renderer::get_p_type(bool leader)
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_spy()
+std::vector<SDL_Rect> Renderer::get_spy() const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -693,14 +676,12 @@ SDL_Rect Renderer::get_mine() const
     return sprites[44];
 }
 
-std::vector<SDL_Rect> Renderer::get_asteroid(short sprite)
+SDL_Rect Renderer::get_asteroid(const unsigned int& sprite) const
 {
+
     if(sprite >= 0 && sprite < 3)
     {
-        std::vector<SDL_Rect> sprite_list;
-
-        sprite_list.push_back(sprites[45 +  sprite]);
-        return sprite_list;
+        return sprites[45 + sprite];
     }
     else
     {
@@ -708,17 +689,17 @@ std::vector<SDL_Rect> Renderer::get_asteroid(short sprite)
     }
 }
 
-SDL_Rect Renderer::get_p1_life()
+SDL_Rect Renderer::get_p1_life() const
 {
     return sprites[48];
 }
 
-SDL_Rect Renderer::get_p2_life()
+SDL_Rect Renderer::get_p2_life() const
 {
     return sprites[49];
 }
 
-std::vector<SDL_Rect> Renderer::get_explosion_1()
+std::vector<SDL_Rect> Renderer::get_explosion_1() const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -729,7 +710,7 @@ std::vector<SDL_Rect> Renderer::get_explosion_1()
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_p1_shoot()
+std::vector<SDL_Rect> Renderer::get_p1_shoot() const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -741,7 +722,7 @@ std::vector<SDL_Rect> Renderer::get_p1_shoot()
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_p2_shoot()
+std::vector<SDL_Rect> Renderer::get_p2_shoot() const
 {
     std::vector<SDL_Rect> sprite_list;
 
@@ -753,7 +734,7 @@ std::vector<SDL_Rect> Renderer::get_p2_shoot()
     return sprite_list;
 }
 
-std::vector<SDL_Rect> Renderer::get_mine_explosion()
+std::vector<SDL_Rect> Renderer::get_mine_explosion() const
 {
     std::vector<SDL_Rect> sprite_list;
     sprite_list.push_back(sprites[61]);
@@ -761,10 +742,4 @@ std::vector<SDL_Rect> Renderer::get_mine_explosion()
     sprite_list.push_back(sprites[63]);
 
     return sprite_list;
-}
-
-
-void Renderer::set_scale(Vector2 scale_sprites)
-{
-    this->scale = scale_sprites;
 }

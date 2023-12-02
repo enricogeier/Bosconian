@@ -5,6 +5,8 @@
 #include "Vector2.h"
 #include "Bullet.h"
 #include "QuadTree.h"
+#include "CollisionManager.h"
+#include "Player.h"
 
 class BulletHandler
 {
@@ -14,8 +16,7 @@ private:
 public:
     BulletHandler() = default;
 
-    void insert_player_bullets(Vector2& player_position, Vector2& player_direction, Vector2& player_clamped_direction,
-                               CollisionCircle collision_circle);
+    void insert_player_bullets(Player& player, CollisionManager& collision_manager);
 
     std::list<Bullet>& get_bullets();
 

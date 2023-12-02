@@ -134,7 +134,8 @@ void Level::set_enemy(CollisionManager& collision_manager)
             Vector2(250, 250),
             collision_manager.get_e_type_collision(),
             Vector2(),
-            Type::E_TYPE
+            Type::E_TYPE,
+            collision_manager.scale
             ));
 
 
@@ -151,14 +152,16 @@ void Level::set_enemy(CollisionManager& collision_manager)
             Vector2(512, 612),
             collision_manager.get_spy_collision(),
             Vector2(0, 0),
-            Type::SPY
+            Type::SPY,
+            collision_manager.scale
             ));
 
 
     tiles[0].objects.push_back(GameObject(
             Vector2(612, 250),
             collision_manager.get_asteroid_collision(),
-            Type::ASTEROID
+            Type::ASTEROID,
+            collision_manager.scale
             ));
 
 

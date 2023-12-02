@@ -1,142 +1,159 @@
 #include "BulletHandler.h"
 
 
-void BulletHandler::insert_player_bullets(Vector2 &player_position, Vector2& player_direction, Vector2 &player_clamped_direction, CollisionCircle collision_circle) {
-    if (player_direction.x == 1.0f) {
-        if (player_direction.y == 1.0f) {
+void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& collision_manager) {
+    if (player.direction.x == 1.0f) {
+        if (player.direction.y == 1.0f) {
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 5, player_position.y),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x + 5, player.position.y),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 21,
-                            player_position.y + 15),
-                    player_clamped_direction,
-                    collision_circle
-            ));
-
-            bullet_list.back().speed *= 2;
-
-        } else if (player_direction.y == 0.0f) {
-
-            bullet_list.push_back(Bullet(
-                    Vector2(player_position.x - 15, player_position.y + 3),
-                    player_clamped_direction * (-1),
-                    collision_circle
-            ));
-
-            bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 16,
-                            player_position.y + 3),
-                    player_clamped_direction,
-                    collision_circle
-            ));
-
-            bullet_list.back().speed *= 2;
-        } else if (player_direction.y == -1.0f) {
-            bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 4, player_position.y),
-                    player_clamped_direction,
-                    collision_circle
+                    Vector2(player.position.x + 21,
+                            player.position.y + 15),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.back().speed *= 2;
 
+        } else if (player.direction.y == 0.0f) {
+
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x - 12,
-                            player_position.y + 15),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x - 15, player.position.y + 3),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
+            ));
+
+            bullet_list.push_back(Bullet(
+                    Vector2(player.position.x + 16,
+                            player.position.y + 3),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
+            ));
+
+            bullet_list.back().speed *= 2;
+        } else if (player.direction.y == -1.0f) {
+            bullet_list.push_back(Bullet(
+                    Vector2(player.position.x + 4, player.position.y),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
+            ));
+
+            bullet_list.back().speed *= 2;
+
+            bullet_list.push_back(Bullet(
+                    Vector2(player.position.x - 12,
+                            player.position.y + 15),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
 
         }
-    } else if (player_direction.x == 0.0f) {
+    } else if (player.direction.x == 0.0f) {
 
-        if (player_direction.y == 1.0f) {
+        if (player.direction.y == 1.0f) {
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 8, player_position.y - 15),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x + 8, player.position.y - 15),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 8, player_position.y + 16),
+                    Vector2(player.position.x + 8, player.position.y + 16),
                     Vector2(0, 1),
-                    collision_circle
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.back().speed *= 2;
 
 
-        } else if (player_direction.y == -1.0f) {
+        } else if (player.direction.y == -1.0f) {
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 3, player_position.y - 15),
-                    player_clamped_direction,
-                    collision_circle
+                    Vector2(player.position.x + 3, player.position.y - 15),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.back().speed *= 2;
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 3, player_position.y + 16),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x + 3, player.position.y + 16),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
 
         }
-    } else if (player_direction.x == -1.0f) {
-        if (player_direction.y == 1.0f) {
+    } else if (player.direction.x == -1.0f) {
+        if (player.direction.y == 1.0f) {
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 11, player_position.y),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x + 11, player.position.y),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
+
             ));
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x - 5,
-                            player_position.y + 15),
-                    player_clamped_direction,
-                    collision_circle
-            ));
-
-            bullet_list.back().speed *= 2;
-
-        } else if (player_direction.y == 0.0f) {
-            bullet_list.push_back(Bullet(
-                    Vector2(player_position.x, player_position.y + 3),
-                    player_clamped_direction,
-                    collision_circle
+                    Vector2(player.position.x - 5,
+                            player.position.y + 15),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.back().speed *= 2;
 
+        } else if (player.direction.y == 0.0f) {
+            bullet_list.push_back(Bullet(
+                    Vector2(player.position.x, player.position.y + 3),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
+            ));
+
+            bullet_list.back().speed *= 2;
+
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 16, player_position.y + 3),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x + 16, player.position.y + 3),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
 
-        } else if (player_direction.y == -1.0f) {
+        } else if (player.direction.y == -1.0f) {
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x, player_position.y),
-                    player_clamped_direction,
-                    collision_circle
+                    Vector2(player.position.x, player.position.y),
+                    player.clamped_direction,
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
             bullet_list.back().speed *= 2;
 
             bullet_list.push_back(Bullet(
-                    Vector2(player_position.x + 16,
-                            player_position.y + 15),
-                    player_clamped_direction * (-1),
-                    collision_circle
+                    Vector2(player.position.x + 16,
+                            player.position.y + 15),
+                    player.clamped_direction * (-1),
+                    collision_manager.get_player_bullet_collision(),
+                    collision_manager.scale
             ));
 
 

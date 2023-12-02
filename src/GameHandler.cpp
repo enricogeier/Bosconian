@@ -6,7 +6,7 @@ void GameHandler::render_bullets()
     std::list<Bullet> bullet_list = bullet_handler.get_bullets();
     for(auto& bullet : bullet_list)
     {
-        renderer.render_bullet(bullet.position, bullet.direction);
+        renderer.render_bullet(bullet);
     }
 }
 
@@ -75,14 +75,12 @@ void GameHandler::run() {
 void GameHandler::initialize()
 {
 
-    renderer.set_scale(scale);
 
-    collision_manager = CollisionManager(scale);
+    collision_manager = CollisionManager();
 
-    player = Player(collision_manager.get_player_collision());
+    player = Player(collision_manager.get_player_collision(), collision_manager.scale);
 
     level.initialize_tile_index(player.position);
-
 
     // TODO: testing, delete this!
     level.set_enemy(collision_manager);
@@ -123,11 +121,7 @@ void GameHandler::game_loop()
 
             if(shoot)
             {
-                bullet_handler.insert_player_bullets(player.position,
-                                                     player.direction,
-                                                     player.clamped_direction,
-                                                     collision_manager.get_player_bullet_collision()
-                                                     );
+                bullet_handler.insert_player_bullets(player, collision_manager);
             }
 
         }

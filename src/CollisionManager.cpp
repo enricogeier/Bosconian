@@ -1,8 +1,7 @@
 #include "CollisionManager.h"
 
-CollisionManager::CollisionManager(Vector2 scale)
+CollisionManager::CollisionManager()
 {
-    this->scale = scale;
     create_collision_circles();
 }
 

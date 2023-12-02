@@ -7,6 +7,7 @@
 #include <utility>
 #include <SDL_image.h>
 #include <chrono>
+#include <random>
 #include "Enemy.h"
 #include "Player.h"
 #include "Bullet.h"
@@ -29,16 +30,15 @@ private:
     std::vector<SDL_Rect> explosion_sprites;
 
 
-
 public:
 
     AnimationState animation_state = AnimationState::PLAY;
     Vector2 position;
     unsigned int id;
 
-    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, Vector2 position, unsigned int id,
+    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, GameObject& game_object,
                              std::chrono::microseconds duration = std::chrono::microseconds(250000))
-    : position(position), id(id)
+    : position(game_object.position), id(game_object.id), scale(game_object.scale)
     {
         this->explosion_sprites = std::move(explosion_sprites);
         frame_time = std::chrono::duration_cast<std::chrono::microseconds>(duration / this->explosion_sprites.size());
@@ -48,8 +48,7 @@ public:
     SDL_Rect* get_animation_sprite();
 
 
-
-
+    Vector2 scale = Vector2(1.0f, 1.0f);
 };
 
 
@@ -58,7 +57,6 @@ public:
 class Renderer
 {
 private:
-    Vector2 scale = Vector2(1.0f, 1.0f);
 
     const int SCREEN_SIZE_WIDTH = 1920;   // small: 960
     const int SCREEN_SIZE_HEIGHT = 1080; // 540
@@ -157,31 +155,31 @@ private:
 
     };
 
-    std::vector<SDL_Rect> get_player_sprites();
+    std::vector<SDL_Rect> get_player_sprites() const;
 
-    std::vector<SDL_Rect> get_e_type(bool leader = false);
+    std::vector<SDL_Rect> get_e_type(bool leader = false) const;
 
-    std::vector<SDL_Rect> get_i_type(bool leader = false);
+    std::vector<SDL_Rect> get_i_type(bool leader = false) const;
 
-    std::vector<SDL_Rect> get_p_type(bool leader = false);
+    std::vector<SDL_Rect> get_p_type(bool leader = false) const;
 
-    std::vector<SDL_Rect> get_spy();
+    std::vector<SDL_Rect> get_spy() const;
 
     SDL_Rect get_mine() const;
 
-    std::vector<SDL_Rect> get_asteroid(short sprite = 0);
+    SDL_Rect get_asteroid(const unsigned int& sprite = 0) const;
 
-    SDL_Rect get_p1_life();
+    SDL_Rect get_p1_life() const;
 
-    SDL_Rect get_p2_life();
+    SDL_Rect get_p2_life() const;
 
-    std::vector<SDL_Rect> get_explosion_1();
+    std::vector<SDL_Rect> get_explosion_1() const;
 
-    std::vector<SDL_Rect> get_p1_shoot();
+    std::vector<SDL_Rect> get_p1_shoot() const;
 
-    std::vector<SDL_Rect> get_p2_shoot();
+    std::vector<SDL_Rect> get_p2_shoot() const;
 
-    std::vector<SDL_Rect> get_mine_explosion();
+    std::vector<SDL_Rect> get_mine_explosion() const;
 
     void load_sprite_sheet();
 
@@ -201,37 +199,33 @@ public:
 
     void update_screen();
 
-    void render_background_particle(SDL_Rect rectangle, short r, short g, short b, short a);
+    void render_player(const Player& object);
 
-    void render_player(Player object);
+    void render_e_type(const Enemy& object);
 
-    void render_e_type(Enemy object);
+    void render_p_type(const Enemy& object);
 
-    void render_p_type(Enemy object);
+    void render_i_type(const Enemy& object);
 
-    void render_i_type(Enemy object);
+    void render_spy(const Enemy& object);
 
-    void render_spy(Enemy object);
+    void render_asteroid(const GameObject& object);
 
-    void render_asteroid(GameObject object);
+    void render_mine(const Mine& object);
 
-    void render_mine(Mine object);
+    void render_space_station(const Enemy& object);
 
-    void render_space_station(Enemy object);
-
-    void render_bullet(Vector2 position, Vector2 direction);
+    void render_bullet(const Bullet& bullet);
 
     void render_animations();
 
     //void render_collision_box(GameObject& game_object);
 
-    void update_camera(Vector2 position);
+    void update_camera(const Vector2& position);
 
     void clear();
 
-    void render_collision_box(GameObject game_object);
-
-    void set_scale(Vector2 scale_sprites);
+    void render_collision_box(const GameObject& game_object);
 
 };
 

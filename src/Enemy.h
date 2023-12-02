@@ -15,8 +15,8 @@ public:
     Vector2 direction;
 
 
-    explicit Enemy(Vector2 position, CollisionCircle collision_circle, Vector2 direction = Vector2(), Type type = Type::E_TYPE)
-    : GameObject(position, std::move(collision_circle), type), direction(direction)
+    explicit Enemy(Vector2 position, CollisionCircle collision_circle, Vector2 direction = Vector2(), Type type = Type::E_TYPE, Vector2 scale = Vector2(1.0f, 1.0f))
+    : GameObject(position, std::move(collision_circle), type, scale), direction(direction)
     {
     }
 
