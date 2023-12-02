@@ -23,7 +23,7 @@ enum AnimationState
 class AnimationPlayer
 {
 private:
-    std::chrono::microseconds frame_time = std::chrono::microseconds(30000); // 0.2s
+    std::chrono::microseconds frame_time = std::chrono::microseconds(30000); // 0.3s;
     u_short frame = 0;
     std::chrono::microseconds start_time = std::chrono::microseconds(0);
     std::vector<SDL_Rect> explosion_sprites;
@@ -36,9 +36,14 @@ public:
     Vector2 position;
     unsigned int id;
 
-    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, Vector2 position, unsigned int id)
-    : explosion_sprites(std::move(explosion_sprites)), position(position), id(id)
-    {}
+    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, Vector2 position, unsigned int id,
+                             std::chrono::microseconds duration = std::chrono::microseconds(250000))
+    : position(position), id(id)
+    {
+        this->explosion_sprites = std::move(explosion_sprites);
+        frame_time = std::chrono::duration_cast<std::chrono::microseconds>(duration / this->explosion_sprites.size());
+
+    }
 
     SDL_Rect* get_animation_sprite();
 
@@ -46,7 +51,6 @@ public:
 
 
 };
-
 
 
 
@@ -68,32 +72,6 @@ private:
     const std::string WINDOW_TITLE = "Bosconian";
 
     std::list<AnimationPlayer> animations;
-
-
-    std::vector<SDL_Rect> get_player_sprites();
-
-    std::vector<SDL_Rect> get_e_type(bool leader = false);
-
-    std::vector<SDL_Rect> get_i_type(bool leader = false);
-
-    std::vector<SDL_Rect> get_p_type(bool leader = false);
-
-    std::vector<SDL_Rect> get_spy();
-
-    SDL_Rect get_mine() const;
-
-    std::vector<SDL_Rect> get_asteroid(short sprite = 0);
-
-    SDL_Rect get_p1_life();
-
-    SDL_Rect get_p2_life();
-
-    std::vector<SDL_Rect> get_explosion_1();
-
-    std::vector<SDL_Rect> get_p1_shoot();
-
-    std::vector<SDL_Rect> get_p2_shoot();
-
 
     // constexpr: value is known at compile-time => for compiler
     const SDL_Rect sprites[256] = {
@@ -173,8 +151,37 @@ private:
             {96, 192, 16, 16},
             {112, 192, 16, 16},
 
+            {128, 128, 32, 32}, // mine explosion
+            {160, 128, 32, 32},
+            {192, 128, 32, 32},
 
     };
+
+    std::vector<SDL_Rect> get_player_sprites();
+
+    std::vector<SDL_Rect> get_e_type(bool leader = false);
+
+    std::vector<SDL_Rect> get_i_type(bool leader = false);
+
+    std::vector<SDL_Rect> get_p_type(bool leader = false);
+
+    std::vector<SDL_Rect> get_spy();
+
+    SDL_Rect get_mine() const;
+
+    std::vector<SDL_Rect> get_asteroid(short sprite = 0);
+
+    SDL_Rect get_p1_life();
+
+    SDL_Rect get_p2_life();
+
+    std::vector<SDL_Rect> get_explosion_1();
+
+    std::vector<SDL_Rect> get_p1_shoot();
+
+    std::vector<SDL_Rect> get_p2_shoot();
+
+    std::vector<SDL_Rect> get_mine_explosion();
 
     void load_sprite_sheet();
 
@@ -225,6 +232,7 @@ public:
     void render_collision_box(GameObject game_object);
 
     void set_scale(Vector2 scale_sprites);
+
 };
 
 

@@ -47,6 +47,7 @@ add_executable(Test src/main.cpp
         src/BulletHandler.h
         src/BulletHandler.cpp
         src/Mine.h
+        src/Mine.cpp
 
 )
 

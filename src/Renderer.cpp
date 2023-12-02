@@ -14,7 +14,10 @@ SDL_Rect *AnimationPlayer::get_animation_sprite()
             start_time = current_frame_time;
         }
 
-        if(std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time - start_time) > frame_time)
+
+        std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time - start_time);
+
+        if(time_delta > frame_time)
         {
             start_time = current_frame_time;
             return &explosion_sprites[frame++];
@@ -410,10 +413,24 @@ void Renderer::render_mine(Mine object)
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
     }
-    else if(object.state == State::EXPLODE)
+    else if(object.state == State::MINE_EXPLODE)
     {
-        // TODO: implement explosion animation
 
+        bool found = false;
+
+        for(auto& animation : animations)
+        {
+            if(animation.id == object.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_mine_explosion(), object.position, object.id, object.explosion_duration));
+        }
 
 
     }
@@ -735,6 +752,17 @@ std::vector<SDL_Rect> Renderer::get_p2_shoot()
 
     return sprite_list;
 }
+
+std::vector<SDL_Rect> Renderer::get_mine_explosion()
+{
+    std::vector<SDL_Rect> sprite_list;
+    sprite_list.push_back(sprites[61]);
+    sprite_list.push_back(sprites[62]);
+    sprite_list.push_back(sprites[63]);
+
+    return sprite_list;
+}
+
 
 void Renderer::set_scale(Vector2 scale_sprites)
 {

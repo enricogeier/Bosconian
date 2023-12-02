@@ -6,6 +6,6 @@ void Bullet::move(float &delta)
     {
         position += direction * (float)speed * delta;
 
-        collision_circle.origin = collision_circle.last_origin + position;
+        collision_circle.origin = collision_circle.initial_origin + position;
     }
 }

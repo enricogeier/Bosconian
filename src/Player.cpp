@@ -20,7 +20,7 @@ void Player::move(Vector2& new_direction, float& delta)
         Vector2 new_position = Vector2(position.x + (clamped_direction.x * MAX_VELOCITY * delta), position.y + (clamped_direction.y * MAX_VELOCITY * delta));
         position = new_position;
 
-        collision_circle.origin = collision_circle.last_origin + position;
+        collision_circle.origin = collision_circle.initial_origin + position;
     }
 
 }

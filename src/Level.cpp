@@ -130,7 +130,7 @@ void Level::set_enemy(CollisionManager& collision_manager)
 {
     // TODO: testing, implement this!
 
-    tiles[0].enemies_in_tile.push_back(Enemy(
+    tiles[0].enemies.push_back(Enemy(
             Vector2(250, 250),
             collision_manager.get_e_type_collision(),
             Vector2(),
@@ -138,15 +138,16 @@ void Level::set_enemy(CollisionManager& collision_manager)
             ));
 
 
-    tiles[0].mines_in_tile.push_back(Mine(
+    tiles[0].mines.push_back(Mine(
             Vector2(250, 612),
                collision_manager.get_mine_collision(),
-               Type::MINE
+               Type::MINE,
+               collision_manager.scale
                ));
 
 
 
-    tiles[0].enemies_in_tile.push_back(Enemy(
+    tiles[0].enemies.push_back(Enemy(
             Vector2(512, 612),
             collision_manager.get_spy_collision(),
             Vector2(0, 0),
@@ -154,7 +155,7 @@ void Level::set_enemy(CollisionManager& collision_manager)
             ));
 
 
-    tiles[0].objects_in_tile.push_back(GameObject(
+    tiles[0].objects.push_back(GameObject(
             Vector2(612, 250),
             collision_manager.get_asteroid_collision(),
             Type::ASTEROID
@@ -167,7 +168,7 @@ void Level::move_enemies(float &delta, QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
-        for(auto enemy = tile.enemies_in_tile.begin(); enemy != tile.enemies_in_tile.end();)
+        for(auto enemy = tile.enemies.begin(); enemy != tile.enemies.end();)
         {
 
             if(enemy->state == State::NORMAL)
@@ -182,13 +183,13 @@ void Level::move_enemies(float &delta, QuadTree &quad_tree)
             }
             else
             {
-                    enemy = tile.enemies_in_tile.erase(enemy);
+                    enemy = tile.enemies.erase(enemy);
             }
 
 
         }
 
-        for(auto object = tile.objects_in_tile.begin(); object != tile.objects_in_tile.end(); )
+        for(auto object = tile.objects.begin(); object != tile.objects.end(); )
         {
             if(object->state == State::NORMAL)
             {
@@ -197,21 +198,45 @@ void Level::move_enemies(float &delta, QuadTree &quad_tree)
             }
             else
             {
-                object = tile.objects_in_tile.erase(object);
+                object = tile.objects.erase(object);
             }
         }
 
-        for(auto mine = tile.mines_in_tile.begin(); mine != tile.mines_in_tile.end();)
+        for(auto mine = tile.mines.begin(); mine != tile.mines.end();)
         {
-            if(mine->state == State::NORMAL)
+            switch (mine->state)
             {
-                quad_tree.insert(*mine);
-                ++mine;
+                case State::NORMAL:
+                    quad_tree.insert(*mine);
+                    ++mine;
+                    break;
+                case State::EXPLODE:
+                    quad_tree.insert(*mine);
+                    mine->state = State::MINE_EXPLODE;
+                    mine->explode();
+                    ++mine;
+                    break;
+                case State::MINE_EXPLODE:
+                    quad_tree.insert(*mine);
+                    mine->state = State::MINE_EXPLODED;
+                    ++mine;
+                    break;
+                case State::MINE_EXPLODED:
+                    quad_tree.insert(*mine);
+                    if(mine->check_explosion())
+                    {
+                        mine->state = State::DESTROY;
+                    }
+                    ++mine;
+                    break;
+                case State::DESTROY:
+                    mine = tile.mines.erase(mine);
+                    break;
             }
-            else
-            {
-                mine = tile.mines_in_tile.erase(mine);
-            }
+
+
+
+
         }
     }
 
@@ -221,7 +246,7 @@ void Level::check_enemy_collisions(QuadTree &quad_tree)
 {
     for(auto& tile : tiles)
     {
-        for(auto& enemy : tile.enemies_in_tile)
+        for(auto& enemy : tile.enemies)
         {
             quad_tree.check_collision(enemy);
         }
@@ -235,7 +260,7 @@ std::vector<GameObject> Level::get_all_game_objects() const
 
     for(auto& tile: tiles)
     {
-        for(auto& asteroid : tile.objects_in_tile)
+        for(auto& asteroid : tile.objects)
         {
             game_objects.push_back(asteroid);
         }
@@ -251,7 +276,7 @@ std::vector<Enemy> Level::get_all_enemies() const
 
     for(auto& tile : tiles)
     {
-        for(auto& enemy: tile.enemies_in_tile)
+        for(auto& enemy: tile.enemies)
         {
             enemies.push_back(enemy);
         }
@@ -266,7 +291,7 @@ std::vector<Mine> Level::get_all_mines() const
 
     for(auto& tile : tiles)
     {
-        for(auto& mine : tile.mines_in_tile)
+        for(auto& mine : tile.mines)
         {
             mines.push_back(mine);
         }

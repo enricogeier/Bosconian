@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(Vector2 position) : tile_position(position)
+Tile::Tile(Vector2 position) : tile_position(position), last_tile_position(position)
 {
 }
 
@@ -25,18 +25,25 @@ void Tile::update_tile_position()
 {
     // update every GameObject position
 
-    for(auto & object : objects_in_tile)
+    Vector2 offset = tile_position - last_tile_position;
+
+    for(auto & object : objects)
     {
-        object.position = object.position + tile_position;
+        object.position = object.position + offset;
+        object.collision_circle.origin = object.position + object.collision_circle.initial_origin;
     }
-    for(auto& mine : mines_in_tile)
+    for(auto& mine : mines)
     {
-        mine.position = mine.position + tile_position;
+        mine.position = mine.position + offset;
+        mine.collision_circle.origin = mine.position + mine.collision_circle.initial_origin;
     }
-    for(auto& enemy : enemies_in_tile)
+
+    for(auto enemy = enemies.begin(); enemy != enemies.end();)
     {
-        enemies_in_tile.remove(enemy);
+        enemy = enemies.erase(enemy);
     }
+
+    last_tile_position = tile_position;
 
 }
 

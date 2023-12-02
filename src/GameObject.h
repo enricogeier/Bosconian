@@ -10,6 +10,8 @@
 enum class State{
     NORMAL,
     EXPLODE,
+    MINE_EXPLODE,
+    MINE_EXPLODED,
     DESTROY
 };
 
@@ -47,7 +49,7 @@ public:
     : position(position), type(type)
     {
         id = id_counter++;
-        collision_circle.origin = collision_circle.last_origin + position;
+        collision_circle.origin = collision_circle.initial_origin + position;
         this->collision_circle = collision_circle;
     }
 

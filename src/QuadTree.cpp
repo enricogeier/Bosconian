@@ -73,7 +73,7 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
     {
         GameObject& object = *iterator;
 
-        if(object.state == State::EXPLODE)
+        if(object.state == State::EXPLODE && object.type != Type::MINE)
         {
             continue;
         }
@@ -92,9 +92,32 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
 
                 std::cout << "collision detected" << std::endl;
 
+                if(game_object.type == Type::MINE)
+                {
+                    if(game_object.state == State::NORMAL)
+                    {
+                        game_object.state = State::EXPLODE;
+                    }
 
-                game_object.state = State::EXPLODE;
-                object.state = State::EXPLODE;
+                    object.state = State::EXPLODE;
+                }
+                else if(object.type == Type::MINE)
+                {
+                    if(object.state == State::NORMAL)
+                    {
+                        object.state = State::EXPLODE;
+                    }
+
+                    game_object.state = State::EXPLODE;
+                }
+                else
+                {
+                    game_object.state = State::EXPLODE;
+                    object.state = State::EXPLODE;
+                }
+
+
+
 
                 return;
 
@@ -139,7 +162,7 @@ void QuadTree::insert(GameObject& game_object)
 
 void QuadTree::check_collision(GameObject &game_object)
 {
-    if(game_object.state == State::EXPLODE)
+    if(game_object.state == State::EXPLODE && game_object.type != Type::MINE)
     {
         return;
     }
