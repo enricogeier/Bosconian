@@ -1,4 +1,3 @@
-6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik) => view
 7. Raumbasen rendern, Raumbasen: Kollision
 8. Level  aus Text-Datei einlesen
 9. Gegner-Logik: Move, Raumbasen, Schießen, ...

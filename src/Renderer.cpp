@@ -41,7 +41,9 @@ Renderer::Renderer()
 
     // create window
     window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
+                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_FULLSCREEN);
+
+
 
     // create renderer for window
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -97,9 +99,39 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
+void Renderer::render_side_bar()
+{
+    // TODO: testing, implement this correctly
+
+    /*
+    SDL_RenderSetViewport(renderer, &hi_score_viewport);
+    SDL_RenderCopy(renderer, );
+    SDL_RenderSetViewport(renderer, &condition_viewport);
+    SDL_RenderCopy(renderer, );
+    */
+
+
+    SDL_RenderSetViewport(renderer, &field_viewport);
+    SDL_SetRenderDrawColor(renderer, 0x6C, 0x46, 0x75, 0xFF);
+    SDL_Rect background{0, 0, field_viewport.w, field_viewport.h};
+    SDL_RenderFillRect(renderer, &background);
+
+
+
+
+
+    /*
+    SDL_RenderSetViewport(renderer, &game_state_viewport);
+    SDL_RenderCopy();
+    */
+
+
+}
+
 
 void Renderer::render_player(const Player& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
 
     if(object.state == State::NORMAL)
     {
@@ -192,6 +224,8 @@ void Renderer::render_player(const Player& object)
 
 void Renderer::render_e_type(const Enemy& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     if(object.state == State::NORMAL)
     {
         // TODO: Testing, change in each moving enemy render function!
@@ -233,6 +267,8 @@ void Renderer::render_e_type(const Enemy& object)
 
 void Renderer::render_p_type(const Enemy& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     if(object.state == State::NORMAL)
     {
         // TODO: Testing, change in each moving enemy render function!
@@ -271,6 +307,8 @@ void Renderer::render_p_type(const Enemy& object)
 
 void Renderer::render_i_type(const Enemy& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     if(object.state == State::NORMAL)
     {
         // TODO: Testing, change in each moving enemy render function!
@@ -310,6 +348,8 @@ void Renderer::render_i_type(const Enemy& object)
 
 void Renderer::render_spy(const Enemy& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     if(object.state == State::NORMAL)
     {
         // TODO: Testing, change in each moving enemy render function!
@@ -349,6 +389,8 @@ void Renderer::render_spy(const Enemy& object)
 
 void Renderer::render_asteroid(const GameObject& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     if(object.state == State::NORMAL)
     {
 
@@ -386,6 +428,8 @@ void Renderer::render_asteroid(const GameObject& object)
 
 void Renderer::render_mine(const Mine& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     if(object.state == State::NORMAL)
     {
         SDL_Rect sprite = get_mine();
@@ -421,12 +465,16 @@ void Renderer::render_mine(const Mine& object)
 
 void Renderer::render_space_station(const Enemy& object)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     // TODO: implement this!
 }
 
 
 void Renderer::render_bullet(const Bullet& bullet)
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     SDL_Rect sprite;
 
     if(bullet.direction.x == 0.0f)
@@ -476,6 +524,8 @@ void Renderer::render_bullet(const Bullet& bullet)
 
 void Renderer::render_animations()
 {
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
     for(auto animation = animations.begin(); animation != animations.end();)
     {
         SDL_Rect* sprite = animation->get_animation_sprite();
@@ -501,7 +551,7 @@ void Renderer::render_animations()
 
 void Renderer::render_collision_box(const GameObject& game_object)
 {
-
+    SDL_RenderSetViewport(renderer, &game_viewport);
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
     SDL_RenderDrawLineF(
@@ -544,8 +594,8 @@ void Renderer::update_camera(const Vector2& position)
     SDL_Rect sprite = get_player_sprites().front();
     Vector2 sprite_size((float)sprite.w, (float)sprite.h);
 
-    camera = Vector2((position.x + (sprite_size.x / 2)) - ((float)SCREEN_SIZE_WIDTH / 2),
-                     (position.y + (sprite_size.y / 2)) - ((float)SCREEN_SIZE_HEIGHT / 2));
+    camera = Vector2((position.x + (sprite_size.x / 2)) - ((float)game_viewport.w / 2),
+                     (position.y + (sprite_size.y / 2)) - ((float)game_viewport.h / 2));
 }
 
 

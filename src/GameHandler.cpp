@@ -3,6 +3,8 @@
 
 void GameHandler::render()
 {
+    renderer.render_side_bar();
+
     renderer.render_animations();
 
     std::vector<GameObject> asteroids = level.get_all_game_objects();

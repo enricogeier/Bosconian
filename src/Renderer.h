@@ -69,6 +69,13 @@ private:
 
     const std::string WINDOW_TITLE = "Bosconian";
 
+    const SDL_Rect game_viewport{0, 0, 1488, 1080};
+    const SDL_Rect hi_score_viewport{1488, 0, 432, 234};
+    const SDL_Rect condition_viewport{1488, 234, 432, 144};
+    const SDL_Rect field_viewport{1488, 378, 432, 540};
+    const SDL_Rect game_state_viewport{1488, 918, 432, 162};
+
+
     std::list<AnimationPlayer> animations;
 
     // constexpr: value is known at compile-time => for compiler
@@ -199,6 +206,8 @@ public:
 
     void update_screen();
 
+    void render_side_bar();
+
     void render_player(const Player& object);
 
     void render_e_type(const Enemy& object);
@@ -218,8 +227,6 @@ public:
     void render_bullet(const Bullet& bullet);
 
     void render_animations();
-
-    //void render_collision_box(GameObject& game_object);
 
     void update_camera(const Vector2& position);
 
