@@ -175,24 +175,24 @@ void BulletHandler::check_collisions(QuadTree &quad_tree)
     }
 }
 
-void BulletHandler::move_player_bullet(Vector2& position, Vector2& clamped_direction, QuadTree& quad_tree, float &delta)
+void BulletHandler::move_player_bullet(Player& player, QuadTree& quad_tree, float &delta)
 {
     for(auto bullet = bullet_list.begin(); bullet != bullet_list.end();)
     {
         float border = 1000.0f;
 
-        if(Vector2::distance(position, bullet->position) > border || bullet->state == State::EXPLODE)
+        if(Vector2::distance(player.position, bullet->position) > border || bullet->state == State::EXPLODE)
         {
             bullet = bullet_list.erase(bullet);
         }
         else
         {
 
-            if(bullet->speed != 1200 && bullet->clamped_direction == clamped_direction)
+            if(bullet->speed != 1200 && bullet->clamped_direction == player.clamped_direction)
             {
                 bullet->speed *= 2;
             }
-            else if(bullet->speed == 1200 && bullet->clamped_direction != clamped_direction)
+            else if(bullet->speed == 1200 && bullet->clamped_direction != player.clamped_direction)
             {
                 bullet->speed /= 2;
             }
@@ -204,4 +204,5 @@ void BulletHandler::move_player_bullet(Vector2& position, Vector2& clamped_direc
         }
 
     }
+
 }

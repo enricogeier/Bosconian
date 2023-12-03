@@ -13,6 +13,7 @@ enum InputState
 {
     NONE,
     SHOOT_PRESSED,
+    FIRST_MOVE_PRESSED,
     CLOSE_WINDOW
 };
 
@@ -32,6 +33,8 @@ private:
     long last_frame_shoot_pressed = -99;
 
     const int TIME_BETWEEN_SHOTS = 8;
+
+    bool first_move_key_pressed = false;
 
 public:
     Input() = default;

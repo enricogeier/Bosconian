@@ -14,6 +14,8 @@ private:
     std::list<Bullet> bullet_list;
 
 public:
+    float previous_player_speed = 0.0f;
+
     BulletHandler() = default;
 
     void insert_player_bullets(Player& player, CollisionManager& collision_manager);
@@ -22,7 +24,7 @@ public:
 
     void check_collisions(QuadTree& quad_tree);
 
-    void move_player_bullet(Vector2& position, Vector2& clamped_direction, QuadTree& quad_tree, float& delta);
+    void move_player_bullet(Player& player, QuadTree& quad_tree, float& delta);
 
 
 };

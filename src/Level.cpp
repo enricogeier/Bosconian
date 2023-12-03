@@ -14,6 +14,7 @@ Level::Level()
 
     player = Player(collision_manager.get_player_collision(), collision_manager.scale);
     initialize_tile_index();
+    bullet_handler.previous_player_speed = player.current_velocity;
 
     // TODO: testing, delete this
     set_enemy();
@@ -30,10 +31,11 @@ void Level::initialize_quad_tree()
             });
 }
 
-void Level::update_player(Vector2& player_direction, float &delta, bool& shoot)
+void Level::update_player(Vector2& player_direction, float &delta, bool& shoot, bool& accelerate)
 {
 
-    player.move(player_direction, delta);
+    player.move(player_direction, delta, accelerate);
+
     set_current_tile();
     quad_tree.insert(player);
 
@@ -56,7 +58,7 @@ void Level::handle_player_state()
 void Level::update(float& delta)
 {
     // move bullets
-    bullet_handler.move_player_bullet(player.position, player.clamped_direction, quad_tree, delta);
+    bullet_handler.move_player_bullet(player, quad_tree, delta);
 
     // move enemies
     move_enemies(delta);

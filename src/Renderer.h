@@ -24,7 +24,7 @@ enum AnimationState
 class AnimationPlayer
 {
 private:
-    std::chrono::microseconds frame_time = std::chrono::microseconds(30000); // 0.3s;
+    std::chrono::microseconds frame_time = std::chrono::microseconds(20000); // 0.2s;
     u_short frame = 0;
     std::chrono::microseconds start_time = std::chrono::microseconds(0);
     std::vector<SDL_Rect> explosion_sprites;

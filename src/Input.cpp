@@ -29,6 +29,10 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
  InputState Input::handle_user_input(Vector2& keyboard_input_vector, long int& current_frame)
  {
     // Handle events on queue. SDL's internal keystates are updated every time SDL PollEvent is called
+
+    Vector2 initial_input_vector = keyboard_input_vector;
+    InputState return_value = NONE;
+
     while (SDL_PollEvent(&event))
     {
 
@@ -101,6 +105,11 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
 
             }
 
+            if(!first_move_key_pressed && keyboard_input_vector != initial_input_vector)
+            {
+                first_move_key_pressed = true;
+                return_value = FIRST_MOVE_PRESSED;
+            }
 
         }
         else if (event.type == SDL_KEYUP && event.key.repeat == 0)
@@ -235,7 +244,7 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
         }
     }
 
-    return NONE;
+    return return_value;
 }
 
 InputState Input::handle_user_destroyed_input()

@@ -54,7 +54,7 @@ public:
 
     void initialize_quad_tree();
 
-    void update_player(Vector2& player_direction, float& delta, bool& shoot);
+    void update_player(Vector2& player_direction, float& delta, bool& shoot, bool& accelerate);
 
     void handle_player_state();
 

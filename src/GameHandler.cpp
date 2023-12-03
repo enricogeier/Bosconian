@@ -67,6 +67,7 @@ void GameHandler::run() {
         if(level.get_player().state == State::NORMAL)
         {
             bool shoot = false;
+            bool accelerate = false;
 
             switch (input.handle_user_input(keyboard_input_vector, frame_counter))
             {
@@ -77,9 +78,13 @@ void GameHandler::run() {
                     break;
                 case CLOSE_WINDOW:
                     quit_game = true;
+                    break;
+                case FIRST_MOVE_PRESSED:
+                    accelerate = true;
+
             }
 
-            level.update_player(keyboard_input_vector, delta, shoot);
+            level.update_player(keyboard_input_vector, delta, shoot, accelerate);
 
             renderer.update_camera(level.get_player().position);
 
@@ -94,8 +99,6 @@ void GameHandler::run() {
                     break;
                 case CLOSE_WINDOW:
                     quit_game = true;
-                case SHOOT_PRESSED:
-                    break;
             }
         }
 

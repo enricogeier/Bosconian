@@ -1,8 +1,6 @@
-4. Mine-Explosion mit Kollision
-5. Beschleunigung am Anfang
-6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik)
+6. Viewport (wahrscheinlich nur basic Sachen ohne Buchstaben/Ziffern/Logik) => view
 7. Raumbasen rendern, Raumbasen: Kollision
-8. LevelManager aus Text-Datei einlesen
+8. Level  aus Text-Datei einlesen
 9. Gegner-Logik: Move, Raumbasen, Schießen, ...
 10. Leben implementieren, Spiel neu starten, ...
 11. korrekte Implementierung des Viewports (Buchstaben, Ziffern, Karte)
@@ -11,9 +9,5 @@
 --------------------------------------------------------------------------------
 Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
 
-
-1. GameObject Fassade: Level
 2. fps korrekt clampen (120 anstatt 123 fps)
 -------------------------------------------------------------------------------------
-Fragen:
-1) mvc: controller mit model logik? => Fassade?

@@ -90,7 +90,6 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                Vector2::distance(game_object.collision_circle.origin, object.collision_circle.origin))
             {
 
-                std::cout << "collision detected" << std::endl;
 
                 if(game_object.type == Type::MINE)
                 {

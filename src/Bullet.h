@@ -12,8 +12,7 @@ public:
     Vector2 clamped_direction;
     Vector2 direction;
 
-    int speed = 600; // default: 600
-
+    int speed = 600.0f;
 
 
     // constructor receives CLAMPED DIRECTION!
