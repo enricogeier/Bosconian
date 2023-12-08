@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "Enemy.h"
 #include "Mine.h"
+#include "SpaceStation.h"
 
 
 class Tile
@@ -16,6 +17,7 @@ public:
     std::list<Mine> mines;
     std::list<GameObject> objects;
     std::list<Enemy> enemies;
+    std::list<SpaceStation> space_stations;
 
     explicit Tile(Vector2 position = Vector2(0.0f, 0.0f));
 

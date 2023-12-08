@@ -78,7 +78,52 @@ void CollisionManager::create_collision_circles()
                                           4.0f * scale.x,
                                           Layer::ENEMY_BULLET,
                                           std::list<Layer>{Layer::PLAYER, Layer::CELESTIAL_OBJECT}
-                                  },};
+                                  },
+                          CollisionCircle // space station
+                                  {
+                                    Vector2(16.0f * scale.x, 11.0f * scale.y),
+                                    8.0f * scale.x,
+                                    Layer::ENEMY,
+                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
+                                  },
+                          CollisionCircle // cannon (square)
+                                  {
+                                    Vector2(8.0f * scale.x, 7.0f * scale.y),
+                                    7.0f * scale.x,
+                                    Layer::ENEMY,
+                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
+                                  },
+                          CollisionCircle // cannon h1
+                                  {
+                                    Vector2(16.0f * scale.x, 11.0f * scale.y),
+                                    16.0f * scale.x,
+                                    Layer::ENEMY,
+                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
+                                  },
+                          CollisionCircle // cannon h2
+                                  {
+                                    Vector2(16.0f * scale.x, 7.0f * scale.y),
+                                    10.0f * scale.x,
+                                    Layer::ENEMY,
+                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
+                                  },
+                          CollisionCircle // cannon v1
+                                  {
+                                    Vector2(12.0f * scale.x, 11.0f * scale.y),
+                                    11.0f * scale.x,
+                                    Layer::ENEMY,
+                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
+                                  },
+                          CollisionCircle // cannon v2
+                                  {
+                                    Vector2(4.0f * scale.x, 7.0f * scale.y),
+                                    6.0f * scale.x,
+                                    Layer::ENEMY,
+                                    std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
+                                  }
+
+
+                                  };
 }
 
 
@@ -131,5 +176,19 @@ CollisionCircle CollisionManager::get_player_bullet_collision()
 CollisionCircle CollisionManager::get_enemy_bullet_collision()
 {
     return collision_circles[9];
+}
+
+std::vector<CollisionCircle> CollisionManager::get_space_station_collisions()
+{
+    return std::vector<CollisionCircle>
+    {
+            collision_circles[10],
+            collision_circles[11],
+            collision_circles[12],
+            collision_circles[13],
+            collision_circles[14],
+            collision_circles[15],
+
+            };
 }
 

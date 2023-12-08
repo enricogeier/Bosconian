@@ -43,6 +43,14 @@ void Tile::update_tile_position()
         enemy = enemies.erase(enemy);
     }
 
+    for(auto& space_station : space_stations)
+    {
+        space_station.position = space_station.position + offset;
+        space_station.collision_circle.origin = space_station.position + space_station.collision_circle.initial_origin;
+
+        space_station.update_cannon_positions(offset);
+    }
+
     last_tile_position = tile_position;
 
 }

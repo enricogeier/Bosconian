@@ -39,6 +39,8 @@ public:
 
     CollisionCircle get_enemy_bullet_collision();
 
+    std::vector<CollisionCircle> get_space_station_collisions();
+
 };
 
 

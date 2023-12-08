@@ -30,8 +30,6 @@ add_executable(Test src/main.cpp
         src/Tile.cpp
         src/Level.h
         src/Level.cpp
-        src/Vector4.h
-        src/Vector4.cpp
         src/Rectangle.h
         src/GameObject.h
         src/Enemy.h
@@ -48,6 +46,9 @@ add_executable(Test src/main.cpp
         src/BulletHandler.cpp
         src/Mine.h
         src/Mine.cpp
+        src/SpaceStation.h
+        src/Cannon.h
+        src/SpaceStation.cpp
 
 )
 
