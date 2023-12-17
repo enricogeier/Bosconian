@@ -5,6 +5,16 @@ SpaceStation::SpaceStation(Vector2 position, std::vector<CollisionCircle> collis
 {
     if(horizontal)
     {
+        CannonType cannon_types[] =
+                {
+                CannonType::N,
+                CannonType::NE,
+                CannonType::SE,
+                CannonType::S,
+                CannonType::SW,
+                CannonType::NW,
+                };
+
         for(int i = 0; i < 6; i++)
         {
             cannons[i] = Cannon(
@@ -12,12 +22,25 @@ SpaceStation::SpaceStation(Vector2 position, std::vector<CollisionCircle> collis
                             position.x + (h_cannon_positions[i].x * scale.x),
                             position.y +  (h_cannon_positions[i].y * scale.y)
                             ),
-                    i % 3 == 0 ? collision_circles[2] : collision_circles[1], scale
+                    cannon_types[i],
+                    i % 3 == 0 ? collision_circles[2] : collision_circles[1],
+                    i % 3 == 0 ? collision_circles[3] : collision_circles[1],
+                    scale
                             );
         }
     }
     else
     {
+        CannonType cannon_types[] =
+                {
+                        CannonType::W,
+                        CannonType::NW,
+                        CannonType::NE,
+                        CannonType::E,
+                        CannonType::SE,
+                        CannonType::SW,
+                };
+
         for(int i = 0; i < 6; i++)
         {
             cannons[i] = Cannon(
@@ -25,7 +48,10 @@ SpaceStation::SpaceStation(Vector2 position, std::vector<CollisionCircle> collis
                             position.x + (v_cannon_positions[i].x * scale.x),
                             position.y +  (v_cannon_positions[i].y * scale.y)
                     ),
-                    i % 3 == 0 ? collision_circles[1] : collision_circles[4], scale
+                    cannon_types[i],
+                    i % 3 == 0 ? collision_circles[1] : collision_circles[4],
+                    i % 3 == 0 ? collision_circles[5] : collision_circles[4],
+                    scale
             );
         }
     }
@@ -38,6 +64,19 @@ void SpaceStation::update_cannon_positions(Vector2& offset)
     {
         cannon.position = cannon.position + offset;
         cannon.collision_circle.origin = cannon.position + cannon.collision_circle.initial_origin;
+    }
+
+}
+
+
+void SpaceStation::update_cannons()
+{
+    if(cannons[0].state != State::NORMAL && !updated)
+    {
+        updated = true;
+
+        cannons[0].update_position(horizontal ? h_cannon_new_position : v_cannon_new_position);
+
     }
 
 }

@@ -42,6 +42,12 @@ void GameHandler::render()
         }
     }
 
+    std::vector<SpaceStation> stations = level.get_space_stations();
+    for(auto& station : stations)
+    {
+        renderer.render_space_station(station);
+    }
+
     std::list<Bullet> bullet_list = level.get_bullets();
     for(auto& bullet : bullet_list)
     {

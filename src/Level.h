@@ -66,6 +66,8 @@ public:
 
     [[nodiscard]] std::vector<Mine> get_all_mines() const;
 
+    [[nodiscard]] std::vector<SpaceStation> get_space_stations() const;
+
     [[nodiscard]] Player get_player() const;
 
     std::list<Bullet> get_bullets();

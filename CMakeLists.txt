@@ -49,6 +49,7 @@ add_executable(Test src/main.cpp
         src/SpaceStation.h
         src/Cannon.h
         src/SpaceStation.cpp
+        src/Cannon.cpp
 
 )
 

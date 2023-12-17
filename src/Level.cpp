@@ -227,6 +227,7 @@ void Level::set_enemy()
             collision_manager.scale
             ));
 
+
     /*
     tiles[0].space_stations.push_back(SpaceStation(
             Vector2(1000.0f, 1000.f),
@@ -234,7 +235,7 @@ void Level::set_enemy()
             collision_manager.scale
             ));
 
-*/
+    */
 
 
 
@@ -311,6 +312,28 @@ void Level::move_enemies(float& delta)
                     break;
             }
 
+            for(auto space_station = tile.space_stations.begin();
+            space_station != tile.space_stations.end();)
+            {
+                if(space_station->state == State::NORMAL)
+                {
+                    quad_tree.insert(*space_station);
+                    space_station->update_cannons();
+
+                    for(Cannon& cannon : space_station->cannons)
+                    {
+                        cannon.check_state();
+                        quad_tree.insert(cannon);
+                    }
+
+                    ++space_station;
+                }
+                else
+                {
+                    space_station = tile.space_stations.erase(space_station);
+                }
+            }
+
 
 
 
@@ -376,6 +399,22 @@ std::vector<Mine> Level::get_all_mines() const
 
     return mines;
 }
+
+std::vector<SpaceStation> Level::get_space_stations() const
+{
+    std::vector<SpaceStation> space_stations;
+
+    for(auto& tile : tiles)
+    {
+        for(auto& station : tile.space_stations)
+        {
+            space_stations.push_back(station);
+        }
+    }
+
+    return space_stations;
+}
+
 
 Player Level::get_player() const
 {

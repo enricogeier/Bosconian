@@ -463,11 +463,95 @@ void Renderer::render_mine(const Mine& object)
     }
 }
 
-void Renderer::render_space_station(const Enemy& object)
+void Renderer::render_space_station(const SpaceStation& station)
 {
     SDL_RenderSetViewport(renderer, &game_viewport);
 
-    // TODO: implement this!
+    if(station.state == State::NORMAL)
+    {
+        if(station.horizontal)
+        {
+
+            SDL_Rect sprite = get_space_station_h_core();
+
+            SDL_Rect render_quad = {(int)(station.position.x - camera.x), (int)(station.position.y - camera.y),
+                                    sprite.w * (int)station.scale.x, sprite.h * (int)station.scale.y};
+
+            SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+            for(auto& cannon : station.cannons)
+            {
+                if(cannon.state == State::NORMAL)
+                {
+
+                    switch(cannon.type)
+                    {
+
+                        case N:
+                            sprite = get_cannon_hnn();
+                            break;
+                        case NE:
+                            sprite = get_cannon_hnne();
+                            break;
+                        case SE:
+                            sprite = get_cannon_hnse();
+                            break;
+                        case S:
+                            sprite = get_cannon_hns();
+                            break;
+                        case SW:
+                            sprite = get_cannon_hnsw();
+                            break;
+                        case NW:
+                            sprite = get_cannon_hnnw();
+                            break;
+                    }
+
+                    render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
+                                            sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+
+                    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+                }
+                else
+                {
+
+                }
+            }
+
+
+
+
+
+
+        }
+        else
+        {
+
+        }
+    }
+    else
+    {
+        bool found = false;
+
+        for(auto& animation : animations)
+        {
+            if(animation.id == station.id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            animations.push_back(AnimationPlayer(get_mine_explosion(), (GameObject &) station));
+        }
+    }
+
+
+
+
 }
 
 
@@ -793,3 +877,144 @@ std::vector<SDL_Rect> Renderer::get_mine_explosion() const
 
     return sprite_list;
 }
+
+std::vector<SDL_Rect> Renderer::get_space_station_explosion() const
+{
+    std::vector<SDL_Rect > sprite_list;
+    sprite_list.push_back(sprites[90]);
+    sprite_list.push_back(sprites[91]);
+    sprite_list.push_back(sprites[92]);
+
+    return sprite_list;
+}
+
+SDL_Rect Renderer::get_space_station_h_core() const
+{
+    return sprites[64];
+}
+
+SDL_Rect Renderer::get_space_station_v_core() const
+{
+    return sprites[65];
+}
+
+SDL_Rect Renderer::get_cannon_hnn() const
+{
+    return sprites[66];
+}
+
+SDL_Rect Renderer::get_cannon_hnne() const
+{
+    return sprites[67];
+}
+
+SDL_Rect Renderer::get_cannon_hnse() const
+{
+    return sprites[68];
+}
+
+SDL_Rect Renderer::get_cannon_hns() const
+{
+    return sprites[69];
+}
+
+SDL_Rect Renderer::get_cannon_hnsw() const
+{
+    return sprites[70];
+}
+
+SDL_Rect Renderer::get_cannon_hnnw() const
+{
+    return sprites[71];
+}
+
+SDL_Rect Renderer::get_cannon_hen() const
+{
+    return sprites[72];
+}
+
+SDL_Rect Renderer::get_cannon_hene() const
+{
+    return sprites[73];
+}
+
+SDL_Rect Renderer::get_cannon_hese() const
+{
+    return sprites[74];
+}
+
+SDL_Rect Renderer::get_cannon_hes() const
+{
+    return sprites[75];
+}
+
+SDL_Rect Renderer::get_cannon_hesw() const
+{
+    return sprites[76];
+}
+
+SDL_Rect Renderer::get_cannon_henw() const
+{
+    return sprites[77];
+}
+
+SDL_Rect Renderer::get_cannon_vnw() const
+{
+    return sprites[78];
+}
+
+SDL_Rect Renderer::get_cannon_vnnw() const
+{
+    return sprites[79];
+}
+
+SDL_Rect Renderer::get_cannon_vnne() const
+{
+    return sprites[80];
+}
+
+SDL_Rect Renderer::get_cannon_vne() const
+{
+    return sprites[81];
+}
+
+SDL_Rect Renderer::get_cannon_vnse() const
+{
+    return sprites[82];
+}
+
+SDL_Rect Renderer::get_cannon_vnsw() const
+{
+    return sprites[83];
+}
+
+SDL_Rect Renderer::get_cannon_vew() const
+{
+    return sprites[84];
+}
+
+SDL_Rect Renderer::get_cannon_venw() const
+{
+    return sprites[85];
+}
+
+SDL_Rect Renderer::get_cannon_vene() const
+{
+    return sprites[86];
+}
+
+SDL_Rect Renderer::get_cannon_vee() const
+{
+    return sprites[87];
+}
+
+SDL_Rect Renderer::get_cannon_vese() const
+{
+    return sprites[88];
+}
+
+SDL_Rect Renderer::get_cannon_vesw() const
+{
+    return sprites[89];
+}
+
