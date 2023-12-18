@@ -29,8 +29,8 @@ private:
             Vector2(-16.0f, -8.0f),
     };
 
-    Vector2 v_cannon_new_position = Vector2(-8.0f, 0.0f);
-    Vector2 h_cannon_new_position = Vector2(0.0f, -16.0f);
+    Vector2 v_cannon_new_position_offset = Vector2(8.0f, 0.0f);
+    Vector2 h_cannon_new_position_offset = Vector2(0.0f, 8.0f);
 
 public:
 

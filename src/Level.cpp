@@ -228,14 +228,14 @@ void Level::set_enemy()
             ));
 
 
-    /*
+
     tiles[0].space_stations.push_back(SpaceStation(
             Vector2(1000.0f, 1000.f),
             collision_manager.get_space_station_collisions(),
             collision_manager.scale
             ));
 
-    */
+
 
 
 

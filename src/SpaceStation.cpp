@@ -71,11 +71,24 @@ void SpaceStation::update_cannon_positions(Vector2& offset)
 
 void SpaceStation::update_cannons()
 {
-    if(cannons[0].state != State::NORMAL && !updated)
+    if(cannons[0].state == State::EXPLODE && !updated)
     {
         updated = true;
 
-        cannons[0].update_position(horizontal ? h_cannon_new_position : v_cannon_new_position);
+        if(horizontal)
+        {
+            h_cannon_new_position_offset.x *= cannons[0].scale.x;
+            h_cannon_new_position_offset.y *= cannons[0].scale.y;
+
+            cannons[0].update_position(h_cannon_new_position_offset);
+        }
+        else
+        {
+            v_cannon_new_position_offset.x *= cannons[0].scale.x;
+            v_cannon_new_position_offset.y *= cannons[0].scale.y;
+            
+            cannons[0].update_position(v_cannon_new_position_offset);
+        }
 
     }
 

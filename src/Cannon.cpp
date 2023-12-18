@@ -2,15 +2,18 @@
 
 void Cannon::check_state()
 {
-    if(state == State::EXPLODE && !exploded)
+    if(state == State::EXPLODE)
     {
-        exploded = true;
+        state = State::DESTROY;
+
         collision_circle = explosion_circle;
+        collision_circle.origin = collision_circle.initial_origin + position;
+
     }
 }
 
-void Cannon::update_position(Vector2 &new_position)
+void Cannon::update_position(Vector2 &offset)
 {
-    position = new_position;
+    position += offset;
     collision_circle.origin = collision_circle.initial_origin + position;
 }

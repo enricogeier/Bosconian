@@ -14,7 +14,6 @@ enum CannonType
 class Cannon : public GameObject
 {
 private:
-    bool exploded = false;
     CollisionCircle explosion_circle;
 
 
@@ -35,7 +34,7 @@ public:
     {
     }
 
-    void update_position(Vector2& new_position);
+    void update_position(Vector2& offset);
 
     void check_state();
 

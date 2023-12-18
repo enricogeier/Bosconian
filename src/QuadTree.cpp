@@ -90,8 +90,7 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                Vector2::distance(game_object.collision_circle.origin, object.collision_circle.origin))
             {
 
-
-                if(game_object.type == Type::MINE)
+                if(game_object.type == Type::MINE || game_object.type == Type::CANNON)
                 {
                     if(game_object.state == State::NORMAL)
                     {
@@ -100,7 +99,7 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
 
                     object.state = State::EXPLODE;
                 }
-                else if(object.type == Type::MINE)
+                else if(object.type == Type::MINE || object.type == Type::CANNON)
                 {
                     if(object.state == State::NORMAL)
                     {
@@ -114,6 +113,7 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                     game_object.state = State::EXPLODE;
                     object.state = State::EXPLODE;
                 }
+
 
 
 

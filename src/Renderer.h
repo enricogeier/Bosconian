@@ -26,7 +26,8 @@ enum AnimationState
 class AnimationPlayer
 {
 private:
-    std::chrono::microseconds frame_time = std::chrono::microseconds(20000); // 0.2s;
+    std::chrono::microseconds duration = std::chrono::microseconds(250000);
+    std::chrono::microseconds frame_time;
     u_short frame = 0;
     std::chrono::microseconds start_time = std::chrono::microseconds(0);
     std::vector<SDL_Rect> explosion_sprites;
@@ -38,13 +39,28 @@ public:
     Vector2 position;
     unsigned int id;
 
-    explicit AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, GameObject& game_object,
-                             std::chrono::microseconds duration = std::chrono::microseconds(250000))
-    : position(game_object.position), id(game_object.id), scale(game_object.scale)
+    AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, GameObject& game_object)
+    : position(game_object.position), id(game_object.id), scale(game_object.scale), frame_time(std::chrono::microseconds(0))
     {
         this->explosion_sprites = std::move(explosion_sprites);
         frame_time = std::chrono::duration_cast<std::chrono::microseconds>(duration / this->explosion_sprites.size());
 
+    }
+
+    AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, GameObject& game_object, std::chrono::microseconds duration)
+            : position(game_object.position), id(game_object.id), scale(game_object.scale),
+            frame_time(std::chrono::microseconds(0)), duration(duration)
+    {
+        this->explosion_sprites = std::move(explosion_sprites);
+        frame_time = std::chrono::duration_cast<std::chrono::microseconds>(duration / this->explosion_sprites.size());
+
+    }
+
+    AnimationPlayer(std::vector<SDL_Rect> explosion_sprites, Vector2& position, const unsigned int& id, const Vector2& scale)
+    : position(position), id(id), scale(scale), frame_time(std::chrono::microseconds(0))
+    {
+        this->explosion_sprites = std::move(explosion_sprites);
+        frame_time = std::chrono::duration_cast<std::chrono::microseconds>(duration / this->explosion_sprites.size());
     }
 
     SDL_Rect* get_animation_sprite();

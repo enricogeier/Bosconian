@@ -41,7 +41,7 @@ Renderer::Renderer()
 
     // create window
     window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_FULLSCREEN);
+                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
 
 
 
@@ -515,19 +515,145 @@ void Renderer::render_space_station(const SpaceStation& station)
                 }
                 else
                 {
+                    if(cannon.state == State::EXPLODE)
+                    {
+                        bool found = false;
 
+                        for(auto& animation : animations)
+                        {
+                            if(animation.id == cannon.id)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if(!found)
+                        {
+                            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) cannon));
+                        }
+                    }
+                    switch (cannon.type)
+                    {
+                        case N:
+                            sprite = get_cannon_hen();
+                            break;
+                        case NE:
+                            sprite = get_cannon_hene();
+                            break;
+                        case SE:
+                            sprite = get_cannon_hese();
+                            break;
+                        case S:
+                            sprite = get_cannon_hes();
+                            break;
+                        case SW:
+                            sprite = get_cannon_hesw();
+                            break;
+                        case NW:
+                            sprite = get_cannon_henw();
+                            break;
+                    }
+
+                    render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
+                                   sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+
+                    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
                 }
             }
-
-
-
-
 
 
         }
         else
         {
+            SDL_Rect sprite = get_space_station_v_core();
 
+            SDL_Rect render_quad = {(int)(station.position.x - camera.x), (int)(station.position.y - camera.y),
+                                    sprite.w * (int)station.scale.x, sprite.h * (int)station.scale.y};
+
+            SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+            for(auto& cannon : station.cannons)
+            {
+                if(cannon.state == State::NORMAL)
+                {
+
+                    switch(cannon.type)
+                    {
+                        case NE:
+                            sprite = get_cannon_vnne();
+                            break;
+                        case E:
+                            sprite = get_cannon_vne();
+                            break;
+                        case SE:
+                            sprite = get_cannon_vnse();
+                            break;
+                        case SW:
+                            sprite = get_cannon_vnsw();
+                            break;
+                        case W:
+                            sprite = get_cannon_vnw();
+                            break;
+                        case NW:
+                            sprite = get_cannon_vnnw();
+                            break;
+                    }
+
+                    render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
+                                   sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+
+                    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+                }
+                else
+                {
+                    if(cannon.state == State::EXPLODE)
+                    {
+                        bool found = false;
+
+                        for(auto& animation : animations)
+                        {
+                            if(animation.id == cannon.id)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if(!found)
+                        {
+                            animations.push_back(AnimationPlayer(get_explosion_1(), (GameObject &) cannon));
+                        }
+                    }
+                    switch (cannon.type)
+                    {
+                        case NE:
+                            sprite = get_cannon_vene();
+                            break;
+                        case E:
+                            sprite = get_cannon_vee();
+                            break;
+                        case SE:
+                            sprite = get_cannon_vese();
+                            break;
+                        case SW:
+                            sprite = get_cannon_vesw();
+                            break;
+                        case W:
+                            sprite = get_cannon_vew();
+                            break;
+                        case NW:
+                            sprite = get_cannon_venw();
+                            break;
+                    }
+
+                    render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
+                                   sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+
+                    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+                }
+            }
         }
     }
     else
@@ -545,7 +671,24 @@ void Renderer::render_space_station(const SpaceStation& station)
 
         if(!found)
         {
-            animations.push_back(AnimationPlayer(get_mine_explosion(), (GameObject &) station));
+            std::vector<SDL_Rect> explosion_sprites = get_space_station_explosion();
+
+            Vector2 animation_position_0 = station.position - Vector2(16 * station.scale.x, 20 * station.scale.y);
+            Vector2 animation_position_1 = animation_position_0 + Vector2(32 * station.scale.x, 0.0f);
+            Vector2 animation_position_2 = animation_position_0 + Vector2(0.0f, 32 * station.scale.y);
+            Vector2 animation_position_3 = animation_position_0 + Vector2(32 * station.scale.x, 32 * station.scale.y);
+
+
+            animations.push_back(AnimationPlayer(explosion_sprites, animation_position_0,
+                                                 station.id, station.scale));
+            animations.push_back(AnimationPlayer(explosion_sprites, animation_position_1,
+                                                 station.id, station.scale));
+            animations.push_back(AnimationPlayer(explosion_sprites, animation_position_2,
+                                                 station.id, station.scale));
+            animations.push_back(AnimationPlayer(explosion_sprites, animation_position_3,
+                                                 station.id, station.scale));
+
+
         }
     }
 
