@@ -10,7 +10,6 @@ class SpaceStation : public GameObject
 private:
     bool updated = false;
 
-
     Vector2 v_cannon_positions[6] = {
             Vector2(-16.0f, 0.0f),
             Vector2(-8.0f, -24.0f),
@@ -42,6 +41,8 @@ public:
     void update_cannon_positions(Vector2& offset);
 
     void update_cannons();
+
+    int get_amount_of_cannons();
 
 };
 

@@ -88,7 +88,7 @@ void CollisionManager::create_collision_circles()
                                   },
                           CollisionCircle // cannon (square)
                                   {
-                                    Vector2(8.0f * scale.x, 7.0f * scale.y),
+                                    Vector2(6.0f * scale.x, 7.0f * scale.y),
                                     7.0f * scale.x,
                                     Layer::ENEMY,
                                     std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}

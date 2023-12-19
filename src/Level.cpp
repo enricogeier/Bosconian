@@ -245,14 +245,16 @@ void Level::set_enemy()
     tiles[0].space_stations.push_back(SpaceStation(
             Vector2(1000.0f, 0.0f),
             collision_manager.get_space_station_collisions(),
-            collision_manager.scale
+            collision_manager.scale,
+            true
     ));
 
 
     tiles[0].space_stations.push_back(SpaceStation(
-            Vector2(1000.0f, -500.f),
+            Vector2(1500.0f, 0.f),
             collision_manager.get_space_station_collisions(),
-            collision_manager.scale
+            collision_manager.scale,
+            true
     ));
 
 
@@ -336,13 +338,28 @@ void Level::move_enemies(float& delta)
         {
             if(space_station->state == State::NORMAL)
             {
-                quad_tree.insert(*space_station);
                 space_station->update_cannons();
+
+                int defect_cannons = 0;
 
                 for(Cannon& cannon : space_station->cannons)
                 {
                     cannon.check_state();
                     quad_tree.insert(cannon);
+
+                    if(cannon.state != State::NORMAL)
+                    {
+                        ++defect_cannons;
+                    }
+                }
+
+                if(defect_cannons == space_station->get_amount_of_cannons())
+                {
+                    space_station->state = State::EXPLODE;
+                }
+                else
+                {
+                    quad_tree.insert(*space_station);
                 }
 
                 ++space_station;

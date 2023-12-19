@@ -1,7 +1,7 @@
 #include "SpaceStation.h"
 
 SpaceStation::SpaceStation(Vector2 position, std::vector<CollisionCircle> collision_circles, Vector2 &scale, bool horizontal)
-: GameObject(position, collision_circles[0], Type::SPACE_STATION, scale)
+: GameObject(position, collision_circles[0], Type::SPACE_STATION, scale), horizontal(horizontal)
 {
     if(horizontal)
     {
@@ -91,5 +91,18 @@ void SpaceStation::update_cannons()
         }
 
     }
+
+}
+
+int SpaceStation::get_amount_of_cannons()
+{
+    int amount = 0;
+
+    for(Cannon& cannon : cannons)
+    {
+        ++amount;
+    }
+
+    return amount;
 
 }
