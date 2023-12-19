@@ -781,6 +781,20 @@ void Renderer::render_collision_box(const GameObject& game_object)
     SDL_RenderSetViewport(renderer, &game_viewport);
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+
+    for(int y = (int)-game_object.collision_circle.radius; y <= (int)game_object.collision_circle.radius; ++y)
+    {
+        for(int x = (int)-game_object.collision_circle.radius; x <= (int) game_object.collision_circle.radius; ++x)
+        {
+            if(x * x + y * y  <= (int)game_object.collision_circle.radius * (int)game_object.collision_circle.radius)
+            {
+                SDL_RenderDrawPoint(renderer, (int)game_object.collision_circle.origin.x + x - (int)camera.x,
+                                    (int)game_object.collision_circle.origin.y + y - (int)camera.y);
+            }
+        }
+    }
+
+    /*
     SDL_RenderDrawLineF(
             renderer,
             game_object.collision_circle.origin.x - camera.x,
@@ -810,8 +824,7 @@ void Renderer::render_collision_box(const GameObject& game_object)
             game_object.collision_circle.origin.y - game_object.collision_circle.radius  - camera.y
     );
 
-
-
+    */
 
 }
 

@@ -230,14 +230,30 @@ void Level::set_enemy()
 
 
     tiles[0].space_stations.push_back(SpaceStation(
-            Vector2(1000.0f, 1000.f),
+            Vector2(1000.0f, 1000.0f),
             collision_manager.get_space_station_collisions(),
             collision_manager.scale
             ));
 
+    tiles[0].space_stations.push_back(SpaceStation(
+            Vector2(1000.0f, 500.0f),
+            collision_manager.get_space_station_collisions(),
+            collision_manager.scale
+    ));
 
 
+    tiles[0].space_stations.push_back(SpaceStation(
+            Vector2(1000.0f, 0.0f),
+            collision_manager.get_space_station_collisions(),
+            collision_manager.scale
+    ));
 
+
+    tiles[0].space_stations.push_back(SpaceStation(
+            Vector2(1000.0f, -500.f),
+            collision_manager.get_space_station_collisions(),
+            collision_manager.scale
+    ));
 
 
 }
@@ -312,32 +328,35 @@ void Level::move_enemies(float& delta)
                     break;
             }
 
-            for(auto space_station = tile.space_stations.begin();
-            space_station != tile.space_stations.end();)
-            {
-                if(space_station->state == State::NORMAL)
-                {
-                    quad_tree.insert(*space_station);
-                    space_station->update_cannons();
-
-                    for(Cannon& cannon : space_station->cannons)
-                    {
-                        cannon.check_state();
-                        quad_tree.insert(cannon);
-                    }
-
-                    ++space_station;
-                }
-                else
-                {
-                    space_station = tile.space_stations.erase(space_station);
-                }
-            }
-
-
-
-
         }
+
+
+        for(auto space_station = tile.space_stations.begin();
+            space_station != tile.space_stations.end();)
+        {
+            if(space_station->state == State::NORMAL)
+            {
+                quad_tree.insert(*space_station);
+                space_station->update_cannons();
+
+                for(Cannon& cannon : space_station->cannons)
+                {
+                    cannon.check_state();
+                    quad_tree.insert(cannon);
+                }
+
+                ++space_station;
+            }
+            else
+            {
+                space_station = tile.space_stations.erase(space_station);
+            }
+        }
+
+
+
+
+
     }
 
 }
@@ -350,6 +369,26 @@ void Level::check_enemy_collisions()
         {
             quad_tree.check_collision(enemy);
         }
+        for(auto& mine : tile.mines)
+        {
+            quad_tree.check_collision(mine);
+        }
+        for(auto& object : tile.objects)
+        {
+            quad_tree.check_collision(object);
+        }
+        for(auto& station : tile.space_stations)
+        {
+            quad_tree.check_collision(station);
+
+            for(auto& cannon : station.cannons)
+            {
+                quad_tree.check_collision(cannon);
+            }
+        }
+
+
+
     }
 }
 

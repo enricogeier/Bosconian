@@ -35,6 +35,8 @@ public:
 
     void check_collision(GameObject& game_object);
 
+    bool calculate_collision(CollisionCircle& huge_circle, CollisionCircle& small_circle);
+
 };
 
 

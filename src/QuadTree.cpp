@@ -79,15 +79,24 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
         }
 
         // check collision for each object in quad
-        if(std::find(game_object.collision_circle.can_collide_with.begin(),
+         if(std::find(game_object.collision_circle.can_collide_with.begin(),
                      game_object.collision_circle.can_collide_with.end(),
                      object.collision_circle.layer) !=
            game_object.collision_circle.can_collide_with.end())
         {
 
-            float max_radius = game_object.collision_circle.radius > object.collision_circle.radius ? game_object.collision_circle.radius : object.collision_circle.radius;
-            if(max_radius >=
-               Vector2::distance(game_object.collision_circle.origin, object.collision_circle.origin))
+             bool collision = false;
+
+             if(game_object.collision_circle.radius > object.collision_circle.radius)
+             {
+                 collision = calculate_collision(game_object.collision_circle, object.collision_circle);
+             }
+             else
+             {
+                 collision = calculate_collision(object.collision_circle, game_object.collision_circle);
+             }
+
+            if(collision)
             {
 
                 if(game_object.type == Type::MINE || game_object.type == Type::CANNON)
@@ -227,4 +236,36 @@ void QuadTree::check_collision(GameObject &game_object)
 
         }
     }
+}
+
+bool QuadTree::calculate_collision(CollisionCircle &huge_circle, CollisionCircle &small_circle)
+{
+    float max_radius = huge_circle.radius;
+    Vector2 origin = small_circle.origin;
+    Vector2 start_origin = huge_circle.origin;
+    float radius = small_circle.radius;
+
+
+
+
+    Vector2 north = Vector2(origin.x, origin.y - radius);
+    Vector2 east = Vector2(origin.x + radius, origin.y);
+    Vector2 south = Vector2(origin.x, origin.y + radius);
+    Vector2 west = Vector2(origin.x - radius, origin.y);
+
+    if(
+            max_radius >= Vector2::distance(start_origin, north)
+            || max_radius >= Vector2::distance(start_origin, east)
+            || max_radius >= Vector2::distance(start_origin, south)
+            || max_radius >= Vector2::distance(start_origin, west)
+            )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+
 }
