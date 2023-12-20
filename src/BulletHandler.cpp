@@ -179,9 +179,9 @@ void BulletHandler::move_player_bullet(Player& player, QuadTree& quad_tree, floa
 {
     for(auto bullet = bullet_list.begin(); bullet != bullet_list.end();)
     {
-        float border = 1000.0f;
 
-        if(Vector2::distance(player.position, bullet->position) > border || bullet->state == State::EXPLODE)
+
+        if(Vector2::distance(player.position, bullet->position) > BORDER|| bullet->state == State::EXPLODE)
         {
             bullet = bullet_list.erase(bullet);
         }

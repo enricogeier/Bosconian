@@ -12,7 +12,8 @@ enum class State{
     EXPLODE,
     MINE_EXPLODE,
     MINE_EXPLODED,
-    DESTROY
+    DESTROY,
+    PLAYER_COLLISION
 };
 
 enum Type

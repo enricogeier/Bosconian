@@ -107,6 +107,12 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                     }
 
                     object.state = State::EXPLODE;
+
+                    if(game_object.type == Type::CANNON && object.type == Type::PLAYER)
+                    {
+                        game_object.state = State::PLAYER_COLLISION;
+                    }
+
                 }
                 else if(object.type == Type::MINE || object.type == Type::CANNON)
                 {
@@ -116,6 +122,12 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                     }
 
                     game_object.state = State::EXPLODE;
+
+                    if(object.type == Type::CANNON && game_object.type == Type::PLAYER)
+                    {
+                        object.state = State::PLAYER_COLLISION;
+                    }
+
                 }
                 else
                 {

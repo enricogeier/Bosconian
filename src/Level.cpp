@@ -341,6 +341,7 @@ void Level::move_enemies(float& delta)
                 space_station->update_cannons();
 
                 int defect_cannons = 0;
+                bool player_collision = false;
 
                 for(Cannon& cannon : space_station->cannons)
                 {
@@ -349,11 +350,20 @@ void Level::move_enemies(float& delta)
 
                     if(cannon.state != State::NORMAL)
                     {
-                        ++defect_cannons;
+                        if(cannon.state == State::PLAYER_COLLISION)
+                        {
+                            player_collision = true;
+                            break;
+                        }
+                        else
+                        {
+                            ++defect_cannons;
+                        }
+
                     }
                 }
 
-                if(defect_cannons == space_station->get_amount_of_cannons())
+                if(player_collision || defect_cannons == space_station->get_amount_of_cannons())
                 {
                     space_station->state = State::EXPLODE;
                 }

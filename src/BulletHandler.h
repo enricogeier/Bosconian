@@ -12,6 +12,7 @@ class BulletHandler
 {
 private:
     std::list<Bullet> bullet_list;
+    const float BORDER = 700.0f;
 
 public:
     float previous_player_speed = 0.0f;
