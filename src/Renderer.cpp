@@ -101,7 +101,7 @@ void Renderer::update_screen()
 
 void Renderer::render_side_bar()
 {
-    // TODO: testing, implement this correctly
+
 
     /*
     SDL_RenderSetViewport(renderer, &hi_score_viewport);

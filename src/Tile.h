@@ -9,6 +9,8 @@
 
 class Tile
 {
+private:
+    float MIN_DISTANCE = 200.0f;
 public:
 
     Vector2 tile_position;
@@ -24,6 +26,10 @@ public:
     bool is_player_within_tile(Vector2& player_position, Vector2 tile_size) const;
 
     void update_tile_position();
+
+    void insert_object(Mine& mine);
+
+    void insert_object(GameObject& object);
 
 
 };

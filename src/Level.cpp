@@ -16,8 +16,8 @@ Level::Level()
     initialize_tile_index();
     bullet_handler.previous_player_speed = player.current_velocity;
 
-    // TODO: testing, delete this
-    set_enemy();
+    load_level(1);
+
 }
 
 void Level::initialize_quad_tree()
@@ -75,6 +75,137 @@ void Level::update(float& delta)
     // check object collisions
     check_enemy_collisions();
 }
+
+void Level::load_level(int level)
+{
+    std::vector<SpaceStation> space_stations;
+
+
+    std::string filename = LEVEL_FOLDER_LOCATION + std::to_string(level) + ".txt";
+    std::ifstream file(filename);
+
+    std::string line;
+
+    while(getline(file, line))
+    {
+        char type = line[0];
+
+        if(type == '*')
+        {
+            break;
+        }
+
+        line[0] = ' ';
+        std::istringstream iss(line);
+
+        switch (type)
+        {
+            case 'h':
+            {
+                Vector2 position;
+                while(iss >> position.x >> position.y)
+                {
+                    space_stations.push_back(SpaceStation(position,
+                                                          collision_manager.get_space_station_collisions(),
+                                                          collision_manager.scale,
+                                                          true
+                    ));
+                }
+                break;
+            }
+            case 'v':
+            {
+                Vector2 position;
+                while(iss >> position.x >> position.y)
+                {
+                    space_stations.push_back(SpaceStation(position,
+                                                          collision_manager.get_space_station_collisions(),
+                                                          collision_manager.scale
+                    ));
+                }
+                break;
+
+            }
+            case 's':
+            {
+                Vector2 position;
+                while(iss >> position.x >> position.y)
+                {
+                    player.position = position;
+                }
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+
+    }
+
+    file.close();
+
+
+    for(auto& station : space_stations)
+    {
+        for(auto& tile : tiles)
+        {
+            if(
+                    (int)station.position.x <= (int)tile.tile_position.x + TILE_SIZE_X &&
+                    (int)station.position.x >= (int)tile.tile_position.x &&
+                    (int)station.position.y <= (int)tile.tile_position.y + TILE_SIZE_Y &&
+                    (int)station.position.y >= (int)tile.tile_position.y)
+            {
+                tile.space_stations.push_back(station);
+
+                break;
+            }
+        }
+
+    }
+
+    for(auto& tile : tiles)
+    {
+        for(int i = 0; i < OBJECTS_IN_TILE; i++)
+        {
+
+            int x = generate_random_int((int)tile.tile_position.x, (int)tile.tile_position.x + TILE_SIZE_X);
+            int y = generate_random_int((int)tile.tile_position.y, (int)tile.tile_position.y + TILE_SIZE_Y);
+
+            Vector2 position = Vector2((float)x, (float)y);
+
+            if(Vector2::distance(player.position, position) < PLAYER_OBJECT_DISTANCE)
+            {
+                continue;
+            }
+
+            int type_of_object = generate_random_int(0, 1);
+
+            if(type_of_object == 0)
+            {
+                Mine mine = Mine(position,
+                                 collision_manager.get_mine_collision(), collision_manager.scale);
+                tile.insert_object(mine);
+            }
+            else
+            {
+                GameObject game_object = GameObject(position,
+                                                    collision_manager.get_asteroid_collision(),
+                                                    Type::ASTEROID, collision_manager.scale);
+
+                tile.insert_object(game_object);
+            }
+        }
+
+    }
+
+
+}
+
+
+
+
 
 void Level::initialize_tile_index()
 {
@@ -191,71 +322,7 @@ void Level::check_tile_positions()
 
 void Level::set_enemy()
 {
-    // TODO: testing, implement this!
-
-    tiles[0].enemies.push_back(Enemy(
-            Vector2(250, 250),
-            collision_manager.get_e_type_collision(),
-            Vector2(),
-            Type::E_TYPE,
-            collision_manager.scale
-            ));
-
-
-    tiles[0].mines.push_back(Mine(
-            Vector2(250, 612),
-               collision_manager.get_mine_collision(),
-               Type::MINE,
-               collision_manager.scale
-               ));
-
-
-
-    tiles[0].enemies.push_back(Enemy(
-            Vector2(512, 612),
-            collision_manager.get_spy_collision(),
-            Vector2(0, 0),
-            Type::SPY,
-            collision_manager.scale
-            ));
-
-
-    tiles[0].objects.push_back(GameObject(
-            Vector2(612, 250),
-            collision_manager.get_asteroid_collision(),
-            Type::ASTEROID,
-            collision_manager.scale
-            ));
-
-
-
-    tiles[0].space_stations.push_back(SpaceStation(
-            Vector2(1000.0f, 1000.0f),
-            collision_manager.get_space_station_collisions(),
-            collision_manager.scale
-            ));
-
-    tiles[0].space_stations.push_back(SpaceStation(
-            Vector2(1000.0f, 500.0f),
-            collision_manager.get_space_station_collisions(),
-            collision_manager.scale
-    ));
-
-
-    tiles[0].space_stations.push_back(SpaceStation(
-            Vector2(1000.0f, 0.0f),
-            collision_manager.get_space_station_collisions(),
-            collision_manager.scale,
-            true
-    ));
-
-
-    tiles[0].space_stations.push_back(SpaceStation(
-            Vector2(1500.0f, 0.f),
-            collision_manager.get_space_station_collisions(),
-            collision_manager.scale,
-            true
-    ));
+    // TODO: implement this!
 
 
 }
@@ -490,4 +557,24 @@ Player Level::get_player() const
 std::list<Bullet> Level::get_bullets()
 {
     return bullet_handler.get_bullets();
+}
+
+float Level::generate_random_float(float a, float b)
+{
+    std::random_device random;
+    std::mt19937 generate(random());
+
+    std::uniform_real_distribution<float> distribution(a, b);
+
+    return distribution(generate);
+}
+
+int Level::generate_random_int(int a, int b)
+{
+    std::random_device random;
+    std::mt19937 generate(random());
+
+    std::uniform_int_distribution<int> distribution(a, b);
+
+    return distribution(generate);
 }

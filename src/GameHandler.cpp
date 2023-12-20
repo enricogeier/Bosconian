@@ -46,33 +46,15 @@ void GameHandler::render()
     for(auto& station : stations)
     {
         renderer.render_space_station(station);
-
-        // TODO: TESTING, DELETE THIS!
-        //renderer.render_collision_box(station);
-
-        for(auto& cannon : station.cannons)
-        {
-            //renderer.render_collision_box(cannon);
-        }
-
-
     }
 
     std::list<Bullet> bullet_list = level.get_bullets();
     for(auto& bullet : bullet_list)
     {
         renderer.render_bullet(bullet);
-
-        //TODO: testing, delete this!
-
-        //renderer.render_collision_box(bullet);
     }
 
     renderer.render_player(level.get_player());
-
-    //TODO: testing, delete this!
-    //renderer.render_collision_box(level.get_player());
-
 
 
 

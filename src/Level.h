@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <list>
+#include <fstream>
+#include <sstream>
+#include <random>
 #include "Tile.h"
 #include "Enemy.h"
 #include "BulletHandler.h"
@@ -17,6 +20,11 @@
 class Level
 {
 private:
+
+    const std::string LEVEL_FOLDER_LOCATION = "../Level/";
+    const short OBJECTS_IN_TILE = 8;
+    float PLAYER_OBJECT_DISTANCE = 400.0f;
+
 
     Tile tiles[9];
     int current_tile_index = 0;
@@ -36,6 +44,11 @@ private:
     void move_enemies(float& delta);
 
     void check_enemy_collisions();
+
+    float generate_random_float(float a, float b);
+
+    int generate_random_int(int a, int b);
+
 
 
 public:
@@ -59,6 +72,8 @@ public:
     void handle_player_state();
 
     void update(float& delta);
+
+    void load_level(int level);
 
     [[nodiscard]] std::vector<GameObject> get_all_game_objects() const;
 
