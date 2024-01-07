@@ -83,7 +83,7 @@ public:
 
     [[nodiscard]] Player get_player() const;
 
-    std::list<Bullet> get_bullets();
+    [[nodiscard]] std::list<Bullet> get_bullets() const;
 
     [[nodiscard]] const long& get_current_frame() const;
 

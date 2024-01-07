@@ -21,7 +21,7 @@ public:
 
     void insert_player_bullets(Player& player, CollisionManager& collision_manager);
 
-    std::list<Bullet>& get_bullets();
+    [[nodiscard]] std::list<Bullet> get_bullets() const;
 
     void check_collisions(QuadTree& quad_tree);
 

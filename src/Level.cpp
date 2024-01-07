@@ -245,7 +245,6 @@ void Level::initialize_tile_index()
         }
     }
 
-    std::cout << current_tile_index << std::endl;
 }
 
 
@@ -271,7 +270,6 @@ void Level::set_current_tile()
         }
     }
 
-    std::cout << current_tile_index << std::endl;
 }
 
 void Level::check_tile_positions()
@@ -558,7 +556,7 @@ Player Level::get_player() const
     return player;
 }
 
-std::list<Bullet> Level::get_bullets()
+std::list<Bullet> Level::get_bullets() const
 {
     return bullet_handler.get_bullets();
 }

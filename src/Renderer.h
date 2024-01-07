@@ -2,17 +2,11 @@
 #define RENDERER_H
 
 #include <SDL.h>
-#include <iostream>
 #include <string>
 #include <utility>
 #include <SDL_image.h>
 #include <chrono>
-#include <random>
-#include "Enemy.h"
-#include "Player.h"
-#include "Bullet.h"
-#include "Mine.h"
-#include "SpaceStation.h"
+#include "Level.h"
 
 
 
@@ -81,6 +75,9 @@ private:
 
 
     const std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
+
+    const Level* level = nullptr;
+    Vector2 coefficient = Vector2();
 
 
     SDL_Window* window = nullptr;
@@ -218,7 +215,8 @@ private:
             {48,  160, 32, 32}, // space station explosion
             {80, 160, 32, 32},
             {112, 160, 32, 32},
-
+            {5, 237, 2, 2}, // player cursor
+            {28, 240, 4, 4}, // space ship cursor
 
 
 
@@ -306,6 +304,10 @@ private:
 
     SDL_Rect get_cannon_vesw() const;
 
+    SDL_Rect get_player_cursor() const;
+
+    SDL_Rect get_station_cursor() const;
+
 
     void render_e_type(const Enemy& object);
 
@@ -315,25 +317,11 @@ private:
 
     void render_spy(const Enemy& object);
 
-
-    void load_sprite_sheet();
-
-
-public:
-
-    Renderer();
-
-    ~Renderer();
-
-    void clear_screen();
-
     void update_screen();
 
-    void render_side_bar();
+    void render_side_bar(const Player& player, const std::vector<SpaceStation> stations);
 
     void render_player(const Player& object);
-
-   void render_enemy(const Enemy& enemy);
 
     void render_asteroid(const GameObject& object);
 
@@ -345,11 +333,28 @@ public:
 
     void render_animations();
 
-    void update_camera(const Vector2& position);
+    void render_collision_box(const GameObject& game_object);
+
+    void load_sprite_sheet();
+
+    void clear_screen();
+
+    void update_camera(const Player* player);
+
+
+public:
+
+    Renderer();
+
+    ~Renderer();
+
+    void set_level(const Level* level);
+
+    void update();
 
     void clear();
 
-    void render_collision_box(const GameObject& game_object);
+
 
 };
 

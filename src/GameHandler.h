@@ -14,8 +14,6 @@ private:
      Level level;
      Input input;
 
-     void render();
-
 public:
 
    GameHandler() = default;

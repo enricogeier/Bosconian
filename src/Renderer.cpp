@@ -87,19 +87,13 @@ void Renderer::load_sprite_sheet()
     sprite_sheet_texture = sprite_sheet;
 }
 
-void Renderer::clear_screen()
-{
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-    SDL_RenderClear(renderer);
-}
-
 void Renderer::update_screen()
 {
     // Update screen
     SDL_RenderPresent(renderer);
 }
 
-void Renderer::render_side_bar()
+void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStation> stations)
 {
 
 
@@ -116,7 +110,108 @@ void Renderer::render_side_bar()
     SDL_Rect background{0, 0, field_viewport.w, field_viewport.h};
     SDL_RenderFillRect(renderer, &background);
 
+    float p_clamped_pos_x = player.position.x;
+    float p_clamped_pos_y = player.position.y;
 
+    if((int)p_clamped_pos_x > level->LEVEL_SIZE_X)
+    {
+        while((int)p_clamped_pos_x > level->LEVEL_SIZE_X)
+        {
+            p_clamped_pos_x -= (float)level->LEVEL_SIZE_X;
+        }
+    }
+    else if((int)p_clamped_pos_x < 0)
+    {
+        while((int)p_clamped_pos_x < 0)
+        {
+            p_clamped_pos_x += (float)level->LEVEL_SIZE_X;
+        }
+    }
+
+    if((int)p_clamped_pos_y < 0)
+    {
+        while((int)p_clamped_pos_y < 0)
+        {
+            p_clamped_pos_y += (float)level->LEVEL_SIZE_Y;
+        }
+    }
+    else if((int)p_clamped_pos_y > level->LEVEL_SIZE_Y)
+    {
+        while((int)p_clamped_pos_y > level->LEVEL_SIZE_Y)
+        {
+            p_clamped_pos_y -= (float)level->LEVEL_SIZE_Y;
+        }
+    }
+
+
+    Vector2 player_cursor_pos = Vector2(
+            p_clamped_pos_x * coefficient.x,
+            p_clamped_pos_y * coefficient.y
+            );
+
+
+
+    SDL_Rect sprite = get_player_cursor();
+
+    SDL_Rect render_quad = {(int)(player_cursor_pos.x), (int)(player_cursor_pos.y),
+                            sprite.w * 4, sprite.h * 4};
+
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+
+
+    for(auto& station : stations)
+    {
+        float s_clamped_pos_x = station.position.x;
+        float s_clamped_pos_y = station.position.y;
+
+        if((int)s_clamped_pos_x > level->LEVEL_SIZE_X)
+        {
+            while((int)s_clamped_pos_x > level->LEVEL_SIZE_X)
+            {
+                s_clamped_pos_x -= (float)level->LEVEL_SIZE_X;
+            }
+        }
+        else if((int)s_clamped_pos_x < 0)
+        {
+            while((int)s_clamped_pos_x < 0)
+            {
+                s_clamped_pos_x += (float)level->LEVEL_SIZE_X;
+            }
+        }
+
+        if((int)s_clamped_pos_y < 0)
+        {
+            while((int)s_clamped_pos_y < 0)
+            {
+                s_clamped_pos_y += (float)level->LEVEL_SIZE_Y;
+            }
+        }
+        else if((int)s_clamped_pos_y > level->LEVEL_SIZE_Y)
+        {
+            while((int)s_clamped_pos_y > level->LEVEL_SIZE_Y)
+            {
+                s_clamped_pos_y -= (float)level->LEVEL_SIZE_Y;
+            }
+        }
+
+
+
+
+        Vector2 station_cursor_pos = Vector2(
+                s_clamped_pos_x * coefficient.x,
+                s_clamped_pos_y * coefficient.y
+        );
+
+        sprite = get_station_cursor();
+
+        render_quad = {(int)(station_cursor_pos.x), (int)(station_cursor_pos.y),
+                                sprite.w * 4, sprite.h * 4};
+
+        SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+
+    }
 
 
 
@@ -222,24 +317,7 @@ void Renderer::render_player(const Player& object)
 
 }
 
-void Renderer::render_enemy(const Enemy &enemy)
-{
-    switch (enemy.type)
-    {
-        case E_TYPE:
-            render_e_type(enemy);
-            break;
-        case P_TYPE:
-            render_p_type(enemy);
-            break;
-        case I_TYPE:
-            render_i_type(enemy);
-            break;
-        case SPY:
-            render_spy(enemy);
-            break;
-    }
-}
+
 
 void Renderer::render_e_type(const Enemy& object)
 {
@@ -848,15 +926,6 @@ void Renderer::render_collision_box(const GameObject& game_object)
 }
 
 
-void Renderer::update_camera(const Vector2& position)
-{
-    SDL_Rect sprite = get_player_sprites().front();
-    Vector2 sprite_size((float)sprite.w, (float)sprite.h);
-
-    camera = Vector2((position.x + (sprite_size.x / 2)) - ((float)game_viewport.w / 2),
-                     (position.y + (sprite_size.y / 2)) - ((float)game_viewport.h / 2));
-}
-
 
 void Renderer::clear()
 {
@@ -877,6 +946,97 @@ void Renderer::clear()
     // Quit SDL subsystems
     SDL_Quit();
 }
+
+void Renderer::update_camera(const Player* player)
+{
+    SDL_Rect sprite = get_player_sprites().front();
+    Vector2 sprite_size((float)sprite.w, (float)sprite.h);
+
+    camera = Vector2((player->position.x + (sprite_size.x / 2)) - ((float)game_viewport.w / 2),
+                     (player->position.y + (sprite_size.y / 2)) - ((float)game_viewport.h / 2));
+}
+
+void Renderer::clear_screen()
+{
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+    SDL_RenderClear(renderer);
+}
+
+
+void Renderer::update()
+{
+    clear_screen();
+
+    const Player player = level->get_player();
+    update_camera(&player);
+
+    render_animations();
+
+
+    const std::vector<GameObject> asteroids = level->get_all_game_objects();
+
+    for(auto& asteroid : asteroids)
+    {
+        render_asteroid(asteroid);
+    }
+
+    const std::vector<Mine> mines = level->get_all_mines();
+
+    for(auto& mine : mines)
+    {
+       render_mine(mine);
+    }
+
+    const std::vector<Enemy> enemies = level->get_all_enemies();
+
+    for(auto& enemy : enemies)
+    {
+        switch (enemy.type)
+        {
+            case E_TYPE:
+                render_e_type(enemy);
+                break;
+            case P_TYPE:
+                render_p_type(enemy);
+                break;
+            case I_TYPE:
+                render_i_type(enemy);
+                break;
+            case SPY:
+                render_spy(enemy);
+                break;
+        }
+    }
+
+    const std::vector<SpaceStation> stations = level->get_space_stations();
+    for(auto& station : stations)
+    {
+        render_space_station(station);
+    }
+
+    const std::list<Bullet> bullet_list = level->get_bullets();
+    for(auto& bullet : bullet_list)
+    {
+        render_bullet(bullet);
+    }
+
+    render_player(player);
+
+    render_side_bar(player, stations);
+
+    update_screen();
+
+}
+
+void Renderer::set_level(const Level *level)
+{
+    this->level = level;
+    coefficient = Vector2(
+            (float)field_viewport.w / (float)level->LEVEL_SIZE_X,
+            (float)field_viewport.h / (float)level->LEVEL_SIZE_Y);
+}
+
+
 
 std::vector<SDL_Rect> Renderer::get_player_sprites() const
 {
@@ -1193,3 +1353,12 @@ SDL_Rect Renderer::get_cannon_vesw() const
     return sprites[89];
 }
 
+SDL_Rect Renderer::get_player_cursor() const
+{
+    return sprites[93];
+}
+
+SDL_Rect Renderer::get_station_cursor() const
+{
+    return sprites[94];
+}

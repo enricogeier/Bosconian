@@ -1,60 +1,13 @@
 #include "GameHandler.h"
 
 
-void GameHandler::render()
-{
-    renderer.render_side_bar();
-
-    renderer.render_animations();
-
-    std::vector<GameObject> asteroids = level.get_all_game_objects();
-
-    for(auto& asteroid : asteroids)
-    {
-        renderer.render_asteroid(asteroid);
-    }
-
-    std::vector<Mine> mines = level.get_all_mines();
-
-    for(auto& mine : mines)
-    {
-        renderer.render_mine(mine);
-    }
-
-    std::vector<Enemy> enemies = level.get_all_enemies();
-
-    for(auto& enemy : enemies)
-    {
-        renderer.render_enemy(enemy);
-    }
-
-    std::vector<SpaceStation> stations = level.get_space_stations();
-    for(auto& station : stations)
-    {
-        renderer.render_space_station(station);
-    }
-
-    std::list<Bullet> bullet_list = level.get_bullets();
-    for(auto& bullet : bullet_list)
-    {
-        renderer.render_bullet(bullet);
-    }
-
-    renderer.render_player(level.get_player());
-
-
-
-    renderer.update_screen();
-}
-
-
 void GameHandler::run() {
 
     bool quit_game = false;
+    renderer.set_level(&level);
+
     while(!quit_game)
     {
-
-        renderer.clear_screen();
 
         if(level.get_player().state == State::NORMAL)
         {
@@ -79,8 +32,6 @@ void GameHandler::run() {
 
             level.update(keyboard_input_vector, shoot, accelerate);
 
-            renderer.update_camera(level.get_player().position);
-
         }
         else
         {
@@ -96,7 +47,7 @@ void GameHandler::run() {
         }
 
 
-        render();
+        renderer.update();
 
 
     }

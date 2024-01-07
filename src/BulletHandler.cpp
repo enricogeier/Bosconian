@@ -162,10 +162,11 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
     }
 }
 
-std::list<Bullet> &BulletHandler::get_bullets()
+std::list<Bullet> BulletHandler::get_bullets() const
 {
     return this->bullet_list;
 }
+
 
 void BulletHandler::check_collisions(QuadTree &quad_tree)
 {
