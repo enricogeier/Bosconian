@@ -222,6 +222,25 @@ void Renderer::render_player(const Player& object)
 
 }
 
+void Renderer::render_enemy(const Enemy &enemy)
+{
+    switch (enemy.type)
+    {
+        case E_TYPE:
+            render_e_type(enemy);
+            break;
+        case P_TYPE:
+            render_p_type(enemy);
+            break;
+        case I_TYPE:
+            render_i_type(enemy);
+            break;
+        case SPY:
+            render_spy(enemy);
+            break;
+    }
+}
+
 void Renderer::render_e_type(const Enemy& object)
 {
     SDL_RenderSetViewport(renderer, &game_viewport);

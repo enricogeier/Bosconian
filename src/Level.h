@@ -14,7 +14,7 @@
 #include "QuadTree.h"
 #include "CollisionManager.h"
 #include "Player.h"
-
+#include "FPSTimer.h"
 
 
 class Level
@@ -33,6 +33,10 @@ private:
     BulletHandler bullet_handler;
     Player player;
 
+    FPSTimer fps_timer;
+    long frame_counter = 1;
+    float delta = 0.0f;
+
     void initialize_tile_index();
 
     void set_current_tile();
@@ -41,13 +45,15 @@ private:
 
     void set_enemy();
 
-    void move_enemies(float& delta);
+    void move_enemies();
 
     void check_enemy_collisions();
 
     float generate_random_float(float a, float b);
 
     int generate_random_int(int a, int b);
+
+    void load_level(int level);
 
 
 
@@ -65,15 +71,7 @@ public:
 
     explicit Level();
 
-    void initialize_quad_tree();
-
-    void update_player(Vector2& player_direction, float& delta, bool& shoot, bool& accelerate);
-
-    void handle_player_state();
-
-    void update(float& delta);
-
-    void load_level(int level);
+    void update(Vector2 player_direction = Vector2(0.0f, 0.0f), bool shoot = false, bool accelerate = false);
 
     [[nodiscard]] std::vector<GameObject> get_all_game_objects() const;
 
@@ -86,6 +84,8 @@ public:
     [[nodiscard]] Player get_player() const;
 
     std::list<Bullet> get_bullets();
+
+    [[nodiscard]] const long& get_current_frame() const;
 
 
 };

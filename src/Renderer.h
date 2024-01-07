@@ -79,6 +79,10 @@ private:
     const int SCREEN_SIZE_WIDTH = 1920;   // small: 960
     const int SCREEN_SIZE_HEIGHT = 1080; // 540
 
+
+    const std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
+
+
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     Vector2 camera;
@@ -303,18 +307,19 @@ private:
     SDL_Rect get_cannon_vesw() const;
 
 
+    void render_e_type(const Enemy& object);
 
+    void render_p_type(const Enemy& object);
+
+    void render_i_type(const Enemy& object);
+
+    void render_spy(const Enemy& object);
 
 
     void load_sprite_sheet();
 
 
 public:
-
-    const int SPRITE_SHEET_WIDTH = 256;
-    const int SPRITE_SHEET_HEIGHT = 400;
-    const std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
-
 
     Renderer();
 
@@ -328,13 +333,7 @@ public:
 
     void render_player(const Player& object);
 
-    void render_e_type(const Enemy& object);
-
-    void render_p_type(const Enemy& object);
-
-    void render_i_type(const Enemy& object);
-
-    void render_spy(const Enemy& object);
+   void render_enemy(const Enemy& enemy);
 
     void render_asteroid(const GameObject& object);
 

@@ -13,15 +13,18 @@ Level::Level()
     }
 
     player = Player(collision_manager.get_player_collision(), collision_manager.scale);
-    initialize_tile_index();
     bullet_handler.previous_player_speed = player.current_velocity;
 
     load_level(1);
+    fps_timer.start();
 
 }
 
-void Level::initialize_quad_tree()
+void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
 {
+
+    delta = fps_timer.get_delta();
+
     quad_tree = QuadTree(
             {
                     (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
@@ -29,39 +32,41 @@ void Level::initialize_quad_tree()
                     LEVEL_SIZE_X,
                     LEVEL_SIZE_Y
             });
-}
 
-void Level::update_player(Vector2& player_direction, float &delta, bool& shoot, bool& accelerate)
-{
 
-    player.move(player_direction, delta, accelerate);
 
-    set_current_tile();
-    quad_tree.insert(player);
-
-    if(shoot)
+    switch (player.state)
     {
-        bullet_handler.insert_player_bullets(player, collision_manager);
+        case State::NORMAL:
+        {
+            player.move(player_direction, delta, accelerate);
+
+            set_current_tile();
+            quad_tree.insert(player);
+
+            if(shoot)
+            {
+                bullet_handler.insert_player_bullets(player, collision_manager);
+            }
+
+            break;
+        }
+        case State::EXPLODE:
+        {
+            player.state = State::DESTROY;
+            break;
+        }
+        case State::DESTROY:
+        {
+            break;
+        }
     }
 
-}
-
-void Level::handle_player_state()
-{
-    if(player.state == State::EXPLODE)
-    {
-        player.state = State::DESTROY;
-    }
-
-}
-
-void Level::update(float& delta)
-{
     // move bullets
     bullet_handler.move_player_bullet(player, quad_tree, delta);
 
     // move enemies
-    move_enemies(delta);
+    move_enemies();
 
     // check player collision
     if(player.state == State::NORMAL)
@@ -74,6 +79,11 @@ void Level::update(float& delta)
 
     // check object collisions
     check_enemy_collisions();
+
+    fps_timer.clamp_and_print_fps(frame_counter);
+    frame_counter++;
+
+
 }
 
 void Level::load_level(int level)
@@ -165,6 +175,7 @@ void Level::load_level(int level)
 
     }
 
+
     for(auto& tile : tiles)
     {
         for(int i = 0; i < OBJECTS_IN_TILE; i++)
@@ -200,11 +211,10 @@ void Level::load_level(int level)
 
     }
 
+    initialize_tile_index();
+
 
 }
-
-
-
 
 
 void Level::initialize_tile_index()
@@ -216,6 +226,7 @@ void Level::initialize_tile_index()
         current_tile_position = tiles[current_tile_index].tile_position;
 
         std::cerr << "Invalid position for player. Position has been set to: ( " << player.position.x << ", " << player.position.y << " )." << std::endl;
+        check_tile_positions();
     }
     else
     {
@@ -223,13 +234,6 @@ void Level::initialize_tile_index()
         {
             if(tiles[i].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
             {
-                if(tiles[i].tile_position == Vector2(Level::LEVEL_SIZE_X - (2 * Level::TILE_SIZE_X), Level::LEVEL_SIZE_Y - (2 * Level::TILE_SIZE_Y)))
-                {
-                    current_tile_index = i;
-                    current_tile_position = tiles[current_tile_index].tile_position;
-                    break;
-                }
-
                 current_tile_index = i;
                 current_tile_position = tiles[current_tile_index].tile_position;
                 check_tile_positions();
@@ -327,7 +331,7 @@ void Level::set_enemy()
 
 }
 
-void Level::move_enemies(float& delta)
+void Level::move_enemies()
 {
     for(auto& tile : tiles)
     {
@@ -577,4 +581,10 @@ int Level::generate_random_int(int a, int b)
     std::uniform_int_distribution<int> distribution(a, b);
 
     return distribution(generate);
+}
+
+
+const long& Level::get_current_frame() const
+{
+    return frame_counter;
 }

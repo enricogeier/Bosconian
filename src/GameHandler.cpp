@@ -25,21 +25,7 @@ void GameHandler::render()
 
     for(auto& enemy : enemies)
     {
-        switch (enemy.type)
-        {
-            case E_TYPE:
-                renderer.render_e_type(enemy);
-                break;
-            case P_TYPE:
-                renderer.render_p_type(enemy);
-                break;
-            case I_TYPE:
-                renderer.render_i_type(enemy);
-                break;
-            case SPY:
-                renderer.render_spy(enemy);
-                break;
-        }
+        renderer.render_enemy(enemy);
     }
 
     std::vector<SpaceStation> stations = level.get_space_stations();
@@ -64,22 +50,19 @@ void GameHandler::render()
 
 void GameHandler::run() {
 
-    fps_timer.start();
+    bool quit_game = false;
     while(!quit_game)
     {
 
         renderer.clear_screen();
-
-        float delta = fps_timer.get_delta();
-
-        level.initialize_quad_tree();
 
         if(level.get_player().state == State::NORMAL)
         {
             bool shoot = false;
             bool accelerate = false;
 
-            switch (input.handle_user_input(keyboard_input_vector, frame_counter))
+
+            switch (input.handle_user_input(keyboard_input_vector, const_cast<long &>(level.get_current_frame())))
             {
                 case NONE:
                     break;
@@ -94,14 +77,14 @@ void GameHandler::run() {
 
             }
 
-            level.update_player(keyboard_input_vector, delta, shoot, accelerate);
+            level.update(keyboard_input_vector, shoot, accelerate);
 
             renderer.update_camera(level.get_player().position);
 
         }
         else
         {
-            level.handle_player_state();
+            level.update();
 
             switch(input.handle_user_destroyed_input())
             {
@@ -113,14 +96,8 @@ void GameHandler::run() {
         }
 
 
-       level.update(delta);
-
         render();
 
-
-
-        fps_timer.clamp_and_print_fps(frame_counter);
-        frame_counter++;
 
     }
 
