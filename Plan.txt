@@ -1,6 +1,6 @@
 9. Gegner-Logik: Move, Raumbasen, Schießen, ...
 10. Leben implementieren, Spiel neu starten, ...
-11. korrekte Implementierung des Viewports (Buchstaben, Ziffern, Karte)
+11. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
 12. google-Tests
 13. Sound
 --------------------------------------------------------------------------------
