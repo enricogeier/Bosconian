@@ -9,18 +9,23 @@ class Player : public GameObject
 {
 private:
     static const Vector2 START_POSITION;
-    static const float MAX_VELOCITY;
-    static const float MIN_VELOCITY;
 
-    int player_lives = 3;
-    bool do_acceleration = false;
-
-    static const float ACCELERATION;
 
 public:
 
     Vector2 clamped_direction;
     Vector2 direction = Vector2(0.0f, -1.0f);
+
+    int lives = 3;
+
+    static const float MAX_VELOCITY;
+    static const float MIN_VELOCITY;
+
+
+    bool do_acceleration = false;
+
+    static const float ACCELERATION;
+
 
     float current_velocity = MIN_VELOCITY;
 

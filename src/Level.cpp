@@ -1,6 +1,5 @@
 #include "Level.h"
 
-
 Level::Level()
 {
     for(int j = 0, tile_index = 0; j < Level::AMOUNT_OF_TILES_Y; j++)
@@ -23,62 +22,200 @@ Level::Level()
 void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
 {
 
-    delta = fps_timer.get_delta();
-
-    quad_tree = QuadTree(
-            {
-                    (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
-                    (int)current_tile_position.y - (int(AMOUNT_OF_TILES_Y / 2) * TILE_SIZE_Y ),
-                    LEVEL_SIZE_X,
-                    LEVEL_SIZE_Y
-            });
-
-
-
-    switch (player.state)
+    switch(state)
     {
-        case State::NORMAL:
+
+        case WAIT:
         {
-            player.move(player_direction, delta, accelerate);
-
-            set_current_tile();
-            quad_tree.insert(player);
-
-            if(shoot)
+            if(timer == std::chrono::microseconds(0))
             {
-                bullet_handler.insert_player_bullets(player, collision_manager);
+                auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+            }
+            else
+            {
+                auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - timer);
+
+                if(time_delta > std::chrono::microseconds(3000000))
+                {
+                    timer = std::chrono::microseconds(0);
+                    state = LevelState::RUNNING;
+                }
+
             }
 
             break;
         }
-        case State::EXPLODE:
+        case RUNNING:
         {
-            player.state = State::DESTROY;
+            delta = fps_timer.get_delta();
+
+            quad_tree = QuadTree(
+                    {
+                            (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
+                            (int)current_tile_position.y - (int(AMOUNT_OF_TILES_Y / 2) * TILE_SIZE_Y ),
+                            LEVEL_SIZE_X,
+                            LEVEL_SIZE_Y
+                    });
+
+
+
+            switch (player.state)
+            {
+                case State::NORMAL:
+                {
+                    player.move(player_direction, delta, accelerate);
+
+                    set_current_tile();
+                    quad_tree.insert(player);
+
+                    if(shoot)
+                    {
+                        bullet_handler.insert_player_bullets(player, collision_manager);
+                    }
+
+                    break;
+                }
+                case State::EXPLODE:
+                {
+                    player.state = State::DESTROY;
+                    --player.lives;
+
+                    if(player.lives < 0)
+                    {
+                        state = LevelState::GAME_OVER;
+                    }
+                    else
+                    {
+                        state = LevelState::LOST_LIVE;
+                    }
+
+                    break;
+                }
+                case State::DESTROY:
+                {
+                    break;
+                }
+            }
+
+            // move bullets
+            bullet_handler.move_player_bullet(player, quad_tree, delta);
+
+            // move enemies
+            move_enemies();
+
+            // check player collision
+            if(player.state == State::NORMAL) [[likely]]
+            {
+                quad_tree.check_collision(player);
+            }
+
+            // check bullet collisions
+            bullet_handler.check_collisions(quad_tree);
+
+            // check object collisions
+            check_enemy_collisions();
             break;
         }
-        case State::DESTROY:
+        case LOST_LIVE:
         {
+            // start timer (5 seconds)
+
+            if(timer == std::chrono::microseconds(0))
+            {
+                auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+            }
+            else
+            {
+                auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - timer);
+
+                if(time_delta > std::chrono::microseconds(5000000))
+                {
+                    timer = std::chrono::microseconds(0);
+                    state = LevelState::RESTART;
+                }
+
+            }
+
+
+            delta = fps_timer.get_delta();
+
+            quad_tree = QuadTree(
+                    {
+                            (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
+                            (int)current_tile_position.y - (int(AMOUNT_OF_TILES_Y / 2) * TILE_SIZE_Y ),
+                            LEVEL_SIZE_X,
+                            LEVEL_SIZE_Y
+                    });
+
+            // move bullets
+            bullet_handler.move_player_bullet(player, quad_tree, delta);
+
+            // move enemies
+            move_enemies();
+
+            // check bullet collisions
+            bullet_handler.check_collisions(quad_tree);
+
+            // check object collisions
+            check_enemy_collisions();
+
+
             break;
         }
+        case GAME_OVER:
+        {
+            // testing
+
+
+
+            delta = fps_timer.get_delta();
+
+            quad_tree = QuadTree(
+                    {
+                            (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
+                            (int)current_tile_position.y - (int(AMOUNT_OF_TILES_Y / 2) * TILE_SIZE_Y ),
+                            LEVEL_SIZE_X,
+                            LEVEL_SIZE_Y
+                    });
+
+            // move bullets
+            bullet_handler.move_player_bullet(player, quad_tree, delta);
+
+            // move enemies
+            move_enemies();
+
+            // check bullet collisions
+            bullet_handler.check_collisions(quad_tree);
+
+            // check object collisions
+            check_enemy_collisions();
+
+            break;
+        }
+        case RESTART:
+        {
+            player.position = start_position;
+            player.direction = Vector2(0.0f, -1.0f);
+            player.clamped_direction = Vector2(0.0f, -1.0f);
+            player.current_velocity = Player::MIN_VELOCITY;
+            player.do_acceleration = false;
+            set_current_tile();
+            player.state = State::NORMAL;
+            state = LevelState::WAIT;
+            break;
+        }
+
     }
 
-    // move bullets
-    bullet_handler.move_player_bullet(player, quad_tree, delta);
 
-    // move enemies
-    move_enemies();
 
-    // check player collision
-    if(player.state == State::NORMAL)
-    {
-        quad_tree.check_collision(player);
-    }
 
-    // check bullet collisions
-    bullet_handler.check_collisions(quad_tree);
-
-    // check object collisions
-    check_enemy_collisions();
 
     fps_timer.clamp_and_print_fps(frame_counter);
     frame_counter++;
@@ -142,6 +279,7 @@ void Level::load_level(int level)
                 while(iss >> position.x >> position.y)
                 {
                     player.position = position;
+                    start_position = position;
                 }
                 break;
             }

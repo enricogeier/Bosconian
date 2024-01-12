@@ -211,14 +211,32 @@ void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStat
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
 
+
+
+
+
+
+
+
+
     }
 
 
 
-    /*
+
     SDL_RenderSetViewport(renderer, &game_state_viewport);
-    SDL_RenderCopy();
-    */
+    sprite = get_p1_life();
+
+    for(int i = 0; i < player.lives; i++)
+    {
+        // sprite size: 64 * 64
+        render_quad = {i * 64, 0, 64, 64};
+        SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+    }
+
+
+
 
 
 }
@@ -1012,6 +1030,8 @@ void Renderer::update()
     for(auto& station : stations)
     {
         render_space_station(station);
+
+
     }
 
     const std::list<Bullet> bullet_list = level->get_bullets();
@@ -1047,6 +1067,7 @@ std::vector<SDL_Rect> Renderer::get_player_sprites() const
 
     return sprite_list;
 }
+
 
 std::vector<SDL_Rect> Renderer::get_e_type(bool leader) const
 {
