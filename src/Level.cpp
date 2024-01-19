@@ -22,6 +22,7 @@ Level::Level()
 void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
 {
 
+
     switch(state)
     {
 
@@ -202,7 +203,6 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
         {
             player.position = start_position;
             player.direction = Vector2(0.0f, -1.0f);
-            player.clamped_direction = Vector2(0.0f, -1.0f);
             player.current_velocity = Player::MIN_VELOCITY;
             player.do_acceleration = false;
             set_current_tile();
@@ -363,6 +363,8 @@ void Level::initialize_tile_index()
         current_tile_index = (Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y) / 2;
         current_tile_position = tiles[current_tile_index].tile_position;
 
+        start_tile = current_tile_index;
+
         std::cerr << "Invalid position for player. Position has been set to: ( " << player.position.x << ", " << player.position.y << " )." << std::endl;
         check_tile_positions();
     }
@@ -374,6 +376,9 @@ void Level::initialize_tile_index()
             {
                 current_tile_index = i;
                 current_tile_position = tiles[current_tile_index].tile_position;
+
+                start_tile = current_tile_index;
+
                 check_tile_positions();
 
 
@@ -432,22 +437,43 @@ void Level::check_tile_positions()
         {
             has_changed = true;
             tiles[i].tile_position.x += Level::AMOUNT_OF_TILES_X * Level::TILE_SIZE_X;
+
+            if(i == start_tile)
+            {
+                start_position.x += Level::AMOUNT_OF_TILES_X * Level::TILE_SIZE_X;
+            }
         }
         else if((int)tiles[i].tile_position.x > e)
         {
             has_changed = true;
             tiles[i].tile_position.x -= Level::AMOUNT_OF_TILES_X * Level::TILE_SIZE_X;
+
+            if(i == start_tile)
+            {
+                start_position.x -= Level::AMOUNT_OF_TILES_X * Level::TILE_SIZE_X;
+            }
         }
 
         if((int)tiles[i].tile_position.y < n)
         {
             has_changed = true;
             tiles[i].tile_position.y += Level::AMOUNT_OF_TILES_Y * Level::TILE_SIZE_Y;
+
+            if(i == start_tile)
+            {
+                start_position.y += Level::AMOUNT_OF_TILES_Y * Level::TILE_SIZE_Y;
+            }
+
         }
         else if((int)tiles[i].tile_position.y > s)
         {
             has_changed = true;
             tiles[i].tile_position.y -= Level::AMOUNT_OF_TILES_Y * Level::TILE_SIZE_Y;
+
+            if(i == start_tile)
+            {
+                start_position.y -= Level::AMOUNT_OF_TILES_Y * Level::TILE_SIZE_Y;
+            }
         }
 
         if(has_changed)

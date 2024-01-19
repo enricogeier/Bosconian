@@ -25,7 +25,7 @@ void GameHandler::run() {
                 case CLOSE_WINDOW:
                     quit_game = true;
                     break;
-                case FIRST_MOVE_PRESSED:
+                case MOVE_PRESSED:
                     accelerate = true;
 
             }
@@ -35,6 +35,8 @@ void GameHandler::run() {
         }
         else
         {
+            keyboard_input_vector = Vector2();
+
             level.update();
 
             switch(input.handle_user_destroyed_input())

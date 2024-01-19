@@ -37,6 +37,7 @@ private:
     float PLAYER_OBJECT_DISTANCE = 400.0f;
 
     Vector2 start_position = Vector2();
+    int start_tile = 0;
     std::chrono::microseconds timer = std::chrono::microseconds(0);
 
 

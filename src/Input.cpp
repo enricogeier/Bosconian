@@ -67,6 +67,8 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
                         keyboard_input_vector.x = 0.0f;
                     }
 
+                    return_value = MOVE_PRESSED;
+
                     break;
 
                 case SDLK_DOWN:
@@ -77,6 +79,8 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
                     {
                         keyboard_input_vector.x = 0.0f;
                     }
+
+                    return_value = MOVE_PRESSED;
 
                     break;
 
@@ -89,6 +93,8 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
                         keyboard_input_vector.y = 0.0f;
                     }
 
+                    return_value = MOVE_PRESSED;
+
                     break;
 
                 case SDLK_RIGHT:
@@ -100,16 +106,14 @@ SDL_KeyCode Input::find_entry(std::map<SDL_KeyCode, long>& key_map, SDL_KeyCode 
                         keyboard_input_vector.y = 0.0f;
                     }
 
+                    return_value = MOVE_PRESSED;
+
                     break;
 
 
             }
 
-            if(!first_move_key_pressed && keyboard_input_vector != initial_input_vector)
-            {
-                first_move_key_pressed = true;
-                return_value = FIRST_MOVE_PRESSED;
-            }
+
 
         }
         else if (event.type == SDL_KEYUP && event.key.repeat == 0)
