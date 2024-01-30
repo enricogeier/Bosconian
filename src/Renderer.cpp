@@ -41,7 +41,7 @@ Renderer::Renderer()
 
     // create window
     window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_FULLSCREEN);
+                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
 
 
 
@@ -310,6 +310,8 @@ void Renderer::render_player(const Player& object)
                                 sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+
+
 
     }
     else if(object.state == State::EXPLODE)
@@ -980,12 +982,114 @@ void Renderer::clear_screen()
     SDL_RenderClear(renderer);
 }
 
+void Renderer::render_background(const Player &player)
+{
+    SDL_RenderSetViewport(renderer, &game_viewport);
+
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> randomX(player.position.x - 2000, player.position.x + 2000);
+    std::uniform_int_distribution<int> randomY(player.position.y - 2000, player.position.y + 2000);
+
+
+    if(points.size() == 0) [[unlikely]]
+    {
+
+        auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+        point_timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+
+
+
+
+
+        for(uint16_t particle = 0; particle < NUM_PARTICLES; particle++)
+        {
+            int randomNumber1 = randomX(mt);
+            int randomNumber2 = randomY(mt);
+
+            for(int column = 0; column < GRID_SIZE; column++)
+            {
+                for(int row = 0; row < GRID_SIZE; row++)
+                {
+                    points.push_back(SDL_Point{randomNumber1 + column, randomNumber2 + row});
+                }
+            }
+        }
+
+    }
+
+    auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+    auto current_time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+    std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(current_time - point_timer);
+
+    std::vector<SDL_Point> pointsCopy;
+
+    bool skip = false;
+
+    if(time_delta > std::chrono::microseconds(1000000))
+    {
+        point_timer = current_time;
+
+        auto secondsDuration = std::chrono::duration_cast<std::chrono::seconds>(point_timer);
+        auto seconds = static_cast<unsigned int>(secondsDuration.count());
+
+
+        for(u_short i = 0; i < (u_short)points.size(); i+= GRID_SIZE * GRID_SIZE)
+        {
+
+            if((seconds - i ) % 3 == 0)
+            {
+                skip = true;
+
+                int randomNumber1 = randomX(mt);
+                int randomNumber2 = randomY(mt);
+
+                for(int column = 0, index = i; column < GRID_SIZE; column++)
+                {
+                    for(int row = 0; row < GRID_SIZE; row++)
+                    {
+                        points[index].x = randomNumber1 + column;
+                        points[index].y = randomNumber2 + row;
+
+                        pointsCopy.push_back(SDL_Point{points[index].x - (int)camera.x, points[index].y - (int)camera.y});
+
+                        ++index;
+                    }
+                }
+
+            }
+
+        }
+    }
+    if(!skip)
+    {
+        pointsCopy = points;
+        for(auto& point : pointsCopy)
+        {
+            point.x -= (int)camera.x;
+            point.y -= (int)camera.y;
+        }
+
+    }
+
+
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);  // Set particle color
+    SDL_RenderDrawPoints(renderer, pointsCopy.data(), (int)pointsCopy.size());
+
+
+}
+
 
 void Renderer::update()
 {
     clear_screen();
 
     const Player player = level->get_player();
+
+    render_background(player);
+
     update_camera(&player);
 
     render_animations();

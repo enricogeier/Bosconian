@@ -6,6 +6,8 @@
 #include <utility>
 #include <SDL_image.h>
 #include <chrono>
+#include <random>
+#include <map>
 #include "Level.h"
 
 
@@ -63,8 +65,10 @@ public:
     Vector2 scale = Vector2(1.0f, 1.0f);
 };
 
-
-
+enum Color
+{
+    RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN
+};
 
 class Renderer
 {
@@ -93,6 +97,33 @@ private:
     const SDL_Rect condition_viewport{1488, 234, 432, 144};
     const SDL_Rect field_viewport{1488, 378, 432, 540};
     const SDL_Rect game_state_viewport{1488, 918, 432, 162};
+
+    std::map<Color, SDL_Color> color_values = {
+            {Color::RED, SDL_Color{255, 0, 0, 255}},
+            {Color::GREEN, SDL_Color{0, 255, 0, 255}},
+            {Color::BLUE, SDL_Color{0, 0, 255, 255}},
+            {Color::YELLOW, SDL_Color{255, 255, 0, 255}},
+            {Color::MAGENTA, SDL_Color{255, 0, 255, 255}},
+            {Color::CYAN, SDL_Color{0, 255, 255, 255}},
+    };
+
+    std::map<Color, SDL_Point> points;
+
+    std::chrono::microseconds point_timer = std::chrono::microseconds(0);
+
+    const uint16_t NUM_PARTICLES = 1250;  // default: 1250
+    const u_short GRID_SIZE = 4; // default: 4
+
+
+    int colors[24] = {
+            255, 0, 0, 255, // red
+            0, 255, 0, 255,  // green
+            0, 0, 255, 255,  // blue
+            255, 255, 0, 255, // yellow
+            255, 0, 255, 255, // magenta
+            0, 255, 255, 255 // cyan
+    };
+
 
 
     std::list<AnimationPlayer> animations;
@@ -216,7 +247,7 @@ private:
             {80, 160, 32, 32},
             {112, 160, 32, 32},
             {5, 237, 2, 2}, // player cursor
-            {28, 240, 4, 4}, // space ship cursor
+            {28, 240, 4, 4}, // spaceship cursor
 
 
 
@@ -308,6 +339,8 @@ private:
 
     SDL_Rect get_station_cursor() const;
 
+
+    void render_background(const Player& player);
 
     void render_e_type(const Enemy& object);
 
