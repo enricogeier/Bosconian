@@ -19,6 +19,121 @@ enum AnimationState
 };
 
 
+class Particle
+{
+private:
+    u_short GRID_SIZE;
+    std::vector<SDL_Point> points;
+
+public:
+
+    int start_x = 0;
+    int start_y = 0;
+
+    uint8_t r = 0;
+    uint8_t g = 0;
+    uint8_t b = 0;
+
+    explicit Particle(int start_x = 0, int start_y = 0, u_short grid_size = 4)
+    {
+        GRID_SIZE = grid_size;
+        start_x = start_x;
+        start_y = start_y;
+        int color = start_x % 6;
+
+        switch(color)
+        {
+            case 0:
+            {
+                r = 255;
+            }
+            break;
+
+            case 1:
+            {
+                g = 255;
+            }
+            break;
+
+            case 2:
+            {
+                b = 255;
+            }
+            break;
+
+            case 3:
+            {
+                r = 255;
+                g = 255;
+            }
+            break;
+
+            case 4:
+            {
+                r = 255;
+                b = 255;
+            }
+            break;
+
+            case 5:
+            {
+                g = 255;
+                b = 255;
+            }
+            break;
+
+        }
+
+
+
+        for(int column = 0; column < GRID_SIZE; column++)
+        {
+            for(int row = 0; row < GRID_SIZE; row++)
+            {
+                points.push_back(SDL_Point{start_x, start_y});
+            }
+        }
+
+
+
+    }
+
+
+    void frame_update(int offset_x = 0, int offset_y = 0)
+    {
+        for(int column = 0, index = 0; column < GRID_SIZE; column++)
+        {
+            for(int row = 0; row < GRID_SIZE; row++)
+            {
+                points[index].x -= offset_x;
+                points[index].y -= offset_y;
+
+                ++index;
+            }
+        }
+    }
+
+    void update_position(int start_x = 0, int start_y = 0, int offset_x = 0, int offset_y = 0)
+    {
+        start_x = start_x;
+        start_y = start_y;
+
+
+        for(int column = 0, index = 0; column < GRID_SIZE; column++)
+        {
+            for(int row = 0; row < GRID_SIZE; row++)
+            {
+                points[index].x = start_x + column - offset_x;
+                points[index].y = start_y + row - offset_y;
+
+                ++index;
+            }
+        }
+
+        
+    }
+};
+
 class AnimationPlayer
 {
 private:
@@ -65,10 +180,6 @@ public:
     Vector2 scale = Vector2(1.0f, 1.0f);
 };
 
-enum Color
-{
-    RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN
-};
 
 class Renderer
 {
@@ -98,21 +209,17 @@ private:
     const SDL_Rect field_viewport{1488, 378, 432, 540};
     const SDL_Rect game_state_viewport{1488, 918, 432, 162};
 
-    std::map<Color, SDL_Color> color_values = {
-            {Color::RED, SDL_Color{255, 0, 0, 255}},
-            {Color::GREEN, SDL_Color{0, 255, 0, 255}},
-            {Color::BLUE, SDL_Color{0, 0, 255, 255}},
-            {Color::YELLOW, SDL_Color{255, 255, 0, 255}},
-            {Color::MAGENTA, SDL_Color{255, 0, 255, 255}},
-            {Color::CYAN, SDL_Color{0, 255, 255, 255}},
-    };
 
-    std::map<Color, SDL_Point> points;
+    std::vector<Particle> particles;
+
+
 
     std::chrono::microseconds point_timer = std::chrono::microseconds(0);
 
     const uint16_t NUM_PARTICLES = 1250;  // default: 1250
-    const u_short GRID_SIZE = 4; // default: 4
+
+    const u_short GRID_SIZE = 4;
+
 
 
     int colors[24] = {
