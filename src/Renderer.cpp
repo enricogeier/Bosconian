@@ -1004,21 +1004,16 @@ void Renderer::render_background(const Player &player)
             int randomNumber1 = randomX(mt);
             int randomNumber2 = randomY(mt);
 
-            particles.push_back(Particle(randomNumber1, randomNumber2, GRID_SIZE));
+            particles.push_back(SDL_Rect{randomNumber1, randomNumber2,
+                                         GRID_SIZE_X, GRID_SIZE_Y});
 
         }
-
-
-
-
 
     }
 
     auto current_frame_time_point = std::chrono::high_resolution_clock::now();
     auto current_time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
     std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(current_time - point_timer);
-
-    std::vector<Particle> particleCopy;
 
 
     if(time_delta > std::chrono::microseconds(1000000))
@@ -1032,32 +1027,37 @@ void Renderer::render_background(const Player &player)
         for(u_short i = 0; i < (u_short)particles.size(); i++)
         {
 
-            Particle& particle = particles[i];
-
             if((seconds - i ) % 3 == 0)
             {
 
                 int randomNumber1 = randomX(mt);
                 int randomNumber2 = randomY(mt);
 
-                particle.update_position(randomNumber1, randomNumber2);
+                particles[i].x = randomNumber1;
+                particles[i].y = randomNumber2;
 
             }
-            else
-            {
-                particle.frame_update((int)camera.x, (int)camera.y);
-            }
-
-            SDL_SetRenderDrawColor(renderer, particle.r, particle.g, particle.b, 255);  // Set particle color
 
         }
     }
 
+    std::vector<SDL_Rect> particleCopy = particles;
+
+    for(int i = 0; i < particleCopy.size(); i++)
+    {
+        uint8_t colorIndex = particleCopy[i].x % 6;
+        SDL_Color particleColor = colors[colorIndex];
+
+        SDL_SetRenderDrawColor(renderer, particleColor.r, particleColor.g, particleColor.b, 255);
+
+        particleCopy[i].x -= camera.x;
+        particleCopy[i].y -= camera.y;
+
+        SDL_RenderFillRect(renderer, &particleCopy[i]);
 
 
+    }
 
-
-    SDL_RenderDrawPoints(renderer, particleCopy.data(), (int)particleCopy.size());
 
 
 }
