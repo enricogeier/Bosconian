@@ -99,10 +99,10 @@ private:
 
     std::vector<SDL_Rect> particles;
     std::chrono::microseconds point_timer = std::chrono::microseconds(0);
-    const uint16_t NUM_PARTICLES = 625;  // default: 1250
+    const uint16_t NUM_PARTICLES = 300;  // default: 625
 
-    const int GRID_SIZE_X = 8;
-    const int GRID_SIZE_Y = 8;
+    const int GRID_SIZE_X = 4;
+    const int GRID_SIZE_Y = 4;
 
     std::vector<SDL_Color> colors = {
             {255, 0, 0},

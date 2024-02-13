@@ -36,7 +36,6 @@ private:
     const short OBJECTS_IN_TILE = 8;
     float PLAYER_OBJECT_DISTANCE = 400.0f;
 
-    Vector2 start_position = Vector2();
     int start_tile = 0;
     std::chrono::microseconds timer = std::chrono::microseconds(0);
 
@@ -76,6 +75,8 @@ private:
 public:
 
     LevelState state = LevelState::WAIT;
+
+    Vector2 start_position = Vector2();
 
     const int LEVEL_SIZE_X = 4500;
     const int LEVEL_SIZE_Y = 7800;

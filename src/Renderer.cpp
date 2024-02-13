@@ -989,27 +989,54 @@ void Renderer::render_background(const Player &player)
 
     std::random_device rd;
     std::mt19937 mt(rd());
+
     std::uniform_int_distribution<int> randomX(player.position.x - 2000, player.position.x + 2000);
     std::uniform_int_distribution<int> randomY(player.position.y - 2000, player.position.y + 2000);
 
 
-    if(particles.size() == 0) [[unlikely]]
+    if(particles.size() == 0 || level->state == LevelState::RESTART) [[unlikely]]
     {
+        int randomNumber1;
+        int randomNumber2;
+
 
         auto current_frame_time_point = std::chrono::high_resolution_clock::now();
         point_timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
 
-        for(uint16_t particle = 0; particle < NUM_PARTICLES; particle++)
+
+        if(level->state == LevelState::RESTART) [[likely]]
         {
-            int randomNumber1 = randomX(mt);
-            int randomNumber2 = randomY(mt);
+            particles.clear();
 
-            particles.push_back(SDL_Rect{randomNumber1, randomNumber2,
-                                         GRID_SIZE_X, GRID_SIZE_Y});
+            for(uint16_t particle = 0; particle < NUM_PARTICLES; particle++)
+            {
 
+                std::uniform_int_distribution<int> x_range((int)level->start_position.x - 2000, (int)level->start_position.x + 2000);
+                std::uniform_int_distribution<int> y_range((int)level->start_position.y - 2000, (int)level->start_position.y + 2000);
+
+                randomNumber1 = x_range(mt);
+                randomNumber2 = y_range(mt);
+
+                particles.push_back(SDL_Rect{randomNumber1, randomNumber2,
+                                             GRID_SIZE_X, GRID_SIZE_Y});
+
+            }
+        }
+        else
+        {
+            for(uint16_t particle = 0; particle < NUM_PARTICLES; particle++)
+            {
+                randomNumber1 = randomX(mt);
+                randomNumber2 = randomY(mt);
+
+                particles.push_back(SDL_Rect{randomNumber1, randomNumber2,
+                                             GRID_SIZE_X, GRID_SIZE_Y});
+
+            }
         }
 
     }
+
 
     auto current_frame_time_point = std::chrono::high_resolution_clock::now();
     auto current_time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
