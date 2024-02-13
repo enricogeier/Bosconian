@@ -5,6 +5,7 @@
 #include "Vector2.h"
 #include "Bullet.h"
 #include "QuadTree.h"
+#include "Score.h"
 #include "CollisionManager.h"
 #include "Player.h"
 
@@ -23,7 +24,7 @@ public:
 
     [[nodiscard]] std::list<Bullet> get_bullets() const;
 
-    void check_collisions(QuadTree& quad_tree);
+    void check_collisions(QuadTree& quad_tree, Score& score);
 
     void move_player_bullet(Player& player, QuadTree& quad_tree, float& delta);
 

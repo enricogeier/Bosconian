@@ -110,11 +110,11 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
             // check player collision
             if(player.state == State::NORMAL) [[likely]]
             {
-                quad_tree.check_collision(player);
+                quad_tree.check_collision(player, score);
             }
 
             // check bullet collisions
-            bullet_handler.check_collisions(quad_tree);
+            bullet_handler.check_collisions(quad_tree, score);
 
             // check object collisions
             check_enemy_collisions();
@@ -161,7 +161,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
             move_enemies();
 
             // check bullet collisions
-            bullet_handler.check_collisions(quad_tree);
+            bullet_handler.check_collisions(quad_tree, score);
 
             // check object collisions
             check_enemy_collisions();
@@ -192,7 +192,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
             move_enemies();
 
             // check bullet collisions
-            bullet_handler.check_collisions(quad_tree);
+            bullet_handler.check_collisions(quad_tree, score);
 
             // check object collisions
             check_enemy_collisions();
@@ -226,6 +226,8 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
 void Level::load_level(int level)
 {
     std::vector<SpaceStation> space_stations;
+    std::vector<Mine> mines;
+    std::vector<GameObject> asteroids;
 
 
     std::string filename = LEVEL_FOLDER_LOCATION + std::to_string(level) + ".txt";
@@ -273,6 +275,29 @@ void Level::load_level(int level)
                 break;
 
             }
+            case 'm':
+            {
+                Vector2 position;
+                while(iss >> position.x >> position.y)
+                {
+                    mines.push_back(
+                            Mine(position, collision_manager.get_mine_collision(), collision_manager.scale)
+                            );
+
+                }
+                break;
+            }
+            case 'a':
+            {
+                Vector2 position;
+                while(iss >> position.x >> position.y)
+                {
+                    asteroids.push_back(GameObject(position,
+                                                   collision_manager.get_asteroid_collision(),
+                                                   Type::ASTEROID, collision_manager.scale));
+                }
+                break;
+            }
             case 's':
             {
                 Vector2 position;
@@ -299,6 +324,11 @@ void Level::load_level(int level)
     {
         for(auto& tile : tiles)
         {
+            if(Vector2::distance(player.position, station.position) < PLAYER_OBJECT_DISTANCE)
+            {
+                continue;
+            }
+
             if(
                     (int)station.position.x <= (int)tile.tile_position.x + TILE_SIZE_X &&
                     (int)station.position.x >= (int)tile.tile_position.x &&
@@ -306,6 +336,7 @@ void Level::load_level(int level)
                     (int)station.position.y >= (int)tile.tile_position.y)
             {
                 tile.space_stations.push_back(station);
+                score.space_stations++;
 
                 break;
             }
@@ -313,41 +344,53 @@ void Level::load_level(int level)
 
     }
 
-
-    for(auto& tile : tiles)
+    for(auto& mine : mines)
     {
-        for(int i = 0; i < OBJECTS_IN_TILE; i++)
+        for(auto& tile : tiles)
         {
 
-            int x = generate_random_int((int)tile.tile_position.x, (int)tile.tile_position.x + TILE_SIZE_X);
-            int y = generate_random_int((int)tile.tile_position.y, (int)tile.tile_position.y + TILE_SIZE_Y);
-
-            Vector2 position = Vector2((float)x, (float)y);
-
-            if(Vector2::distance(player.position, position) < PLAYER_OBJECT_DISTANCE)
+            if(Vector2::distance(player.position, mine.position) < PLAYER_OBJECT_DISTANCE)
             {
                 continue;
             }
 
-            int type_of_object = generate_random_int(0, 1);
+            if(
+                    (int)mine.position.x <= (int)tile.tile_position.x + TILE_SIZE_X &&
+                    (int)mine.position.x >= (int)tile.tile_position.x &&
+                    (int)mine.position.y <= (int)tile.tile_position.y + TILE_SIZE_Y &&
+                    (int)mine.position.y >= (int)tile.tile_position.y
+                    )
 
-            if(type_of_object == 0)
             {
-                Mine mine = Mine(position,
-                                 collision_manager.get_mine_collision(), collision_manager.scale);
                 tile.insert_object(mine);
-            }
-            else
-            {
-                GameObject game_object = GameObject(position,
-                                                    collision_manager.get_asteroid_collision(),
-                                                    Type::ASTEROID, collision_manager.scale);
-
-                tile.insert_object(game_object);
+                break;
             }
         }
-
     }
+
+    for(auto& asteroid : asteroids)
+    {
+        for(auto& tile : tiles)
+        {
+            if(Vector2::distance(player.position, asteroid.position) < PLAYER_OBJECT_DISTANCE)
+            {
+                continue;
+            }
+
+            if(
+                    (int)asteroid.position.x <= (int)tile.tile_position.x + TILE_SIZE_X &&
+                    (int)asteroid.position.x >= (int)tile.tile_position.x &&
+                    (int)asteroid.position.y <= (int)tile.tile_position.y + TILE_SIZE_Y &&
+                    (int)asteroid.position.y >= (int)tile.tile_position.y
+
+                    )
+            {
+                tile.insert_object(asteroid);
+                break;
+            }
+        }
+    }
+
 
     initialize_tile_index();
 
@@ -486,12 +529,7 @@ void Level::check_tile_positions()
     }
 }
 
-void Level::set_enemy()
-{
-    // TODO: implement this!
 
-
-}
 
 void Level::move_enemies()
 {
@@ -627,23 +665,23 @@ void Level::check_enemy_collisions()
     {
         for(auto& enemy : tile.enemies)
         {
-            quad_tree.check_collision(enemy);
+            quad_tree.check_collision(enemy, score);
         }
         for(auto& mine : tile.mines)
         {
-            quad_tree.check_collision(mine);
+            quad_tree.check_collision(mine, score);
         }
         for(auto& object : tile.objects)
         {
-            quad_tree.check_collision(object);
+            quad_tree.check_collision(object, score);
         }
         for(auto& station : tile.space_stations)
         {
-            quad_tree.check_collision(station);
+            quad_tree.check_collision(station, score);
 
             for(auto& cannon : station.cannons)
             {
-                quad_tree.check_collision(cannon);
+                quad_tree.check_collision(cannon, score);
             }
         }
 
@@ -724,27 +762,6 @@ std::list<Bullet> Level::get_bullets() const
 {
     return bullet_handler.get_bullets();
 }
-
-float Level::generate_random_float(float a, float b)
-{
-    std::random_device random;
-    std::mt19937 generate(random());
-
-    std::uniform_real_distribution<float> distribution(a, b);
-
-    return distribution(generate);
-}
-
-int Level::generate_random_int(int a, int b)
-{
-    std::random_device random;
-    std::mt19937 generate(random());
-
-    std::uniform_int_distribution<int> distribution(a, b);
-
-    return distribution(generate);
-}
-
 
 const long& Level::get_current_frame() const
 {

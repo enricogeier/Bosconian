@@ -1072,7 +1072,7 @@ void Renderer::render_background(const Player &player)
 
     for(int i = 0; i < particleCopy.size(); i++)
     {
-        uint8_t colorIndex = particleCopy[i].x % 6;
+        uint8_t colorIndex = abs(particleCopy[i].x) % 6;
         SDL_Color particleColor = colors[colorIndex];
 
         SDL_SetRenderDrawColor(renderer, particleColor.r, particleColor.g, particleColor.b, 255);

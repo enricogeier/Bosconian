@@ -6,7 +6,7 @@
 #include <functional>
 #include <iostream>
 #include <cmath>
-#include "GameObject.h"
+#include "Score.h"
 
 
 
@@ -24,16 +24,16 @@ private:
 
     void subdivide();
 
-    void check_collision_in_neighbour_tile(QuadTree* checked_quad, GameObject& gameObject, Vector2& border_position);
+    void check_collision_in_neighbour_tile(QuadTree* checked_quad, GameObject& gameObject, Vector2& border_position, Score& score);
 
-    void do_collision_calculation(GameObject& game_object);
+    void do_collision_calculation(GameObject& game_object, Score& score);
 
 public:
     explicit QuadTree(Rectangle boundary = {}, QuadTree* parent = nullptr): boundary(boundary), parent(parent){}
 
     void insert(GameObject& game_object);
 
-    void check_collision(GameObject& game_object);
+    void check_collision(GameObject& game_object, Score& score);
 
     bool calculate_collision(CollisionCircle& huge_circle, CollisionCircle& small_circle);
 

@@ -168,11 +168,11 @@ std::list<Bullet> BulletHandler::get_bullets() const
 }
 
 
-void BulletHandler::check_collisions(QuadTree &quad_tree)
+void BulletHandler::check_collisions(QuadTree &quad_tree, Score& score)
 {
     for(auto& bullet : bullet_list)
     {
-        quad_tree.check_collision(bullet);
+        quad_tree.check_collision(bullet, score);
     }
 }
 

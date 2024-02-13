@@ -34,7 +34,7 @@ private:
 
     const std::string LEVEL_FOLDER_LOCATION = "../Level/";
     const short OBJECTS_IN_TILE = 8;
-    float PLAYER_OBJECT_DISTANCE = 400.0f;
+    float PLAYER_OBJECT_DISTANCE = 300.0f;
 
     int start_tile = 0;
     std::chrono::microseconds timer = std::chrono::microseconds(0);
@@ -58,21 +58,17 @@ private:
 
     void check_tile_positions();
 
-    void set_enemy();
-
     void move_enemies();
 
     void check_enemy_collisions();
-
-    float generate_random_float(float a, float b);
-
-    int generate_random_int(int a, int b);
 
     void load_level(int level);
 
 
 
 public:
+
+    Score score;
 
     LevelState state = LevelState::WAIT;
 
@@ -81,8 +77,9 @@ public:
     const int LEVEL_SIZE_X = 4500;
     const int LEVEL_SIZE_Y = 7800;
 
-    const int TILE_SIZE_X = 1500; // default: 2000
-    const int TILE_SIZE_Y = 2600; // default: 2667
+    const int TILE_SIZE_X = 1500;
+    const int TILE_SIZE_Y = 2600;
+
     const int AMOUNT_OF_TILES_X = 3;
     const int AMOUNT_OF_TILES_Y = 3;
 

@@ -27,7 +27,7 @@ enum Type
     MINE,
     SPACE_STATION,
     CANNON,
-    BULLET,
+    BULLET
 };
 
 

@@ -29,14 +29,14 @@ void QuadTree::subdivide()
 
 }
 
-void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObject &game_object, Vector2& border_position)
+void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObject &game_object, Vector2& border_position, Score& score)
 {
     for(auto& quad : quad_trees)
     {
         if(checked_quad != &quad)
         {
             if
-            (
+                    (
                     border_position.x < quad.boundary.x + quad.boundary.w &&
                     border_position.x >= quad.boundary.x &&
                     border_position.y < quad.boundary.y + quad.boundary.h &&
@@ -45,11 +45,11 @@ void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObj
             {
                 if(quad.divided)
                 {
-                    quad.check_collision_in_neighbour_tile(nullptr, game_object, border_position);
+                    quad.check_collision_in_neighbour_tile(nullptr, game_object, border_position, score);
                 }
                 else
                 {
-                    quad.do_collision_calculation(game_object);
+                    quad.do_collision_calculation(game_object, score);
                 }
 
                 return;
@@ -59,7 +59,7 @@ void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObj
 
     if(parent != nullptr)
     {
-        parent->check_collision_in_neighbour_tile(this, game_object, border_position);
+        parent->check_collision_in_neighbour_tile(this, game_object, border_position, score);
     }
 
 
@@ -67,7 +67,7 @@ void QuadTree::check_collision_in_neighbour_tile(QuadTree *checked_quad, GameObj
 
 }
 
-void QuadTree::do_collision_calculation(GameObject &game_object)
+void QuadTree::do_collision_calculation(GameObject &game_object, Score& score)
 {
     for(auto iterator = game_objects.begin(); iterator != game_objects.end(); ++iterator)
     {
@@ -79,22 +79,22 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
         }
 
         // check collision for each object in quad
-         if(std::find(game_object.collision_circle.can_collide_with.begin(),
+        if(std::find(game_object.collision_circle.can_collide_with.begin(),
                      game_object.collision_circle.can_collide_with.end(),
                      object.collision_circle.layer) !=
            game_object.collision_circle.can_collide_with.end())
         {
 
-             bool collision = false;
+            bool collision = false;
 
-             if(game_object.collision_circle.radius > object.collision_circle.radius)
-             {
-                 collision = calculate_collision(game_object.collision_circle, object.collision_circle);
-             }
-             else
-             {
-                 collision = calculate_collision(object.collision_circle, game_object.collision_circle);
-             }
+            if(game_object.collision_circle.radius > object.collision_circle.radius)
+            {
+                collision = calculate_collision(game_object.collision_circle, object.collision_circle);
+            }
+            else
+            {
+                collision = calculate_collision(object.collision_circle, game_object.collision_circle);
+            }
 
             if(collision)
             {
@@ -136,7 +136,14 @@ void QuadTree::do_collision_calculation(GameObject &game_object)
                 }
 
 
-
+                if(game_object.type != Type::PLAYER && game_object.type != Type::BULLET)
+                {
+                    score.increase_score(game_object.type);
+                }
+                if(object.type != Type::PLAYER && object.type != Type::BULLET)
+                {
+                    score.increase_score(object.type);
+                }
 
 
                 return;
@@ -180,7 +187,7 @@ void QuadTree::insert(GameObject& game_object)
     }
 }
 
-void QuadTree::check_collision(GameObject &game_object)
+void QuadTree::check_collision(GameObject &game_object, Score& score)
 {
     if(game_object.state == State::EXPLODE && game_object.type != Type::MINE)
     {
@@ -197,14 +204,14 @@ void QuadTree::check_collision(GameObject &game_object)
                     game_object.position.y >= quad.boundary.y
                     )
             {
-                quad.check_collision(game_object);
+                quad.check_collision(game_object, score);
             }
         }
     }
     else
     {
 
-        do_collision_calculation(game_object);
+        do_collision_calculation(game_object, score);
 
 
         // no collision found, check if game object is near border of quad
@@ -213,10 +220,10 @@ void QuadTree::check_collision(GameObject &game_object)
             if(game_object.collision_circle.origin.x + game_object.collision_circle.radius >= boundary.x + boundary.w)
             {
                 Vector2 border_position{
-                    game_object.collision_circle.origin.x +  game_object.collision_circle.radius,
+                        game_object.collision_circle.origin.x +  game_object.collision_circle.radius,
                         game_object.collision_circle.origin.y
                 };
-                parent->check_collision_in_neighbour_tile(this, game_object, border_position);
+                parent->check_collision_in_neighbour_tile(this, game_object, border_position, score);
             }
             else if(game_object.collision_circle.origin.x - game_object.collision_circle.radius <= boundary.x)
             {
@@ -224,16 +231,16 @@ void QuadTree::check_collision(GameObject &game_object)
                         game_object.collision_circle.origin.x - game_object.collision_circle.radius,
                         game_object.collision_circle.origin.y
                 };
-                parent->check_collision_in_neighbour_tile(this, game_object, border_position);
+                parent->check_collision_in_neighbour_tile(this, game_object, border_position, score);
             }
             else if(game_object.collision_circle.origin.y + game_object.collision_circle.radius >= boundary.y + boundary.h)
             {
                 Vector2 border_position{
-                    game_object.collision_circle.origin.x,
-                    game_object.collision_circle.origin.y + game_object.collision_circle.radius
+                        game_object.collision_circle.origin.x,
+                        game_object.collision_circle.origin.y + game_object.collision_circle.radius
                 };
 
-                parent->check_collision_in_neighbour_tile(this, game_object, border_position);
+                parent->check_collision_in_neighbour_tile(this, game_object, border_position, score);
             }
             else if(game_object.collision_circle.origin.y - game_object.collision_circle.radius <= boundary.y)
             {
@@ -242,7 +249,7 @@ void QuadTree::check_collision(GameObject &game_object)
                         game_object.collision_circle.origin.y - game_object.collision_circle.radius
                 };
 
-                parent->check_collision_in_neighbour_tile(this, game_object, border_position);
+                parent->check_collision_in_neighbour_tile(this, game_object, border_position, score);
             }
 
 
