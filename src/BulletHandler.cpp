@@ -207,3 +207,8 @@ void BulletHandler::move_player_bullet(Player& player, QuadTree& quad_tree, floa
     }
 
 }
+
+void BulletHandler::clear_bullets()
+{
+    bullet_list.clear();
+}

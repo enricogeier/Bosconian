@@ -26,6 +26,8 @@ public:
 
     void check_collisions(QuadTree& quad_tree, Score& score);
 
+    void clear_bullets();
+
     void move_player_bullet(Player& player, QuadTree& quad_tree, float& delta);
 
 

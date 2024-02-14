@@ -2,6 +2,17 @@
 
 Level::Level()
 {
+
+    player = Player(collision_manager.get_player_collision(), collision_manager.scale);
+    bullet_handler.previous_player_speed = player.current_velocity;
+
+    load_level();
+    fps_timer.start();
+
+}
+
+void Level::initialize_tiles()
+{
     for(int j = 0, tile_index = 0; j < Level::AMOUNT_OF_TILES_Y; j++)
     {
         for(int i = 0; i < Level::AMOUNT_OF_TILES_X; i++)
@@ -10,12 +21,6 @@ Level::Level()
         }
 
     }
-
-    player = Player(collision_manager.get_player_collision(), collision_manager.scale);
-    bullet_handler.previous_player_speed = player.current_velocity;
-
-    load_level(1);
-    fps_timer.start();
 
 }
 
@@ -52,6 +57,25 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
         case RUNNING:
         {
             delta = fps_timer.get_delta();
+
+            if(score.space_stations == 0)
+            {
+
+                for(auto& tile : tiles)
+                {
+                    tile.space_stations.clear();
+                    tile.enemies.clear();
+                }
+
+                //TODO: check enemy bullets
+
+                bullet_handler.clear_bullets();
+                score.space_stations = 0;
+                state = LevelState::FINISHED_LEVEL;
+                break;
+
+
+            }
 
             quad_tree = QuadTree(
                     {
@@ -210,6 +234,43 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
             state = LevelState::WAIT;
             break;
         }
+        case FINISHED_LEVEL:
+        {
+            if(timer == std::chrono::microseconds(0))
+            {
+                auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+            }
+            else
+            {
+                auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - timer);
+
+                if(time_delta > std::chrono::microseconds(5000000))
+                {
+                    timer = std::chrono::microseconds(0);
+
+                    for(auto& tile : tiles)
+                    {
+                        tile.objects.clear();
+                        tile.mines.clear();
+                    }
+
+                    // load next level
+
+                    ++current_round;
+                    load_level();
+
+                    state = LevelState::RESTART;
+
+                }
+
+            }
+
+            break;
+        }
+
 
     }
 
@@ -223,14 +284,21 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
 
 }
 
-void Level::load_level(int level)
+void Level::load_level()
 {
+    if(current_round > AMOUNT_OF_ROUNDS)
+    {
+        current_round = 1;
+    }
+
+    initialize_tiles();
+
     std::vector<SpaceStation> space_stations;
     std::vector<Mine> mines;
     std::vector<GameObject> asteroids;
 
 
-    std::string filename = LEVEL_FOLDER_LOCATION + std::to_string(level) + ".txt";
+    std::string filename = LEVEL_FOLDER_LOCATION + std::to_string(current_round) + ".txt";
     std::ifstream file(filename);
 
     std::string line;
@@ -318,6 +386,7 @@ void Level::load_level(int level)
     }
 
     file.close();
+
 
 
     for(auto& station : space_stations)
@@ -637,6 +706,7 @@ void Level::move_enemies()
                 if(player_collision || defect_cannons == space_station->get_amount_of_cannons())
                 {
                     space_station->state = State::EXPLODE;
+                    score.increase_score(SPACE_STATION);
                 }
                 else
                 {

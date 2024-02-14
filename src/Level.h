@@ -23,6 +23,7 @@ enum LevelState
     LOST_LIVE,
     GAME_OVER,
     RESTART,
+    FINISHED_LEVEL
 
 };
 
@@ -33,6 +34,8 @@ class Level
 private:
 
     const std::string LEVEL_FOLDER_LOCATION = "../Level/";
+    const uint8_t AMOUNT_OF_ROUNDS = 3;
+
     const short OBJECTS_IN_TILE = 8;
     float PLAYER_OBJECT_DISTANCE = 300.0f;
 
@@ -52,6 +55,8 @@ private:
     long frame_counter = 1;
     float delta = 0.0f;
 
+    void initialize_tiles();
+
     void initialize_tile_index();
 
     void set_current_tile();
@@ -62,13 +67,13 @@ private:
 
     void check_enemy_collisions();
 
-    void load_level(int level);
-
-
+    void load_level();
 
 public:
 
     Score score;
+
+    uint8_t current_round = 1;
 
     LevelState state = LevelState::WAIT;
 

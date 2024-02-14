@@ -39,6 +39,7 @@ void Score::increase_score(Type type)
         {
             space_stations--;
             score += 1500;
+
             break;
         }
 
