@@ -100,7 +100,7 @@ private:
 
     std::vector<SDL_Rect> particles;
     std::chrono::microseconds point_timer = std::chrono::microseconds(0);
-    const uint16_t NUM_PARTICLES = 300;  // default: 625
+    const uint16_t NUM_PARTICLES = 500;  // default: 300
 
     const int GRID_SIZE_X = 4;
     const int GRID_SIZE_Y = 4;
