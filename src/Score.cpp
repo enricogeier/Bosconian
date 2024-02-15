@@ -54,7 +54,15 @@ void Score::increase_score(Type type)
 
     if(score > highscore)
     {
-        highscore = score;
+        if(score <= 99999999)
+        {
+            highscore = score;
+        }
+        else
+        {
+            highscore = 99999999;
+        }
+
     }
 }
 

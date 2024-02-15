@@ -1,10 +1,7 @@
-9. Gegner-Logik: Move, Raumbasen, Schießen, ...
-10. Leben implementieren, Spiel neu starten, ...
-11. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
-12. google-Tests
-13. Sound
---------------------------------------------------------------------------------
-Sachen, die zu lange gedauert haben, jedoch in einem akzeptablen Zustand sind:
+10. korrekte Implementierung des Viewports (Buchstaben, Ziffern)
+11. Gegner: Spawn, Move, ... => alles
+12. Raumbasen: Schießen implementieren
 
-2. fps korrekt clampen (120 anstatt 123 fps)
--------------------------------------------------------------------------------------
+13. Sound
+14. google-Tests
+15. Projektbericht

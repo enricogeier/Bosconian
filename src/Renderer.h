@@ -75,6 +75,7 @@ private:
     const int SCREEN_SIZE_WIDTH = 1920;   // small: 960
     const int SCREEN_SIZE_HEIGHT = 1080; // 540
 
+    const Vector2 SCALE = Vector2(4.0f, 4.0f);
 
     const std::string PATH_TO_SPRITE_SHEET = "../textures/bosconian.png";
 
@@ -236,7 +237,21 @@ private:
             {112, 160, 32, 32},
             {5, 237, 2, 2}, // player cursor
             {28, 240, 4, 4}, // spaceship cursor
-
+            {64, 240, 61, 7}, // hi-score
+            {1, 208, 8, 7}, // 0
+            {10, 208, 7, 7}, // 1
+            {17, 208, 8, 7}, // 2
+            {25, 208, 8, 7}, // 3
+            {33, 208, 8, 7}, // 4
+            {41, 208, 8, 7}, // 5
+            {49, 208, 8, 7}, // 6
+            {57, 208, 8, 7}, // 7
+            {65, 208, 8, 7}, // 8
+            {73, 208, 8, 7}, // 9
+            {64, 224, 22, 7}, // 1UP
+            {128, 208, 64, 7}, // condition
+            {64, 249, 37, 7}, // green
+            {64, 233, 39, 7}, // round
 
 
 
@@ -327,6 +342,18 @@ private:
 
     SDL_Rect get_station_cursor() const;
 
+    SDL_Rect get_hi_score() const;
+
+    SDL_Rect get_number(char number) const;
+
+    SDL_Rect get_1UP() const;
+
+    SDL_Rect get_condition() const;
+
+    SDL_Rect get_green() const;
+
+    SDL_Rect get_round() const;
+
 
     void render_background(const Player& player);
 
@@ -361,6 +388,10 @@ private:
     void clear_screen();
 
     void update_camera(const Player* player);
+
+    void render_number_backwards(std::string& numbers, SDL_Rect& sprites, SDL_Rect& render_quad, int y_pos,
+                                 int number_width = 53, int number_height = 46);
+
 
 
 public:

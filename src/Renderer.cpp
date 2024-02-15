@@ -41,7 +41,7 @@ Renderer::Renderer()
 
     // create window
     window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
+                              SCREEN_SIZE_WIDTH, SCREEN_SIZE_HEIGHT, SDL_WINDOW_FULLSCREEN);
 
 
 
@@ -93,17 +93,61 @@ void Renderer::update_screen()
     SDL_RenderPresent(renderer);
 }
 
+void Renderer::render_number_backwards(std::string& numbers, SDL_Rect& sprite, SDL_Rect& render_quad, int y_pos,
+                                       int number_width, int number_height)
+{
+    for(int i = numbers.size() - 1, offset_x = 0; i >= 0; i--)
+    {
+        sprite = get_number(numbers[i]);
+        offset_x += number_width;
+        render_quad = {hi_score_viewport.w - 1 - offset_x, y_pos, number_width, number_height};
+        SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+    }
+}
+
 void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStation> stations)
 {
 
+    SDL_Rect sprite;
+    SDL_Rect render_quad;
 
-    /*
     SDL_RenderSetViewport(renderer, &hi_score_viewport);
-    SDL_RenderCopy(renderer, );
-    SDL_RenderSetViewport(renderer, &condition_viewport);
-    SDL_RenderCopy(renderer, );
-    */
+    sprite = get_hi_score();
+    render_quad = {0, 0, hi_score_viewport.w, 46};
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
+    std::string str_hi_score = std::to_string(level->score.highscore);
+    render_number_backwards(str_hi_score, sprite, render_quad, 48);
+
+    sprite = get_1UP();
+    render_quad = {0, 95, 53 * 3, 46};
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+    std::string str_score;
+    const int& player_score = level->score.score;
+    if(player_score == 0)
+    {
+        str_score = "00";
+    }
+    else
+    {
+        str_score = std::to_string(player_score);
+    }
+
+    render_number_backwards(str_score, sprite, render_quad, 142);
+
+    SDL_RenderSetViewport(renderer, &condition_viewport);
+    sprite = get_condition();
+    render_quad = {0, 0, condition_viewport.w, 46};
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+    render_quad = {0, 66, condition_viewport.w, 58}; // default: h: 58
+    SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
+    SDL_RenderFillRect(renderer, &render_quad);
+
+    sprite = get_green();
+    render_quad = {83, 78, 265, 36};
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
     SDL_RenderSetViewport(renderer, &field_viewport);
     SDL_SetRenderDrawColor(renderer, 0x6C, 0x46, 0x75, 0xFF);
@@ -143,22 +187,17 @@ void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStat
         }
     }
 
-
     Vector2 player_cursor_pos = Vector2(
             p_clamped_pos_x * coefficient.x,
             p_clamped_pos_y * coefficient.y
             );
 
+    sprite = get_player_cursor();
 
-
-    SDL_Rect sprite = get_player_cursor();
-
-    SDL_Rect render_quad = {(int)(player_cursor_pos.x), (int)(player_cursor_pos.y),
+    render_quad = {(int)(player_cursor_pos.x), (int)(player_cursor_pos.y),
                             sprite.w * 4, sprite.h * 4};
 
     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
-
-
 
     for(auto& station : stations)
     {
@@ -195,9 +234,6 @@ void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStat
             }
         }
 
-
-
-
         Vector2 station_cursor_pos = Vector2(
                 s_clamped_pos_x * coefficient.x,
                 s_clamped_pos_y * coefficient.y
@@ -210,19 +246,7 @@ void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStat
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
-
-
-
-
-
-
-
-
-
     }
-
-
-
 
     SDL_RenderSetViewport(renderer, &game_state_viewport);
     sprite = get_p1_life();
@@ -235,8 +259,12 @@ void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStat
 
     }
 
+    sprite = get_round();
+    render_quad = {0, 120, 210, 42};
+    SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
-
+    std::string str_round = std::to_string(level->current_round);
+    render_number_backwards(str_round, sprite, render_quad, 120, 42, 42);
 
 
 }
@@ -1494,4 +1522,83 @@ SDL_Rect Renderer::get_player_cursor() const
 SDL_Rect Renderer::get_station_cursor() const
 {
     return sprites[94];
+}
+
+SDL_Rect Renderer::get_hi_score() const
+{
+    return sprites[95];
+}
+
+SDL_Rect Renderer::get_number(char number) const
+{
+    switch(number)
+    {
+        case '0':
+        {
+            return sprites[96];
+        }
+        case '1':
+        {
+            return sprites[97];
+        }
+        case '2':
+        {
+            return sprites[98];
+        }
+        case '3':
+        {
+            return sprites[99];
+        }
+        case '4':
+        {
+            return sprites[100];
+        }
+        case '5':
+        {
+            return sprites[101];
+        }
+        case '6':
+        {
+            return sprites[102];
+        }
+        case '7':
+        {
+            return sprites[103];
+        }
+        case '8':
+        {
+            return sprites[104];
+        }
+        case '9':
+        {
+            return sprites[105];
+        }
+        default:
+        {
+            std::cerr << "not a valid number! 0 is returned instead." << std::endl;
+            return sprites[96];
+        }
+    }
+
+
+}
+
+SDL_Rect Renderer::get_1UP() const
+{
+    return sprites[106];
+}
+
+SDL_Rect Renderer::get_condition() const
+{
+    return sprites[107];
+}
+
+SDL_Rect Renderer::get_green() const
+{
+    return sprites[108];
+}
+
+SDL_Rect Renderer::get_round() const
+{
+    return sprites[109];
 }

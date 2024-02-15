@@ -17,7 +17,7 @@ private:
 public:
 
     int score = 0;
-    int highscore = 41810;
+    int highscore = 20000;
 
     short space_stations = 0;
 
