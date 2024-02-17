@@ -115,6 +115,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     else
                     {
                         state = LevelState::LOST_LIVE;
+
                     }
 
                     break;
@@ -148,20 +149,24 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
         {
             // start timer (5 seconds)
 
-            if(timer == std::chrono::microseconds(0))
+            if(lost_life_timer == std::chrono::microseconds(0))
             {
                 auto current_frame_time_point = std::chrono::high_resolution_clock::now();
-                timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                lost_life_timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
             }
             else
             {
                 auto current_frame_time_point = std::chrono::high_resolution_clock::now();
                 auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
-                std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - timer);
+                std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - lost_life_timer);
 
                 if(time_delta > std::chrono::microseconds(5000000))
                 {
-                    timer = std::chrono::microseconds(0);
+                    lost_life_timer = std::chrono::microseconds(0);
+                    for(auto& tile : tiles)
+                    {
+                        tile.enemies.clear();
+                    }
                     state = LevelState::RESTART;
                 }
 
@@ -484,7 +489,7 @@ void Level::initialize_tile_index()
     {
         for(int i = 0; i < Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y; i++)
         {
-            if(tiles[i].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
+            if(tiles[i].is_object_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
             {
                 current_tile_index = i;
                 current_tile_position = tiles[current_tile_index].tile_position;
@@ -506,7 +511,8 @@ void Level::initialize_tile_index()
 void Level::set_current_tile()
 {
 
-    if(!(tiles[current_tile_index].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y))))
+    if(!(tiles[current_tile_index].is_object_within_tile(player.position,
+                                                         Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y))))
     {
         for(int i = 0; i < Level::AMOUNT_OF_TILES_X * Level::AMOUNT_OF_TILES_Y; i++)
         {
@@ -514,7 +520,7 @@ void Level::set_current_tile()
             {
                 continue;
             }
-            else if(tiles[i].is_player_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
+            else if(tiles[i].is_object_within_tile(player.position, Vector2(Level::TILE_SIZE_X, Level::TILE_SIZE_Y)))
             {
                 current_tile_index = i;
                 current_tile_position = tiles[current_tile_index].tile_position;
@@ -602,6 +608,63 @@ void Level::check_tile_positions()
 
 void Level::move_enemies()
 {
+    if(enemy_timer == std::chrono::microseconds(0))
+    {
+        auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+        enemy_timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+    }
+    else
+    {
+        auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+        auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+        std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - enemy_timer);
+
+        if(time_delta > std::chrono::microseconds(1000000))
+        {
+            enemy_timer = std::chrono::microseconds(0);
+
+            // create enemy
+
+            std::random_device rd;
+            std::mt19937 mt(rd());
+
+            std::uniform_int_distribution<int> random(0, 8);
+
+            int tile_to_set = random(mt);
+
+            std::uniform_int_distribution<int> randomX(
+                    tiles[tile_to_set].tile_position.x,
+                    tiles[tile_to_set].tile_position.x + TILE_SIZE_X);
+            std::uniform_int_distribution<int> randomY(
+                    tiles[tile_to_set].tile_position.y,
+                    tiles[tile_to_set].tile_position.y + TILE_SIZE_Y
+                    );
+
+            Vector2 enemy_position = Vector2(randomX(mt), randomY(mt));
+
+            if(Vector2::distance(player.position, enemy_position) > 2000)
+            {
+                int enemy_type = random(mt) % 2;
+
+                if(enemy_type == 0)
+                {
+                    tiles[tile_to_set].enemies.push_back(Enemy(enemy_position, collision_manager.get_p_type_collision(),
+                                                               P_TYPE, collision_manager.scale));
+                }
+                else
+                {
+                    tiles[tile_to_set].enemies.push_back(Enemy(enemy_position, collision_manager.get_i_type_collision(),
+                                                               I_TYPE, collision_manager.scale));
+                }
+
+
+            }
+
+        }
+
+    }
+
+
     for(auto& tile : tiles)
     {
         for(auto enemy = tile.enemies.begin(); enemy != tile.enemies.end();)
@@ -610,12 +673,20 @@ void Level::move_enemies()
             if(enemy->state == State::NORMAL)
             {
 
-                    Vector2 move_direction(0.0f, 0.0f);
-                    enemy->move(move_direction, delta);
+                    if(player.state == State::NORMAL)
+                    {
+                        enemy->move(player.position, delta);
+                    }
+                    else
+                    {
+                        Vector2 new_position = player.position.multiply(999.0f);
+                        enemy->move(new_position, delta);
+                    }
 
                     quad_tree.insert(*enemy);
 
                     ++enemy;
+
             }
             else
             {
@@ -624,6 +695,9 @@ void Level::move_enemies()
 
 
         }
+
+
+
 
         for(auto object = tile.objects.begin(); object != tile.objects.end(); )
         {

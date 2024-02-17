@@ -5,7 +5,7 @@ Tile::Tile(Vector2 position) : tile_position(position), last_tile_position(posit
 }
 
 
-bool Tile::is_player_within_tile(Vector2 &player_position, Vector2 tile_size) const
+bool Tile::is_object_within_tile(Vector2 &player_position, Vector2 tile_size) const
 {
 
     if(
@@ -36,11 +36,6 @@ void Tile::update_tile_position()
     {
         mine.position = mine.position + offset;
         mine.collision_circle.origin = mine.position + mine.collision_circle.initial_origin;
-    }
-
-    for(auto enemy = enemies.begin(); enemy != enemies.end();)
-    {
-        enemy = enemies.erase(enemy);
     }
 
     for(auto& space_station : space_stations)

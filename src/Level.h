@@ -41,6 +41,8 @@ private:
 
     int start_tile = 0;
     std::chrono::microseconds timer = std::chrono::microseconds(0);
+    std::chrono::microseconds lost_life_timer = std::chrono::microseconds(0);
+    std::chrono::microseconds enemy_timer = std::chrono::microseconds(0);
 
 
 

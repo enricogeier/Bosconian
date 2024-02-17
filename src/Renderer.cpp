@@ -1130,6 +1130,13 @@ void Renderer::update()
 
     render_animations();
 
+    const std::vector<SpaceStation> stations = level->get_space_stations();
+    for(auto& station : stations)
+    {
+        render_space_station(station);
+
+
+    }
 
     const std::vector<GameObject> asteroids = level->get_all_game_objects();
 
@@ -1166,13 +1173,6 @@ void Renderer::update()
         }
     }
 
-    const std::vector<SpaceStation> stations = level->get_space_stations();
-    for(auto& station : stations)
-    {
-        render_space_station(station);
-
-
-    }
 
     const std::list<Bullet> bullet_list = level->get_bullets();
     for(auto& bullet : bullet_list)
