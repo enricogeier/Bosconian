@@ -10,7 +10,7 @@ void Enemy::move(Vector2& player_position, float &delta)
 
     if(clamped_direction.x < 0)
     {
-        float difference = 1.0f;
+        float difference = 10.0f;
         float previous_value = 0.0f;
         for(auto& value : VALUE_LESS_THAN_0)
         {
@@ -29,7 +29,7 @@ void Enemy::move(Vector2& player_position, float &delta)
     }
     else
     {
-        float difference = 1.0f;
+        float difference = 10.0f;
         float previous_value = 0.0f;
         for(auto& value : VALUE_0_OR_HIGHER)
         {
@@ -51,7 +51,7 @@ void Enemy::move(Vector2& player_position, float &delta)
     {
         if(clamped_direction.y < 0)
         {
-            float difference = 1.0f;
+            float difference = 10.0f;
             float previous_value = 0.0f;
             for(auto& value : VALUE_LESS_THAN_0)
             {
@@ -70,7 +70,7 @@ void Enemy::move(Vector2& player_position, float &delta)
         }
         else
         {
-            float difference = 1.0f;
+            float difference = 10.0f;
             float previous_value = 0.0f;
             for(auto& value : VALUE_0_OR_HIGHER)
             {

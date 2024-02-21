@@ -15,7 +15,6 @@ private:
 
 public:
 
-    Vector2 start_position;
     Vector2 direction = Vector2();
     Vector2 clamped_direction = Vector2();
 
