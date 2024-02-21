@@ -373,46 +373,173 @@ void Renderer::render_e_type(const Enemy& object)
 
     if(object.state == State::NORMAL)
     {
-        // TODO: Testing, change in each moving enemy render function!
 
         std::vector<SDL_Rect> sprite = get_e_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
                                 sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
 
+        float epsilon = 0.001f;
+
         if(object.direction.x == 0.0f)
         {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[0], &render_quad);
+                return;
 
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
         }
         else if(object.direction.x == 1.0f)
         {
-
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
         }
         else if(object.direction.x == -1.0f)
         {
-
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[3], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[4], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[5], &render_quad);
+                return;
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
         }
-        else if(object.direction.x == 0.33f)
+        else if(std::abs(object.direction.x - 0.33f) < epsilon)
         {
-
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
         }
-        else if(object.direction.x == -0.33f)
+        else if(std::abs(object.direction.x + 0.33f) < epsilon)
         {
-
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                return;
+            }
         }
-        else if(object.direction.x == 0.67f)
+        else if(std::abs(object.direction.x - 0.67f) < epsilon)
         {
-
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
         }
-        else if(object.direction.x == -0.67f)
+        else if(std::abs(object.direction.x + 0.67f) < epsilon)
         {
-
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[2], &render_quad);
+                return;
+            }
         }
-
-
-
-
-         // SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
     }
     else if(object.state == State::EXPLODE)
@@ -447,15 +574,177 @@ void Renderer::render_p_type(const Enemy& object)
 
     if(object.state == State::NORMAL)
     {
-        // TODO: Testing, change in each moving enemy render function!
 
-        float rotation = 0.0f;
-        SDL_Rect sprite = get_p_type()[0];
+        std::vector<SDL_Rect> sprite = get_p_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
 
-        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+        float epsilon = 0.001f;
+
+        if(object.direction.x == 0.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[0], &render_quad);
+                return;
+
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(object.direction.x == 1.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(object.direction.x == -1.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[3], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[4], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[5], &render_quad);
+                return;
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x - 0.33f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x + 0.33f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x - 0.67f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x + 0.67f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[2], &render_quad);
+                return;
+            }
+        }
+
+        std::cerr << "error" << std::endl;
+
 
     }
     else if(object.state == State::EXPLODE)
@@ -487,15 +776,176 @@ void Renderer::render_i_type(const Enemy& object)
 
     if(object.state == State::NORMAL)
     {
-        // TODO: Testing, change in each moving enemy render function!
-
-        float rotation = 0.0f;
-        SDL_Rect sprite = get_i_type()[0];
+        std::vector<SDL_Rect> sprite = get_i_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
 
-        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+        float epsilon = 0.001f;
+
+        if(object.direction.x == 0.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[0], &render_quad);
+                return;
+
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(object.direction.x == 1.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(object.direction.x == -1.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[3], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[4], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[5], &render_quad);
+                return;
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x - 0.33f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x + 0.33f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x - 0.67f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x + 0.67f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[2], &render_quad);
+                return;
+            }
+        }
+
+        std::cerr << "error" << std::endl;
+
 
     }
     else if(object.state == State::EXPLODE)
@@ -528,15 +978,172 @@ void Renderer::render_spy(const Enemy& object)
 
     if(object.state == State::NORMAL)
     {
-        // TODO: Testing, change in each moving enemy render function!
-
-        float rotation = 0.0f;
-        SDL_Rect sprite = get_spy()[0];
+        std::vector<SDL_Rect> sprite = get_spy();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
 
-        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+        float epsilon = 0.001f;
+
+        if(object.direction.x == 0.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[0], &render_quad);
+                return;
+
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(object.direction.x == 1.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(object.direction.x == -1.0f)
+        {
+            if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[3], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.67f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[4], &render_quad);
+                return;
+            }
+            else if(std::abs(object.direction.y + 0.33f) < epsilon)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[5], &render_quad);
+                return;
+            }
+            else if(object.direction.y == 0.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[0], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.33f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(std::abs(object.direction.y - 0.67f) < epsilon)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[3], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x - 0.33f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[1], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x + 0.33f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[5], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x - 0.67f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[2], &render_quad,
+                                 180.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+        }
+        else if(std::abs(object.direction.x + 0.67f) < epsilon)
+        {
+            if(object.direction.y == 1.0f)
+            {
+                SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite[4], &render_quad,
+                                 -90.0f, nullptr, SDL_FLIP_NONE);
+                return;
+            }
+            else if(object.direction.y == -1.0f)
+            {
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[2], &render_quad);
+                return;
+            }
+        }
 
     }
     else if(object.state == State::EXPLODE)

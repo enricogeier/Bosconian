@@ -87,6 +87,8 @@ void QuadTree::do_collision_calculation(GameObject &game_object, Score& score)
 
             bool collision = false;
 
+
+
             if(game_object.collision_circle.radius > object.collision_circle.radius)
             {
                 collision = calculate_collision(game_object.collision_circle, object.collision_circle);
@@ -98,6 +100,15 @@ void QuadTree::do_collision_calculation(GameObject &game_object, Score& score)
 
             if(collision)
             {
+                if(game_object.type != Type::PLAYER && game_object.type != Type::BULLET && game_object.state == State::NORMAL)
+                {
+                    score.increase_score(game_object.type);
+                }
+                if(object.type != Type::PLAYER && object.type != Type::BULLET && object.state == State::NORMAL)
+                {
+                    score.increase_score(object.type);
+                }
+
 
                 if(game_object.type == Type::MINE || game_object.type == Type::CANNON)
                 {
@@ -135,15 +146,6 @@ void QuadTree::do_collision_calculation(GameObject &game_object, Score& score)
                     object.state = State::EXPLODE;
                 }
 
-
-                if(game_object.type != Type::PLAYER && game_object.type != Type::BULLET)
-                {
-                    score.increase_score(game_object.type);
-                }
-                if(object.type != Type::PLAYER && object.type != Type::BULLET)
-                {
-                    score.increase_score(object.type);
-                }
 
 
                 return;

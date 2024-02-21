@@ -47,44 +47,61 @@ void Enemy::move(Vector2& player_position, float &delta)
         }
     }
 
-    if(clamped_direction.y < 0)
+    if(direction.x == 1.0f || direction.x == -1.0f)
     {
-        float difference = 1.0f;
-        float previous_value = 0.0f;
-        for(auto& value : VALUE_LESS_THAN_0)
+        if(clamped_direction.y < 0)
         {
-            float current_difference = clamped_direction.y - value;
-            if(std::abs(current_difference) < std::abs(difference))
+            float difference = 1.0f;
+            float previous_value = 0.0f;
+            for(auto& value : VALUE_LESS_THAN_0)
             {
-                difference = current_difference;
-                previous_value = value;
-                direction.y = previous_value;
+                float current_difference = clamped_direction.y - value;
+                if(std::abs(current_difference) < std::abs(difference))
+                {
+                    difference = current_difference;
+                    previous_value = value;
+                    direction.y = previous_value;
+                }
+                else
+                {
+                    break;
+                }
             }
-            else
+        }
+        else
+        {
+            float difference = 1.0f;
+            float previous_value = 0.0f;
+            for(auto& value : VALUE_0_OR_HIGHER)
             {
-                break;
+                float current_difference = clamped_direction.y - value;
+                if(std::abs(current_difference) < std::abs(difference))
+                {
+                    difference = current_difference;
+                    previous_value = value;
+                    direction.y = previous_value;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
     else
     {
-        float difference = 1.0f;
-        float previous_value = 0.0f;
-        for(auto& value : VALUE_0_OR_HIGHER)
+        if(clamped_direction.y < 0.0f)
         {
-            float current_difference = clamped_direction.y - value;
-            if(std::abs(current_difference) < std::abs(difference))
-            {
-                difference = current_difference;
-                previous_value = value;
-                direction.y = previous_value;
-            }
-            else
-            {
-                break;
-            }
+            direction.y = -1.0f;
+        }
+        else
+        {
+            direction.y = 1.0f;
         }
     }
+
+
+
 
     clamped_direction = direction.clamp();
 
