@@ -375,13 +375,44 @@ void Renderer::render_e_type(const Enemy& object)
     {
         // TODO: Testing, change in each moving enemy render function!
 
-        float rotation = 0.0f;
-        SDL_Rect sprite = get_e_type()[0];
+        std::vector<SDL_Rect> sprite = get_e_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
 
-        SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
+        if(object.direction.x == 0.0f)
+        {
+
+        }
+        else if(object.direction.x == 1.0f)
+        {
+
+        }
+        else if(object.direction.x == -1.0f)
+        {
+
+        }
+        else if(object.direction.x == 0.33f)
+        {
+
+        }
+        else if(object.direction.x == -0.33f)
+        {
+
+        }
+        else if(object.direction.x == 0.67f)
+        {
+
+        }
+        else if(object.direction.x == -0.67f)
+        {
+
+        }
+
+
+
+
+         // SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
     }
     else if(object.state == State::EXPLODE)

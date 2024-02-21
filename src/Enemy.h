@@ -10,7 +10,7 @@ class Enemy : public GameObject
 private:
 
     const float VELOCITY = 350.0f;
-    const float VALUE_LESS_THAN_0[3] = {-1.0f, -0.67f, -0.33f};
+    const float VALUE_LESS_THAN_0[4] = {-1.0f, -0.67f, -0.33f, 0.0f};
     const float VALUE_0_OR_HIGHER[4] = {0.0f, 0.33f, 0.67f, 1.0f};
 
 public:

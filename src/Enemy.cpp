@@ -19,10 +19,10 @@ void Enemy::move(Vector2& player_position, float &delta)
             {
                 difference = current_difference;
                 previous_value = value;
+                direction.x = previous_value;
             }
             else
             {
-                direction.x = previous_value;
                 break;
             }
         }
@@ -38,10 +38,10 @@ void Enemy::move(Vector2& player_position, float &delta)
             {
                 difference = current_difference;
                 previous_value = value;
+                direction.x = previous_value;
             }
             else
             {
-                direction.x = previous_value;
                 break;
             }
         }
@@ -58,10 +58,10 @@ void Enemy::move(Vector2& player_position, float &delta)
             {
                 difference = current_difference;
                 previous_value = value;
+                direction.y = previous_value;
             }
             else
             {
-                direction.y = previous_value;
                 break;
             }
         }
@@ -77,10 +77,10 @@ void Enemy::move(Vector2& player_position, float &delta)
             {
                 difference = current_difference;
                 previous_value = value;
+                direction.y = previous_value;
             }
             else
             {
-                direction.y = previous_value;
                 break;
             }
         }
