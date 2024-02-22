@@ -38,11 +38,13 @@ private:
 
     const short OBJECTS_IN_TILE = 8;
     float PLAYER_OBJECT_DISTANCE = 300.0f;
+    float PLAYER_CANNON_DISTANCE = 400.0f;
 
     int start_tile = 0;
     std::chrono::microseconds timer = std::chrono::microseconds(0);
     std::chrono::microseconds lost_life_timer = std::chrono::microseconds(0);
     std::chrono::microseconds enemy_timer = std::chrono::microseconds(0);
+    std::chrono::microseconds cannon_timer = std::chrono::microseconds(0);
 
 
 
@@ -106,7 +108,9 @@ public:
 
     [[nodiscard]] Player get_player() const;
 
-    [[nodiscard]] std::list<Bullet> get_bullets() const;
+    [[nodiscard]] std::list<Bullet> get_player_bullets() const;
+
+    [[nodiscard]] std::list<Bullet> get_enemy_bullets() const;
 
     [[nodiscard]] const long& get_current_frame() const;
 

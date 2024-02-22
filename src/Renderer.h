@@ -379,6 +379,7 @@ private:
 
     void render_bullet(const Bullet& bullet);
 
+
     void render_animations();
 
     void render_collision_box(const GameObject& game_object);

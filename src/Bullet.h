@@ -12,13 +12,15 @@ public:
     Vector2 clamped_direction;
     Vector2 direction;
 
-    int speed = 600.0f;
+    int speed = 600;
 
 
     // constructor receives CLAMPED DIRECTION!
-    Bullet(Vector2 position, Vector2 bullet_direction, CollisionCircle collision_circle, Vector2 scale = Vector2(1.0f, 1.0f)) :
+    Bullet(Vector2 position, Vector2 bullet_direction, CollisionCircle collision_circle, Vector2 scale = Vector2(1.0f, 1.0f), int speed = 600) :
     GameObject(position, std::move(collision_circle), Type::BULLET, scale), clamped_direction(bullet_direction)
     {
+        this->speed = speed;
+
         if(bullet_direction.x > 0.0f)
         {
             direction.x = 1.0f;

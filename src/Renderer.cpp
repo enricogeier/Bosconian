@@ -489,7 +489,7 @@ void Renderer::render_e_type(const Enemy& object)
             }
             else if(object.direction.y == -1.0f)
             {
-                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[1], &render_quad);
             }
         }
         else if(std::abs(object.direction.x - 0.67f) < epsilon)
@@ -667,7 +667,7 @@ void Renderer::render_p_type(const Enemy& object)
             }
             else if(object.direction.y == -1.0f)
             {
-                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[1], &render_quad);
             }
         }
         else if(std::abs(object.direction.x - 0.67f) < epsilon)
@@ -844,7 +844,7 @@ void Renderer::render_i_type(const Enemy& object)
             }
             else if(object.direction.y == -1.0f)
             {
-                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[1], &render_quad);
             }
         }
         else if(std::abs(object.direction.x - 0.67f) < epsilon)
@@ -1019,7 +1019,7 @@ void Renderer::render_spy(const Enemy& object)
             }
             else if(object.direction.y == -1.0f)
             {
-                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprites[1], &render_quad);
+                SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite[1], &render_quad);
             }
         }
         else if(std::abs(object.direction.x - 0.67f) < epsilon)
@@ -1433,7 +1433,6 @@ void Renderer::render_bullet(const Bullet& bullet)
 }
 
 
-
 void Renderer::render_animations()
 {
     SDL_RenderSetViewport(renderer, &game_viewport);
@@ -1714,7 +1713,13 @@ void Renderer::update()
     }
 
 
-    const std::list<Bullet> bullet_list = level->get_bullets();
+    const std::list<Bullet> bullet_list = level->get_player_bullets();
+    for(auto& bullet : bullet_list)
+    {
+        render_bullet(bullet);
+    }
+
+    const std::list<Bullet> enemy_bullets = level->get_enemy_bullets();
     for(auto& bullet : bullet_list)
     {
         render_bullet(bullet);

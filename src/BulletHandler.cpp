@@ -1,17 +1,27 @@
 #include "BulletHandler.h"
 
+void BulletHandler::insert_enemy_bullet(Vector2 &position, Vector2& direction, CollisionManager &collision_manager)
+{
+    enemy_bullet_list.push_back(Bullet(
+            position,
+            direction,
+            collision_manager.get_enemy_bullet_collision(),
+            collision_manager.scale,
+            300
+    ));
+}
 
-void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& collision_manager) {
+void BulletHandler::insert_player_bullets(Player& player, CollisionManager& collision_manager) {
     if (player.direction.x == 1.0f) {
         if (player.direction.y == 1.0f) {
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 5, player.position.y),
                     player.clamped_direction * (-1),
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 21,
                             player.position.y + 15),
                     player.clamped_direction,
@@ -19,18 +29,18 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
         } else if (player.direction.y == 0.0f) {
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x - 15, player.position.y + 3),
                     player.clamped_direction * (-1),
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 16,
                             player.position.y + 3),
                     player.clamped_direction,
@@ -38,18 +48,18 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
         } else if (player.direction.y == -1.0f) {
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 4, player.position.y),
                     player.clamped_direction,
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x - 12,
                             player.position.y + 15),
                     player.clamped_direction * (-1),
@@ -62,34 +72,34 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
     } else if (player.direction.x == 0.0f) {
 
         if (player.direction.y == 1.0f) {
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 8, player.position.y - 15),
                     player.clamped_direction * (-1),
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 8, player.position.y + 16),
                     Vector2(0, 1),
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
 
         } else if (player.direction.y == -1.0f) {
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 3, player.position.y - 15),
                     player.clamped_direction,
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 3, player.position.y + 16),
                     player.clamped_direction * (-1),
                     collision_manager.get_player_bullet_collision(),
@@ -100,7 +110,7 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
         }
     } else if (player.direction.x == -1.0f) {
         if (player.direction.y == 1.0f) {
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 11, player.position.y),
                     player.clamped_direction * (-1),
                     collision_manager.get_player_bullet_collision(),
@@ -108,7 +118,7 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
 
             ));
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x - 5,
                             player.position.y + 15),
                     player.clamped_direction,
@@ -116,20 +126,20 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
         } else if (player.direction.y == 0.0f) {
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x, player.position.y + 3),
                     player.clamped_direction,
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 16, player.position.y + 3),
                     player.clamped_direction * (-1),
                     collision_manager.get_player_bullet_collision(),
@@ -139,16 +149,16 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
 
         } else if (player.direction.y == -1.0f) {
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x, player.position.y),
                     player.clamped_direction,
                     collision_manager.get_player_bullet_collision(),
                     collision_manager.scale
             ));
 
-            bullet_list.back().speed *= 2;
+            player_bullet_list.back().speed *= 2;
 
-            bullet_list.push_back(Bullet(
+            player_bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 16,
                             player.position.y + 15),
                     player.clamped_direction * (-1),
@@ -162,29 +172,37 @@ void BulletHandler::insert_player_bullets(Player& player,  CollisionManager& col
     }
 }
 
-std::list<Bullet> BulletHandler::get_bullets() const
+std::list<Bullet> BulletHandler::get_player_bullets() const
 {
-    return this->bullet_list;
+    return this->player_bullet_list;
 }
 
+std::list<Bullet> BulletHandler::get_enemy_bullets() const
+{
+    return this->enemy_bullet_list;
+}
 
 void BulletHandler::check_collisions(QuadTree &quad_tree, Score& score)
 {
-    for(auto& bullet : bullet_list)
+    for(auto& bullet : player_bullet_list)
+    {
+        quad_tree.check_collision(bullet, score);
+    }
+    for(auto& bullet : enemy_bullet_list)
     {
         quad_tree.check_collision(bullet, score);
     }
 }
 
-void BulletHandler::move_player_bullet(Player& player, QuadTree& quad_tree, float &delta)
+void BulletHandler::move_bullets(Player& player, QuadTree& quad_tree, float &delta)
 {
-    for(auto bullet = bullet_list.begin(); bullet != bullet_list.end();)
+    for(auto bullet = player_bullet_list.begin(); bullet != player_bullet_list.end();)
     {
 
 
         if(Vector2::distance(player.position, bullet->position) > BORDER|| bullet->state == State::EXPLODE)
         {
-            bullet = bullet_list.erase(bullet);
+            bullet = player_bullet_list.erase(bullet);
         }
         else
         {
@@ -205,10 +223,30 @@ void BulletHandler::move_player_bullet(Player& player, QuadTree& quad_tree, floa
         }
 
     }
+    for(auto bullet = enemy_bullet_list.begin(); bullet != enemy_bullet_list.end();)
+    {
+
+
+        if(Vector2::distance(player.position, bullet->position) > BORDER|| bullet->state == State::EXPLODE)
+        {
+            bullet = player_bullet_list.erase(bullet);
+        }
+        else
+        {
+
+            bullet->move(delta);
+            quad_tree.insert(*bullet);
+
+            ++bullet;
+        }
+
+    }
 
 }
 
+
 void BulletHandler::clear_bullets()
 {
-    bullet_list.clear();
+    player_bullet_list.clear();
+    enemy_bullet_list.clear();
 }

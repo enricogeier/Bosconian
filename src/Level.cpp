@@ -127,7 +127,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
             }
 
             // move bullets
-            bullet_handler.move_player_bullet(player, quad_tree, delta);
+            bullet_handler.move_bullets(player, quad_tree, delta);
 
             // move enemies
             move_enemies();
@@ -184,7 +184,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     });
 
             // move bullets
-            bullet_handler.move_player_bullet(player, quad_tree, delta);
+            bullet_handler.move_bullets(player, quad_tree, delta);
 
             // move enemies
             move_enemies();
@@ -215,7 +215,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     });
 
             // move bullets
-            bullet_handler.move_player_bullet(player, quad_tree, delta);
+            bullet_handler.move_bullets(player, quad_tree, delta);
 
             // move enemies
             move_enemies();
@@ -777,6 +777,75 @@ void Level::move_enemies()
                     }
                 }
 
+                if(tile.tile_position == tiles[current_tile_index].tile_position && player.state == State::NORMAL)
+                {
+                    if(cannon_timer == std::chrono::microseconds(0))
+                    {
+                        auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                        cannon_timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                    }
+                    else
+                    {
+                        auto current_frame_time_point = std::chrono::high_resolution_clock::now();
+                        auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                        std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - cannon_timer);
+
+                        if(time_delta > std::chrono::microseconds(2000000))
+                        {
+                            cannon_timer = std::chrono::microseconds(0);
+
+                            SpaceStation nextStation = tile.space_stations.front();
+                            float distance = 9999.0f;
+
+                            for(auto& station : tile.space_stations)
+                            {
+                                float current_distance = Vector2::distance(player.position, station.position);
+
+                                if( current_distance < distance)
+                                {
+                                    nextStation = station;
+                                    distance = current_distance;
+                                }
+                            }
+
+                            Cannon nextCannon = nextStation.cannons[0];
+                            distance = 9999.0f;
+
+                            for(auto& cannon : nextStation.cannons)
+                            {
+                                if(cannon.state == State::NORMAL)
+                                {
+                                    float current_distance = Vector2::distance(player.position, cannon.position);
+
+                                    if(current_distance < distance)
+                                    {
+                                        nextCannon = cannon;
+                                        distance = current_distance;
+                                    }
+                                }
+
+                            }
+
+                            if(distance <= PLAYER_CANNON_DISTANCE)
+                            {
+                                // shoot
+
+                                Vector2 shoot_position = nextCannon.position + Vector2(32.0f, 32.0f);
+                                Vector2 relative_player_position = player.position + Vector2(32.0f, 32.0f);
+                                Vector2 direction = relative_player_position - shoot_position;
+                                direction = direction.clamp();
+
+                                bullet_handler.insert_enemy_bullet(shoot_position, direction, collision_manager);
+
+                            }
+
+
+                        }
+                    }
+                }
+
+
+
                 if(player_collision || defect_cannons == space_station->get_amount_of_cannons())
                 {
                     space_station->state = State::EXPLODE;
@@ -902,9 +971,14 @@ Player Level::get_player() const
     return player;
 }
 
-std::list<Bullet> Level::get_bullets() const
+std::list<Bullet> Level::get_player_bullets() const
 {
-    return bullet_handler.get_bullets();
+    return bullet_handler.get_player_bullets();
+}
+
+std::list<Bullet> Level::get_enemy_bullets() const
+{
+    return bullet_handler.get_enemy_bullets();
 }
 
 const long& Level::get_current_frame() const

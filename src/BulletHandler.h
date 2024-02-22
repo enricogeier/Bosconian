@@ -12,7 +12,8 @@
 class BulletHandler
 {
 private:
-    std::list<Bullet> bullet_list;
+    std::list<Bullet> player_bullet_list;
+    std::list<Bullet> enemy_bullet_list;
     const float BORDER = 700.0f;
 
 public:
@@ -22,14 +23,16 @@ public:
 
     void insert_player_bullets(Player& player, CollisionManager& collision_manager);
 
-    [[nodiscard]] std::list<Bullet> get_bullets() const;
+    void insert_enemy_bullet(Vector2& position, Vector2& direction, CollisionManager& collision_manager);
+
+    [[nodiscard]] std::list<Bullet> get_player_bullets() const;
+    std::list<Bullet> get_enemy_bullets() const;
 
     void check_collisions(QuadTree& quad_tree, Score& score);
 
     void clear_bullets();
 
-    void move_player_bullet(Player& player, QuadTree& quad_tree, float& delta);
-
+    void move_bullets(Player& player, QuadTree& quad_tree, float& delta);
 
 };
 
