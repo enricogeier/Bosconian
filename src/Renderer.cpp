@@ -1673,8 +1673,6 @@ void Renderer::update()
     for(auto& station : stations)
     {
         render_space_station(station);
-
-
     }
 
     const std::vector<GameObject> asteroids = level->get_all_game_objects();
