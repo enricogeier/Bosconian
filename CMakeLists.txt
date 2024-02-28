@@ -52,6 +52,7 @@ add_executable(Test src/main.cpp
         src/Cannon.cpp
         src/Score.h
         src/Score.cpp
+        src/Sound.h
 
 )
 

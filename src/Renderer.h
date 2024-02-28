@@ -252,6 +252,7 @@ private:
             {128, 208, 64, 7}, // condition
             {64, 249, 37, 7}, // green
             {64, 233, 39, 7}, // round
+            {144, 160, 64, 16}, // game over
 
 
 
@@ -353,6 +354,8 @@ private:
     SDL_Rect get_green() const;
 
     SDL_Rect get_round() const;
+
+    SDL_Rect get_gameOver() const;
 
 
     void render_background(const Player& player);

@@ -251,7 +251,7 @@ void Renderer::render_side_bar(const Player& player, const std::vector<SpaceStat
     SDL_RenderSetViewport(renderer, &game_state_viewport);
     sprite = get_p1_life();
 
-    for(int i = 0; i < player.lives; i++)
+    for(int i = 0; i < player.lives - 1; i++)
     {
         // sprite size: 64 * 64
         render_quad = {i * 64, 0, 64, 64};
@@ -1724,6 +1724,21 @@ void Renderer::update()
 
     render_player(player);
 
+    if(level->state == GAME_OVER)
+    {
+        SDL_Rect sprite = get_gameOver();
+        SDL_Rect render_quad = {
+                (game_viewport.w / 2) - (sprite.w / 2),
+                (game_viewport.h / 2) - (sprite.h / 2),
+                sprite.w * (int)SCALE.x,
+                sprite.h * (int)SCALE.y
+        };
+
+        SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
+
+    }
+
     render_side_bar(player, stations);
 
     update_screen();
@@ -2143,4 +2158,9 @@ SDL_Rect Renderer::get_green() const
 SDL_Rect Renderer::get_round() const
 {
     return sprites[109];
+}
+
+SDL_Rect Renderer::get_gameOver() const
+{
+    return sprites[110];
 }

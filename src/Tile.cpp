@@ -134,3 +134,11 @@ void Tile::insert_object(GameObject &object)
     }
     objects.push_back(object);
 }
+
+void Tile::clear()
+{
+    mines.clear();
+    enemies.clear();
+    space_stations.clear();
+    objects.clear();
+}

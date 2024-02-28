@@ -31,6 +31,7 @@ public:
 
     void insert_object(GameObject& object);
 
+    void clear();
 
 };
 

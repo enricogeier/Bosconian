@@ -73,6 +73,8 @@ private:
 
     void load_level();
 
+    void clear();
+
 public:
 
     Score score;

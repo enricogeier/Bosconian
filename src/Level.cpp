@@ -107,14 +107,15 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     player.state = State::DESTROY;
                     --player.lives;
 
-                    if(player.lives < 0)
+                    if(player.lives < 1)
                     {
+                        clear();
                         state = LevelState::GAME_OVER;
+                        return;
                     }
                     else
                     {
                         state = LevelState::LOST_LIVE;
-
                     }
 
                     break;
@@ -147,6 +148,25 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
         case LOST_LIVE:
         {
             // start timer (5 seconds)
+
+            if(score.space_stations == 0)
+            {
+
+                for(auto& tile : tiles)
+                {
+                    tile.space_stations.clear();
+                    tile.enemies.clear();
+                }
+
+
+                bullet_handler.clear_bullets();
+                score.space_stations = 0;
+                state = LevelState::FINISHED_LEVEL;
+                lost_life_timer = std::chrono::microseconds(0);
+                break;
+
+
+            }
 
             if(lost_life_timer == std::chrono::microseconds(0))
             {
@@ -200,30 +220,6 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
         case GAME_OVER:
         {
             // testing
-
-
-
-            delta = fps_timer.get_delta();
-
-            quad_tree = QuadTree(
-                    {
-                            (int)current_tile_position.x - (int(AMOUNT_OF_TILES_X / 2) * TILE_SIZE_X ),
-                            (int)current_tile_position.y - (int(AMOUNT_OF_TILES_Y / 2) * TILE_SIZE_Y ),
-                            LEVEL_SIZE_X,
-                            LEVEL_SIZE_Y
-                    });
-
-            // move bullets
-            bullet_handler.move_bullets(player, quad_tree, delta);
-
-            // move enemies
-            move_enemies();
-
-            // check bullet collisions
-            bullet_handler.check_collisions(quad_tree, score);
-
-            // check object collisions
-            check_enemy_collisions();
 
             break;
         }
@@ -904,6 +900,15 @@ void Level::check_enemy_collisions()
     }
 }
 
+void Level::clear()
+{
+    for(auto& tile : tiles)
+    {
+        tile.clear();
+    }
+
+    bullet_handler.clear_bullets();
+}
 
 std::vector<GameObject> Level::get_all_game_objects() const
 {
