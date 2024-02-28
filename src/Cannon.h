@@ -33,7 +33,7 @@ public:
             Vector2 scale = Vector2()
                     )
     : GameObject(position, std::move(collision_circle), Type::CANNON, scale),
-    explosion_circle(std::move(explosion_circle)), type(cannon_type)
+    explosion_circle(std::move(explosion_circle)), type(cannon_type), shoot_position_offset(shoot_position_offset)
     {
     }
 

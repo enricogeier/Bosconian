@@ -10,7 +10,7 @@ class SpaceStation : public GameObject
 private:
     bool updated = false;
 
-    Vector2 h_shoot_positions_offset[6] = {
+    Vector2 v_shoot_positions_offset[6] = {
             Vector2(0.0f, 8.0f),
             Vector2(16.0f, 0.0f),
             Vector2(8.0f, 0.0f),
@@ -19,7 +19,7 @@ private:
             Vector2(16.0f, 24.0f),
     };
 
-    Vector2 v_shoot_positions_offset[6] = {
+    Vector2 h_shoot_positions_offset[6] = {
             Vector2(16.0f, 0.0f),
             Vector2(16.0f, 8.0f),
             Vector2(16.0f, 8.0f),

@@ -23,8 +23,8 @@ SpaceStation::SpaceStation(Vector2 position, std::vector<CollisionCircle> collis
                             position.y +  (h_cannon_positions[i].y * scale.y)
                             ),
                     Vector2(
-                            h_shoot_positions_offset[i].x * scale.x,
-                            h_shoot_positions_offset[i].y * scale.y
+                            h_shoot_positions_offset[i].x * scale.x / 2,
+                            h_shoot_positions_offset[i].y * scale.y / 2
                             ),
                     cannon_types[i],
                     i % 3 == 0 ? collision_circles[2] : collision_circles[1],
@@ -53,8 +53,8 @@ SpaceStation::SpaceStation(Vector2 position, std::vector<CollisionCircle> collis
                             position.y +  (v_cannon_positions[i].y * scale.y)
                     ),
                     Vector2(
-                            v_shoot_positions_offset[i].x * scale.x,
-                            v_shoot_positions_offset[i].y * scale.y
+                            v_shoot_positions_offset[i].x * scale.x / 2,
+                            v_shoot_positions_offset[i].y * scale.y / 2
                     ),
                     cannon_types[i],
                     i % 3 == 0 ? collision_circles[1] : collision_circles[4],
