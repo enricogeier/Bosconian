@@ -335,7 +335,7 @@ void Renderer::render_player(const Player& object)
         }
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
         SDL_RenderCopyEx(renderer, sprite_sheet_texture, &sprite, &render_quad, rotation, nullptr, SDL_FLIP_NONE);
 
@@ -377,7 +377,7 @@ void Renderer::render_e_type(const Enemy& object)
         std::vector<SDL_Rect> sprite = get_e_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
+                                sprite[0].w * (int)SCALE.x, sprite[0].h * (int)SCALE.y};
 
         float epsilon = 0.001f;
 
@@ -555,7 +555,7 @@ void Renderer::render_p_type(const Enemy& object)
         std::vector<SDL_Rect> sprite = get_p_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
+                                sprite[0].w * (int)SCALE.x, sprite[0].h * (int)SCALE.y};
 
         float epsilon = 0.001f;
 
@@ -732,7 +732,7 @@ void Renderer::render_i_type(const Enemy& object)
         std::vector<SDL_Rect> sprite = get_i_type();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
+                                sprite[0].w * (int)SCALE.x, sprite[0].h * (int)SCALE.y};
 
         float epsilon = 0.001f;
 
@@ -907,7 +907,7 @@ void Renderer::render_spy(const Enemy& object)
         std::vector<SDL_Rect> sprite = get_spy();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite[0].w * (int)object.scale.x, sprite[0].h * (int)object.scale.y};
+                                sprite[0].w * (int)SCALE.x, sprite[0].h * (int)SCALE.y};
 
         float epsilon = 0.001f;
 
@@ -1082,7 +1082,7 @@ void Renderer::render_asteroid(const GameObject& object)
         SDL_Rect sprite = get_asteroid(object.id % 3);
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1120,7 +1120,7 @@ void Renderer::render_mine(const Mine& object)
         SDL_Rect sprite = get_mine();
 
         SDL_Rect render_quad = {(int)(object.position.x - camera.x), (int)(object.position.y - camera.y),
-                                sprite.w * (int)object.scale.x, sprite.h * (int)object.scale.y};
+                                sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1160,7 +1160,7 @@ void Renderer::render_space_station(const SpaceStation& station)
             SDL_Rect sprite = get_space_station_h_core();
 
             SDL_Rect render_quad = {(int)(station.position.x - camera.x), (int)(station.position.y - camera.y),
-                                    sprite.w * (int)station.scale.x, sprite.h * (int)station.scale.y};
+                                    sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
             SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1193,7 +1193,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                     }
 
                     render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
-                                            sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+                                            sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1241,7 +1241,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                     }
 
                     render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
-                                   sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+                                   sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
                 }
@@ -1254,7 +1254,7 @@ void Renderer::render_space_station(const SpaceStation& station)
             SDL_Rect sprite = get_space_station_v_core();
 
             SDL_Rect render_quad = {(int)(station.position.x - camera.x), (int)(station.position.y - camera.y),
-                                    sprite.w * (int)station.scale.x, sprite.h * (int)station.scale.y};
+                                    sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
             SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1286,7 +1286,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                     }
 
                     render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
-                                   sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+                                   sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1334,7 +1334,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                     }
 
                     render_quad = {(int)(cannon.position.x - camera.x), (int)(cannon.position.y - camera.y),
-                                   sprite.w * (int)cannon.scale.x, sprite.h * (int)cannon.scale.y};
+                                   sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
                 }
@@ -1358,20 +1358,20 @@ void Renderer::render_space_station(const SpaceStation& station)
         {
             std::vector<SDL_Rect> explosion_sprites = get_space_station_explosion();
 
-            Vector2 animation_position_0 = station.position - Vector2(16 * station.scale.x, 20 * station.scale.y);
-            Vector2 animation_position_1 = animation_position_0 + Vector2(32 * station.scale.x, 0.0f);
-            Vector2 animation_position_2 = animation_position_0 + Vector2(0.0f, 32 * station.scale.y);
-            Vector2 animation_position_3 = animation_position_0 + Vector2(32 * station.scale.x, 32 * station.scale.y);
+            Vector2 animation_position_0 = station.position - Vector2(16 * SCALE.x, 20 * SCALE.y);
+            Vector2 animation_position_1 = animation_position_0 + Vector2(32 * SCALE.x, 0.0f);
+            Vector2 animation_position_2 = animation_position_0 + Vector2(0.0f, 32 * SCALE.y);
+            Vector2 animation_position_3 = animation_position_0 + Vector2(32 * SCALE.x, 32 * SCALE.y);
 
 
             animations.push_back(AnimationPlayer(explosion_sprites, animation_position_0,
-                                                 station.id, station.scale));
+                                                 station.id, SCALE));
             animations.push_back(AnimationPlayer(explosion_sprites, animation_position_1,
-                                                 station.id, station.scale));
+                                                 station.id, SCALE));
             animations.push_back(AnimationPlayer(explosion_sprites, animation_position_2,
-                                                 station.id, station.scale));
+                                                 station.id, SCALE));
             animations.push_back(AnimationPlayer(explosion_sprites, animation_position_3,
-                                                 station.id, station.scale));
+                                                 station.id, SCALE));
 
 
         }
@@ -1426,7 +1426,7 @@ void Renderer::render_bullet(const Bullet& bullet)
     }
 
     SDL_Rect render_quad = {(int)(bullet.position.x - camera.x), (int)(bullet.position.y - camera.y),
-                            sprite.w * (int)bullet.scale.x, sprite.h * (int)bullet.scale.y};
+                            sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
 
@@ -1441,7 +1441,7 @@ void Renderer::render_animations()
     {
         SDL_Rect* sprite = animation->get_animation_sprite();
         SDL_Rect render_quad = {(int)(animation->position.x - camera.x), (int)(animation->position.y - camera.y),
-                                sprite->w * (int)animation->scale.x, sprite->h * (int)animation->scale.y};
+                                sprite->w * (int)SCALE.x, sprite->h * (int)SCALE.y};
 
         SDL_RenderCopy(renderer, sprite_sheet_texture, sprite, &render_quad);
 

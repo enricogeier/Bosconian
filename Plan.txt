@@ -1,5 +1,3 @@
-12. Raumbasen: Schießen implementieren
-
 13. Sound
 14. google-Tests
 15. Projektbericht
