@@ -12,9 +12,10 @@
 class BulletHandler
 {
 private:
-    std::list<Bullet> player_bullet_list;
-    std::list<Bullet> enemy_bullet_list;
+    std::list<Bullet> bullet_list;
     const float BORDER = 700.0f;
+
+    const int ENEMY_BULLET_SPEED = 250;
 
 public:
     float previous_player_speed = 0.0f;
@@ -25,8 +26,7 @@ public:
 
     void insert_enemy_bullet(Vector2& position, Vector2& direction, CollisionManager& collision_manager);
 
-    [[nodiscard]] std::list<Bullet> get_player_bullets() const;
-    std::list<Bullet> get_enemy_bullets() const;
+    [[nodiscard]] std::list<Bullet> get_bullets() const;
 
     void check_collisions(QuadTree& quad_tree, Score& score);
 

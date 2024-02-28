@@ -1,4 +1,3 @@
-11. Gegner: Spawn, Move, ... => alles
 12. Raumbasen: Schießen implementieren
 
 13. Sound

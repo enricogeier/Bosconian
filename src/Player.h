@@ -15,6 +15,7 @@ public:
 
     Vector2 clamped_direction;
     Vector2 direction = Vector2(0.0f, -1.0f);
+    Vector2 CENTER_OFFSET = Vector2(8.0f, 8.0f);
 
     int lives = 3;
 

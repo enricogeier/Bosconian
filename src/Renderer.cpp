@@ -1709,21 +1709,18 @@ void Renderer::update()
             case SPY:
                 render_spy(enemy);
                 break;
+
+
         }
     }
 
 
-    const std::list<Bullet> bullet_list = level->get_player_bullets();
+    const std::list<Bullet> bullet_list = level->get_bullets();
     for(auto& bullet : bullet_list)
     {
         render_bullet(bullet);
     }
 
-    const std::list<Bullet> enemy_bullets = level->get_enemy_bullets();
-    for(auto& bullet : bullet_list)
-    {
-        render_bullet(bullet);
-    }
 
     render_player(player);
 

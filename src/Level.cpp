@@ -67,7 +67,6 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     tile.enemies.clear();
                 }
 
-                //TODO: check enemy bullets
 
                 bullet_handler.clear_bullets();
                 score.space_stations = 0;
@@ -790,7 +789,7 @@ void Level::move_enemies()
                         auto time = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
                         std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(time - cannon_timer);
 
-                        if(time_delta > std::chrono::microseconds(2000000))
+                        if(time_delta > std::chrono::microseconds(1000000))
                         {
                             cannon_timer = std::chrono::microseconds(0);
 
@@ -830,10 +829,12 @@ void Level::move_enemies()
                             {
                                 // shoot
 
-                                Vector2 shoot_position = nextCannon.position + Vector2(32.0f, 32.0f);
-                                Vector2 relative_player_position = player.position + Vector2(32.0f, 32.0f);
+                                Vector2 shoot_position = nextCannon.position + nextCannon.shoot_position_offset;
+                                Vector2 relative_player_position = player.position +
+                                        Vector2(player.CENTER_OFFSET.x * collision_manager.scale.x, player.CENTER_OFFSET.y * collision_manager.scale.y);
                                 Vector2 direction = relative_player_position - shoot_position;
                                 direction = direction.clamp();
+
 
                                 bullet_handler.insert_enemy_bullet(shoot_position, direction, collision_manager);
 
@@ -971,15 +972,11 @@ Player Level::get_player() const
     return player;
 }
 
-std::list<Bullet> Level::get_player_bullets() const
+std::list<Bullet> Level::get_bullets() const
 {
-    return bullet_handler.get_player_bullets();
+    return bullet_handler.get_bullets();
 }
 
-std::list<Bullet> Level::get_enemy_bullets() const
-{
-    return bullet_handler.get_enemy_bullets();
-}
 
 const long& Level::get_current_frame() const
 {

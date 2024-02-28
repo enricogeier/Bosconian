@@ -108,9 +108,7 @@ public:
 
     [[nodiscard]] Player get_player() const;
 
-    [[nodiscard]] std::list<Bullet> get_player_bullets() const;
-
-    [[nodiscard]] std::list<Bullet> get_enemy_bullets() const;
+    [[nodiscard]] std::list<Bullet> get_bullets() const;
 
     [[nodiscard]] const long& get_current_frame() const;
 

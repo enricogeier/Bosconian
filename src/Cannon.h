@@ -17,13 +17,16 @@ private:
     CollisionCircle explosion_circle;
 
 
+
 public:
 
     CannonType type = CannonType::N;
+    Vector2 shoot_position_offset = Vector2();
 
     explicit Cannon
     (
             Vector2 position = Vector2(),
+            Vector2 shoot_position_offset = Vector2(),
             CannonType cannon_type = CannonType::N,
             CollisionCircle collision_circle = CollisionCircle(),
             CollisionCircle explosion_circle = CollisionCircle(),

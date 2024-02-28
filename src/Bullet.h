@@ -21,32 +21,31 @@ public:
     {
         this->speed = speed;
 
-        if(bullet_direction.x > 0.0f)
+        if(bullet_direction.x >= 0.4f)
         {
             direction.x = 1.0f;
         }
-        else if(bullet_direction.x == 0.0f)
-        {
-            direction.x = 0.0f;
-        }
-        else
+        else if(bullet_direction.x <= -0.4f)
         {
             direction.x = -1.0f;
         }
+        else
+        {
+            direction.x = 0.0f;
+        }
 
-        if(bullet_direction.y > 0.0f)
+        if(bullet_direction.y >= 0.4f)
         {
             direction.y = 1.0f;
         }
-        else if(bullet_direction.y == 0.0f)
-        {
-            direction.y = 0.0f;
-        }
-        else
+        else if(bullet_direction.y <= -0.4f)
         {
             direction.y = -1.0f;
         }
-
+        else
+        {
+            direction.y = 0.0f;
+        }
 
     }
 
