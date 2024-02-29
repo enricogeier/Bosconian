@@ -15,6 +15,7 @@
 #include "CollisionManager.h"
 #include "Player.h"
 #include "FPSTimer.h"
+#include "Sound.h"
 
 enum LevelState
 {
@@ -76,6 +77,8 @@ private:
     void clear();
 
 public:
+
+    Sound sound;
 
     Score score;
 

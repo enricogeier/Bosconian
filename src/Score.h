@@ -2,17 +2,21 @@
 #define SCORE_H
 
 #include "GameObject.h"
+#include "Sound.h"
+
 
 class Score
 {
 private:
-    const short P_ASTEROIDS = 10;
-    const short P_MINE = 20;
-    const short P_ITYPE = 50;
-    const short P_PTYPE = 60;
-    const short P_ETYPE = 70;
-    const short CANNON = 200;
-    const short SPACE_STATION = 1500;
+    short P_ASTEROIDS = 10;
+    short P_MINE = 20;
+    short P_ITYPE = 50;
+    short P_PTYPE = 60;
+    short P_ETYPE = 70;
+    short CANNON = 200;
+    short SPACE_STATION = 1500;
+
+    Sound* sound = nullptr;
 
 public:
 
@@ -21,7 +25,7 @@ public:
 
     short space_stations = 0;
 
-    Score() = default;
+    explicit Score(Sound* sound = nullptr);
 
     void increase_score(Type type);
 

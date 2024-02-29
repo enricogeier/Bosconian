@@ -55,6 +55,7 @@ void GameHandler::run() {
     }
 
     renderer.clear();
+    level.sound.close();
 
 }
 

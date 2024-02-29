@@ -1610,7 +1610,7 @@ void Renderer::render_background(const Player &player)
     std::chrono::microseconds time_delta = std::chrono::duration_cast<std::chrono::microseconds>(current_time - point_timer);
 
 
-    if(time_delta > std::chrono::microseconds(1000000))
+    if(time_delta > std::chrono::microseconds(500000))
     {
         point_timer = current_time;
 

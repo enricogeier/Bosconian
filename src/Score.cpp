@@ -1,5 +1,10 @@
 #include "Score.h"
 
+Score::Score(Sound* sound)
+{
+    this->sound = sound;
+}
+
 void Score::increase_score(Type type)
 {
     switch(type)
@@ -64,5 +69,7 @@ void Score::increase_score(Type type)
         }
 
     }
+
+    sound->playExplosion();
 }
 

@@ -3,6 +3,7 @@
 Level::Level()
 {
 
+    score = Score(&sound);
     player = Player(collision_manager.get_player_collision(), collision_manager.scale);
     bullet_handler.previous_player_speed = player.current_velocity;
 
@@ -37,6 +38,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
             {
                 auto current_frame_time_point = std::chrono::high_resolution_clock::now();
                 timer = std::chrono::duration_cast<std::chrono::microseconds>(current_frame_time_point.time_since_epoch());
+                sound.playStartFanfare();
             }
             else
             {
@@ -71,6 +73,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                 bullet_handler.clear_bullets();
                 score.space_stations = 0;
                 state = LevelState::FINISHED_LEVEL;
+                sound.playEndFanfare();
                 break;
 
 
@@ -98,12 +101,15 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     if(shoot)
                     {
                         bullet_handler.insert_player_bullets(player, collision_manager);
+
+                        sound.playShot();
                     }
 
                     break;
                 }
                 case State::EXPLODE:
                 {
+                    sound.playExplosion();
                     player.state = State::DESTROY;
                     --player.lives;
 
@@ -111,6 +117,8 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                     {
                         clear();
                         state = LevelState::GAME_OVER;
+                        sound.stopBackground();
+                        sound.playGameOver();
                         return;
                     }
                     else
@@ -163,6 +171,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
                 score.space_stations = 0;
                 state = LevelState::FINISHED_LEVEL;
                 lost_life_timer = std::chrono::microseconds(0);
+                sound.playEndFanfare();
                 break;
 
 
