@@ -1,5 +1,10 @@
 #include "Bullet.h"
 
+void Bullet::increment(int &a)
+{
+    ++a;
+}
+
 void Bullet::move(float &delta)
 {
     if(state == State::NORMAL)

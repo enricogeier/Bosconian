@@ -1,10 +1,12 @@
 #include "GameHandler.h"
+#include <gtest/gtest.h>
 
-
-int main(int argc, char* args[])
+int main(int argc, char **argv)
 {
     GameHandler game_handler;
     game_handler.run();
 
-    return 0;
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+
 }

@@ -14,6 +14,8 @@ public:
 
     int speed = 600;
 
+    void increment(int& a);
+
 
     // constructor receives CLAMPED DIRECTION!
     Bullet(Vector2 position, Vector2 bullet_direction, CollisionCircle collision_circle, Vector2 scale = Vector2(1.0f, 1.0f), int speed = 600) :
