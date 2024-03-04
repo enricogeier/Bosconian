@@ -13,7 +13,7 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_MIXER
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(googletest FALSE)
+set(googletest TRUE)
 if(googletest)
     add_executable(Test
             test/mainTest.cpp
