@@ -18,6 +18,7 @@ if(googletest)
     add_executable(Test
             test/mainTest.cpp
             test/BulletTest.cpp
+            test/BulletHandlerTest.cpp
             src/Player.h
             src/Player.cpp
             src/Vector2.h
@@ -60,6 +61,10 @@ if(googletest)
             src/Score.cpp
             src/Sound.h
             src/Sound.cpp
+            test/CannonTest.cpp
+            test/CollisionCircleTest.cpp
+            test/CollisionManagerTest.cpp
+
     )
 else ()
     add_executable(Test src/main.cpp

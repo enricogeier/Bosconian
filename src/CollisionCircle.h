@@ -31,7 +31,7 @@ public:
     Layer layer;
     std::list<Layer> can_collide_with;
 
-    explicit CollisionCircle(Vector2 origin = Vector2(), float radius = 0.0f, Layer layer = Layer::PLAYER, std::list<Layer> can_collide_with = {}, Vector2 scale = Vector2(1.0f, 1.0f))
+    explicit CollisionCircle(Vector2 origin = Vector2(), float radius = 0.0f, Layer layer = Layer::PLAYER, std::list<Layer> can_collide_with = {})
     : origin(origin), radius(radius), layer(layer), can_collide_with(std::move(can_collide_with)), initial_origin(origin)
     {
     }

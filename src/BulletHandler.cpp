@@ -13,7 +13,8 @@ void BulletHandler::insert_enemy_bullet(Vector2 &position, Vector2& direction, C
 
 void BulletHandler::insert_player_bullets(Player& player, CollisionManager& collision_manager) {
     if (player.direction.x == 1.0f) {
-        if (player.direction.y == 1.0f) {
+        if (player.direction.y == 1.0f)
+        {
             bullet_list.push_back(Bullet(
                     Vector2(player.position.x + 5, player.position.y),
                     player.clamped_direction * (-1),
@@ -189,7 +190,6 @@ void BulletHandler::move_bullets(Player& player, QuadTree& quad_tree, float &del
 {
     for(auto bullet = bullet_list.begin(); bullet != bullet_list.end();)
     {
-
 
         if(Vector2::distance(player.position, bullet->position) > BORDER|| bullet->state == State::EXPLODE)
         {
