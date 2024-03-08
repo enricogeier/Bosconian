@@ -29,19 +29,9 @@ TEST(SpaceStation, update_cannon_positions)
         {
             EXPECT_NE(position, spaceStation.cannons[i++].position);
         }
+
     }
 
 
-
-
-}
-
-TEST(SpaceStation, update_cannons)
-{
-
-}
-
-TEST(SpaceStation, get_amount_of_cannons)
-{
 
 }

@@ -73,6 +73,9 @@ if(googletest)
             test/RectangleTest.cpp
             test/ScoreTest.cpp
             test/SpaceStationTest.cpp
+            test/TileTest.cpp
+            test/Vector2Test.cpp
+
 
     )
 else ()

@@ -19,6 +19,7 @@ bool Tile::is_object_within_tile(Vector2 &player_position, Vector2 tile_size) co
     {
         return false;
     }
+
 }
 
 void Tile::update_tile_position()
@@ -132,7 +133,9 @@ void Tile::insert_object(GameObject &object)
         }
 
     }
+
     objects.push_back(object);
+
 }
 
 void Tile::clear()

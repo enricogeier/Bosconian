@@ -109,6 +109,7 @@ int SpaceStation::get_amount_of_cannons()
     for(Cannon& cannon : cannons)
     {
         ++amount;
+
     }
 
     return amount;
