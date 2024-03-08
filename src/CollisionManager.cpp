@@ -120,8 +120,7 @@ void CollisionManager::create_collision_circles()
                                     6.0f * scale.x,
                                     Layer::ENEMY,
                                     std::list<Layer>{Layer::CELESTIAL_OBJECT, Layer::PLAYER, Layer::PLAYER_BULLET}
-                                  }
-
+                                  },
 
                                   };
 }
@@ -188,6 +187,7 @@ std::vector<CollisionCircle> CollisionManager::get_space_station_collisions()
             collision_circles[13],
             collision_circles[14],
             collision_circles[15],
+
 
             };
 }

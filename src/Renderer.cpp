@@ -1244,6 +1244,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                                    sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
                 }
             }
 
@@ -1289,6 +1290,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                                    sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
 
                 }
                 else
@@ -1337,6 +1339,7 @@ void Renderer::render_space_station(const SpaceStation& station)
                                    sprite.w * (int)SCALE.x, sprite.h * (int)SCALE.y};
 
                     SDL_RenderCopy(renderer, sprite_sheet_texture, &sprite, &render_quad);
+
                 }
             }
         }

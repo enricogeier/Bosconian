@@ -64,6 +64,15 @@ if(googletest)
             test/CannonTest.cpp
             test/CollisionCircleTest.cpp
             test/CollisionManagerTest.cpp
+            test/EnemyTest.cpp
+            test/FPSTimer.cpp
+            test/GameObjectTest.cpp
+            test/MineTest.cpp
+            test/PlayerTest.cpp
+            test/QuadTreeTest.cpp
+            test/RectangleTest.cpp
+            test/ScoreTest.cpp
+            test/SpaceStationTest.cpp
 
     )
 else ()

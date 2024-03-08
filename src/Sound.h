@@ -33,7 +33,6 @@ public:
 
     void stopBackground();
 
-    // TODO: call after render loop !!!
     void close();
 
 };

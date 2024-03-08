@@ -226,12 +226,6 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
 
             break;
         }
-        case GAME_OVER:
-        {
-            // testing
-
-            break;
-        }
         case RESTART:
         {
             player.position = start_position;
@@ -284,10 +278,7 @@ void Level::update(Vector2 player_direction, bool shoot, bool accelerate)
     }
 
 
-
-
-
-    fps_timer.clamp_and_print_fps(frame_counter);
+    fps_timer.clamp_fps(frame_counter);
     frame_counter++;
 
 

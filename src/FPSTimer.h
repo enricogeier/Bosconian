@@ -17,7 +17,7 @@ public:
 
     float get_delta() const;
 
-    void clamp_and_print_fps(const long int& amount_of_frames);
+    void clamp_fps(const long int& amount_of_frames);
 
 };
 

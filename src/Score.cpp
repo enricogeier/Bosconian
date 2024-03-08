@@ -66,6 +66,7 @@ void Score::increase_score(Type type)
         else
         {
             highscore = 99999999;
+            score = 99999999;
         }
 
     }

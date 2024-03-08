@@ -14,7 +14,7 @@ private:
     short P_PTYPE = 60;
     short P_ETYPE = 70;
     short CANNON = 200;
-    short SPACE_STATION = 1500;
+     short SPACE_STATION = 1500;
 
     Sound* sound = nullptr;
 

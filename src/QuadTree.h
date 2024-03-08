@@ -28,14 +28,14 @@ private:
 
     void do_collision_calculation(GameObject& game_object, Score& score);
 
+    bool calculate_collision(CollisionCircle& huge_circle, CollisionCircle& small_circle);
+
 public:
     explicit QuadTree(Rectangle boundary = {}, QuadTree* parent = nullptr): boundary(boundary), parent(parent){}
 
     void insert(GameObject& game_object);
 
     void check_collision(GameObject& game_object, Score& score);
-
-    bool calculate_collision(CollisionCircle& huge_circle, CollisionCircle& small_circle);
 
 };
 
