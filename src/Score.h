@@ -25,8 +25,18 @@ public:
 
     short space_stations = 0;
 
+    /**
+     * Constructs a new Sound object.
+     *
+     * @param sound Sound reference to play explosion sounds if an object was destroyed.
+     */
     explicit Score(Sound* sound = nullptr);
 
+    /**
+     * Called if a collision happened.
+     *
+     * @param type Type of object which has been destroyed. See enum Type.
+     */
     void increase_score(Type type);
 
 

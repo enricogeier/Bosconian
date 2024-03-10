@@ -5,12 +5,12 @@ Tile::Tile(Vector2 position) : tile_position(position), last_tile_position(posit
 }
 
 
-bool Tile::is_object_within_tile(Vector2 &player_position, Vector2 tile_size) const
+bool Tile::is_object_within_tile(Vector2 &position, Vector2 tile_size) const
 {
 
     if(
-            (int)player_position.x < (int)tile_position.x + (int)tile_size.x && (int)player_position.x >= (int)tile_position.x
-            && (int)player_position.y < (int)tile_position.y + (int)tile_size.y && (int)player_position.y >= (int)tile_position.y
+            (int)position.x < (int)tile_position.x + (int)tile_size.x && (int)position.x >= (int)tile_position.x
+            && (int)position.y < (int)tile_position.y + (int)tile_size.y && (int)position.y >= (int)tile_position.y
     )
     {
         return true;

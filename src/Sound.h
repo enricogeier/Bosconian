@@ -19,20 +19,44 @@ private:
 
 public:
 
+    /**
+     * Constructs a new Sound object. Plays the background music infinitively.
+     */
     explicit Sound();
 
+    /**
+     * plays the start fanfare track.
+     */
     void playStartFanfare();
 
+    /**
+     * plays the explosion track.
+     */
     void playExplosion();
 
+    /**
+     * plays the end fanfare track.
+     */
     void playEndFanfare();
 
+    /**
+     * is called every time the player shoots. Plays shoot track.
+     */
     void playShot();
 
+    /**
+     * is called when player has lost all lives. Plays game over track.
+     */
     void playGameOver();
 
+    /**
+     * stops the background music.
+     */
     void stopBackground();
 
+    /**
+     * Clears the Sound.
+     */
     void close();
 
 };

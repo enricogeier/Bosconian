@@ -16,16 +16,35 @@ private:
 
 
 public:
+    /**
+     * Constructs a timer object.
+     */
     Timer()= default;
 
+    /**
+     * Starts the timer.
+     */
     void start();
 
+    /**
+     * Stops the timer.
+     */
     void stop();
 
+    /**
+     * Pauses the timer.
+     */
     void pause();
 
+    /**
+     * Resumes the timer.
+     */
     void resume();
 
+    /**
+     * Retrieves the current time left.
+     * @return current time left.
+     */
     Uint64 get_current_time() const;
 
 

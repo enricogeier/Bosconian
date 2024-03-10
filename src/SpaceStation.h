@@ -4,7 +4,6 @@
 #include <utility>
 #include "Cannon.h"
 
-
 class SpaceStation : public GameObject
 {
 private:
@@ -55,12 +54,31 @@ public:
     Cannon cannons[6];
     bool horizontal = false;
 
+    /**
+     * Constructs a new SpaceStation object and its cannons.
+     *
+     * @param position The position of the SpaceStation in the game.
+     * @param collision_circles  used for collision calculation.
+     * @param scale used for collision calculation.
+     * @param horizontal true if the SpaceStation is horizontal, false otherwise.
+     */
     explicit SpaceStation(Vector2 position, std::vector<CollisionCircle> collision_circles, Vector2& scale, bool horizontal = false);
 
+    /**
+     * Updates cannon positions. Called when tile position has been changed.
+     * @param offset Offset position used for change the cannon positions.
+     */
     void update_cannon_positions(Vector2& offset);
 
+    /**
+     * Checks if cannons have been destroyed and possibly updates the cannons.
+     */
     void update_cannons();
 
+    /**
+     * Retrieves amount of cannons which have not been destroyed yet.
+     * @return amount of cannons which have not been destroyed yet.
+     */
     int get_amount_of_cannons();
 
 };
