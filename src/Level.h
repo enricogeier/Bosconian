@@ -60,20 +60,44 @@ private:
     long frame_counter = 1;
     float delta = 0.0f;
 
+    /**
+     * Initializes tile positions.
+     */
     void initialize_tiles();
 
+    /**
+     * Sets the current tile and update other tiles.
+     */
     void initialize_tile_index();
 
+    /**
+     * Changes the current tile and update other tiles.
+     */
     void set_current_tile();
 
+    /**
+     * Check if tile position should be changed. If true function calls update_tile_positions() of a Tile object.
+     */
     void check_tile_positions();
 
+    /**
+     * Spawns and moves enemies.
+     */
     void move_enemies();
 
+    /**
+     * Checks enemy collsions. Calls check_collision function of the QuadTree object.
+     */
     void check_enemy_collisions();
 
+    /**
+     * Load a specific Level based on current_round attribute.
+     */
     void load_level();
 
+    /**
+     * Clears level. Removes anything in the game except the player.
+     */
     void clear();
 
 public:
@@ -99,23 +123,69 @@ public:
 
     Vector2 current_tile_position = Vector2();
 
+    /**
+     * Constructs a new Level object. Represents the model.
+     */
     explicit Level();
 
+    /**
+     * Updates the game logic within a frame.
+     *
+     * @param player_direction user keyboard input within current frame. Default value is (0.0f, 0.0f) if not provided.
+     * @param shoot true if shoot was pressed, false otherwise. Default value is false if not provided.
+     * @param accelerate true if first user input while level start. false otherwise. Default value is false if not provided.
+     */
     void update(Vector2 player_direction = Vector2(0.0f, 0.0f), bool shoot = false, bool accelerate = false);
 
-    [[nodiscard]] std::vector<GameObject> get_all_game_objects() const;
+    /**
+     * Retrieves all asteroids currently used in game.
+     *
+     * @return list of game objects currently used in game.
+     */
+    std::vector<GameObject> get_all_game_objects() const;
 
-    [[nodiscard]] std::vector<Enemy> get_all_enemies() const;
+    /**
+     * Retrieves all enemies currently used in game.
+     *
+     * @return list of enemies currently used in game.
+     */
+    std::vector<Enemy> get_all_enemies() const;
 
-    [[nodiscard]] std::vector<Mine> get_all_mines() const;
+    /**
+     * Retrieves all mines currently used in game.
+     *
+     * @return list of mines currently used in game.
+     */
+    std::vector<Mine> get_all_mines() const;
 
-    [[nodiscard]] std::vector<SpaceStation> get_space_stations() const;
+    /**
+     * Retrieves all space stations and its cannons used in game.
+     *
+     * @return list of space stations used in game.
+     */
+    std::vector<SpaceStation> get_space_stations() const;
 
-    [[nodiscard]] Player get_player() const;
+    /**
+     * Retrieves the Player instance.
+     *
+     * @return the Player instance.
+     */
+    Player get_player() const;
 
-    [[nodiscard]] std::list<Bullet> get_bullets() const;
 
-    [[nodiscard]] const long& get_current_frame() const;
+    /**
+     * Retrieves all bullets currently used in game.
+     *
+     * @return list of all bullets currently used in game.
+     */
+    std::list<Bullet> get_bullets() const;
+
+    /**
+     * Retrieves the current frame number.
+     *
+     * @return Reference of the current frame number.
+     */
+    const long& get_current_frame() const;
 
 
 };

@@ -23,6 +23,16 @@ public:
     CannonType type = CannonType::N;
     Vector2 shoot_position_offset = Vector2();
 
+    /**
+     * Constructs a new Cannon object.
+     *
+     * @param position The position of the cannon. The position value for the Cannon instance
+     * @param shoot_position_offset start position of a shoot
+     * @param cannon_type Type of Cannon. See enum CannonType
+     * @param collision_circle used for collision calculation. Default value is (0.0f, 0.0f)
+     * @param explosion_circle used for collision calculation when cannon has been destroyed. Default value is (0.0f, 0.0f)
+     * @param scale used for collision calculation. Default value is (0.0f, 0.0f)
+     */
     explicit Cannon
     (
             Vector2 position = Vector2(),
@@ -37,8 +47,15 @@ public:
     {
     }
 
+    /** Updates the position of the Cannon instance. Called when tile position is changed.
+     *
+     * @param offset Offset value used for setting the new position value.
+     */
     void update_position(Vector2& offset);
 
+    /**
+     * Called when Cannon has been destroyed. Changes the collision circle
+     */
     void check_state();
 
 

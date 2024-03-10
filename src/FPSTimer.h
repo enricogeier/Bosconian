@@ -13,10 +13,21 @@ private:
     Uint64 delta = 0;
 public:
 
+    /**
+     * Constructs a new FPSTimer object.
+     */
     FPSTimer()= default;
 
+    /**
+     * Retrieves the time between two frames in seconds.
+     * @return Time between two frames in seconds.
+     */
     float get_delta() const;
 
+    /**
+     * Clamps fps to a given value. The program creates around MAX_FPS frames in one second.
+     * @param amount_of_frames Amount of frames calculated since program start.
+     */
     void clamp_fps(const long int& amount_of_frames);
 
 };
